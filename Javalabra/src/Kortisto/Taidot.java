@@ -1,23 +1,19 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Kortisto;
 
 /**
  *
  * @author heidi
  */
-import java.util.ArrayList;
 
 public class Taidot {
-    
-    static ArrayList<String> taidot = new ArrayList<String>();
+    String taito;
 
-    public Taidot() {
+    public Taidot(String taito) {
+        this.taito = taito;
     }
     
-    public void lisaaOsaaminen(String taito) {
-        taidot.add(taito);
+    public String getOsaaminen() {
+        return this.taito;
     }
 }

@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Kayttoliittyma;
 
 import Kortisto.Henkilo;
@@ -27,6 +24,8 @@ public class Komennot {
         System.out.println(" 2. Muokkaa henkilön tietoja");
         System.out.println(" 3. Listaa henkilöt");
         System.out.println(" 4. Listaa osaamisalueet");
+        System.out.println(" 5. Etsi henkilö");
+        System.out.println(" 6. Etsi taito");
         System.out.println(" 0. Poistu");
 
 

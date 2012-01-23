@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Kortisto;
 
 import Kayttoliittyma.Komennot;
@@ -38,5 +35,11 @@ public class Kortisto {
        return -1;
          
      }
+    
+    public static void tulostaHenkilot() {
+        for (Henkilo henkilo : henkilot) {
+            System.out.println(henkilo.getEtunimi()+" "+henkilo.getSukunimi());
+        }
+    }
 
 }

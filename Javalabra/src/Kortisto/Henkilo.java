@@ -1,8 +1,7 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Kortisto;
+
+import java.util.ArrayList;
 
 /**
  *
@@ -11,6 +10,8 @@ package Kortisto;
 public class Henkilo {
     String etunimi;
     String sukunimi;
+    
+    static ArrayList<Taidot> taidot = new ArrayList<Taidot>();
  
     public Henkilo() {
     }
@@ -21,8 +22,8 @@ public class Henkilo {
     }
      
     void lisaaOsaaminen(String osaaminen) {
-        Taidot taito = new Taidot();
-        taito.lisaaOsaaminen(osaaminen);
+        Taidot taito = new Taidot(osaaminen);
+        taidot.add(taito);
     }
     
     String getEtunimi() {
@@ -32,4 +33,8 @@ public class Henkilo {
     String getSukunimi() {
         return this.sukunimi;
     }
+    
+    
+    
+    
 }

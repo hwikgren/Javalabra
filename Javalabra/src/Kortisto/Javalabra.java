@@ -23,13 +23,18 @@ public class Javalabra {
             }
 
             if (valinta == 3) {
-                System.out.println("Valitsit henkilöiden listaamisen");
+                Kortisto.tulostaHenkilot();
             }
 
             if (valinta == 4) {
                 System.out.println("Valitsit osaamisalueiden listaamisen");
             }
-
+            if (valinta == 5) {
+                System.out.println("Valitsit etsimisen henkilön nimen perusteella");
+            }
+            if (valinta == 6) {
+                System.out.println("Valitsit etsimisen taidon perusteella");
+            }
 
         }
     }
