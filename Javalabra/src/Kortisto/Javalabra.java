@@ -1,9 +1,20 @@
+
 package Kortisto;
 
 import Kayttoliittyma.Komennot;
 
+/**
+ * Sisältää main-luokan.
+ * @author heidi
+ * 
+ */
 public class Javalabra {
-
+    
+    /**
+     * Huolehtii käyttäjän valinnoista.
+     * Ohjelma toimii kunnes valinta on 0.
+     * @param args 
+     */
     public static void main(String[] args) {
         
         while (true) {

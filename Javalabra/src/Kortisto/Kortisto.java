@@ -3,19 +3,28 @@ package Kortisto;
 
 import Kayttoliittyma.Komennot;
 import java.util.ArrayList;
-import java.util.Scanner;
- 
+
+/**
+ * Sovellus-olio
+ * @author heidi
+ */
 public class Kortisto {
     
-    public static Scanner lukija = new Scanner(System.in);
-      
+    /**
+     * Henkilö-olioiden säilytyspaikka
+     */
     static ArrayList<Henkilo> henkilot = new ArrayList<Henkilo>();
+    
+    /**
+     * Henkilö-olio
+     */
     static Henkilo henkilo;
 
     public Kortisto() {
     }
     /**
-     * Metodi luo uuden Henkilö olion ja lisää sen henkilöt ArrayListiin
+     * Metodi luo uuden Henkilö-olion.
+     * Lisää sen henkilöt-ArrayListiin.
      * @param etu
      * @param suku 
      */
@@ -24,37 +33,43 @@ public class Kortisto {
         henkilot.add(henkilo);
     }
     /**
-     * Metodi pyytää etsiHenkilo-metodilta Henkilö-olion,
-     * pyytää Komentoja kysymään mikä taito lisätään
-     * ja lisää Henkilö-oliolle kyseisen taidon
+     * Metodi lisää henkilölle taidon.
+     * Pyytää etsiHenkilo-metodilta Henkilö-olion, saa Komennolta käyttäjän antaman taidon 
+     * ja välittää sen Henkilö-oliolle.
      * @param etu
      * @param suku 
      */
     public static void lisaaOsaaminen(String etu, String suku) {
         henkilo = henkilot.get(etsiHenkilo(etu, suku));
+        /**
+         * Käyttäjältä saatu taito.
+         */
         String osaaminen = Komennot.mikaOsaaminen(henkilo);
         henkilo.lisaaOsaaminen(osaaminen);
     }
     /**
-     * Metodi käy läpi henkilot-Arrayn,
-     * vertaa kunkin olion etu- ja sukunimeä parametreihin
+     * Metodi palauttaa henkilön indeksin Arrayssa.
+     * Käy läpi henkilot-Arrayn ja vertaa kunkin olion etu- ja sukunimeä parametreihin.
      * @param etu
      * @param suku
-     * @return henkilön indeksi Arrayssa
+     * @return i indeksi Arrayssa
      */
     public static int etsiHenkilo(String etu, String suku) {
        for (int i=0; i<henkilot.size(); i++) {
            henkilo = henkilot.get(i);
-           if (henkilo.getSukunimi().equals(suku) || henkilo.getEtunimi().equals(etu)) {
-               return i;
+           if (henkilo.getSukunimi().equals(suku)) {
+               if (henkilo.getEtunimi().equals(etu)) {
+                   return i;
+               }
+               
            }
        }
        return -1;
          
      }
     /**
-     * Metodi tulostaa henkilot-Arrayn henkilot
-     * hakemalla kunkin etu- ja sukunimen
+     * Metodi tulostaa henkilöt.
+     * Hakee henkilöt-Arrayn jokaisen henkilön etu- ja sukunimen.
      */
     public static void tulostaHenkilot() {
         for (Henkilo haettu : henkilot) {

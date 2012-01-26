@@ -6,7 +6,7 @@ import Kortisto.Kortisto;
 import java.util.Scanner;
 
 /**
- *
+ * Hoitaa Scannerin avulla yhteyden käyttäjään kunnes käyttöliittymä on valmis.
  * @author heidi
  */
 public class Komennot {
