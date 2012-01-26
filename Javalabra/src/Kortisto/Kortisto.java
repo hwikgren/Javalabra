@@ -13,7 +13,11 @@ public class Kortisto {
 
     public Kortisto() {
     }
-    
+    /**
+     * Metodi luo uuden Henkilö olion ja lisää sen henkilöt ArrayListiin
+     * @param etu
+     * @param suku 
+     */
     public static void lisaaHenkilo(String etu, String suku) {
         Henkilo henkilo = new Henkilo(etu, suku);
         henkilot.add(henkilo);
