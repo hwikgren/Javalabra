@@ -23,6 +23,10 @@ public class Kortisto {
     public Kortisto() {
         henkilot = new ArrayList<Henkilo>();
     }
+    
+    public int getKoko() {
+        return henkilot.size();
+    }
     /**
      * Metodi luo uuden Henkilö-olion.
      * Lisää sen henkilöt-ArrayListiin.
@@ -35,18 +39,14 @@ public class Kortisto {
     }
     /**
      * Metodi lisää henkilölle taidon.
-     * Pyytää etsiHenkilo-metodilta Henkilö-olion, saa Komennolta käyttäjän antaman taidon 
-     * ja välittää sen Henkilö-oliolle.
-     * @param etu
-     * @param suku 
+     * Hakee henkilö-olion Arraysta ja välittää tälle käyttäjän antaman taidon.
+     * @param indeksi Henkilön indeksi Arrayssa
+     * @param taito 
      */
-    public void lisaaOsaaminen(String etu, String suku) {
-        henkilo = henkilot.get(etsiHenkilo(etu, suku));
-        /**
-         * Käyttäjältä saatu taito.
-         */
-        String osaaminen = Komennot.mikaOsaaminen(henkilo);
-        henkilo.lisaaOsaaminen(osaaminen);
+    public void lisaaOsaaminen(int indeksi, String taito) {
+        henkilo = henkilot.get(indeksi);
+        
+        henkilo.lisaaOsaaminen(taito);
     }
     /**
      * Metodi palauttaa henkilön indeksin Arrayssa.

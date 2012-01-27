@@ -32,7 +32,7 @@ public class Henkilo {
      * Metodi lisää Henkilö-Oliolle Taito-olion
      * @param osaaminen 
      */
-    void lisaaOsaaminen(String osaaminen) {
+    public void lisaaOsaaminen(String osaaminen) {
         Taito taito = new Taito(osaaminen);
         taidot.add(taito);
     }
@@ -41,7 +41,7 @@ public class Henkilo {
      * Palauttaa henkilön etunimen.
      * @return etunimi
      */
-    String getEtunimi() {
+    public String getEtunimi() {
         return this.etunimi;
     }
     
@@ -49,11 +49,13 @@ public class Henkilo {
      * Palauttaa henkilön sukunimen.
      * @return sukunimi
      */
-    String getSukunimi() {
+    public String getSukunimi() {
         return this.sukunimi;
     }
     
-    
+    public int getMaara() {
+        return taidot.size();
+    }
     
     
 }

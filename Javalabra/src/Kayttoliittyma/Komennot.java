@@ -47,15 +47,18 @@ public class Komennot {
         System.out.println("Haluatko asettaa henkilölle osaamisalueita? Y(es)/N(o)");
         String valinta = lukija.next();
         if (valinta.equalsIgnoreCase("y")) {
-            kortisto.lisaaOsaaminen(etunimi, sukunimi);
+            mikaOsaaminen(etunimi, sukunimi);
         }
     }
+    
+    
     
     /*void lisaaOsaaminen(int indeksi) {
         henkilo.lisaaOsaaminen(indeksi);   
     }*/
     
-    public String mikaOsaaminen(Henkilo henkilo) {
+    public String mikaOsaaminen(String etunimi, String sukunimi) {
+        int indeksi = kortisto.etsiHenkilo(etunimi, sukunimi);
         System.out.println("Anna henkilön osaamisalue: ");
         return lukija.next();
         
