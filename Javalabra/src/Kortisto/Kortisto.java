@@ -5,7 +5,7 @@ import Kayttoliittyma.Komennot;
 import java.util.ArrayList;
 
 /**
- * Sovellus-olio
+ * Sovelluslogiikka-olio
  * @author heidi
  */
 public class Kortisto {
@@ -13,14 +13,15 @@ public class Kortisto {
     /**
      * Henkilö-olioiden säilytyspaikka
      */
-    static ArrayList<Henkilo> henkilot = new ArrayList<Henkilo>();
+    private ArrayList<Henkilo> henkilot;
     
     /**
      * Henkilö-olio
      */
-    static Henkilo henkilo;
+    private Henkilo henkilo;
 
     public Kortisto() {
+        henkilot = new ArrayList<Henkilo>();
     }
     /**
      * Metodi luo uuden Henkilö-olion.
@@ -28,7 +29,7 @@ public class Kortisto {
      * @param etu
      * @param suku 
      */
-    public static void lisaaHenkilo(String etu, String suku) {
+    public void lisaaHenkilo(String etu, String suku) {
         henkilo = new Henkilo(etu, suku);
         henkilot.add(henkilo);
     }
@@ -39,7 +40,7 @@ public class Kortisto {
      * @param etu
      * @param suku 
      */
-    public static void lisaaOsaaminen(String etu, String suku) {
+    public void lisaaOsaaminen(String etu, String suku) {
         henkilo = henkilot.get(etsiHenkilo(etu, suku));
         /**
          * Käyttäjältä saatu taito.
@@ -54,7 +55,7 @@ public class Kortisto {
      * @param suku
      * @return i indeksi Arrayssa
      */
-    public static int etsiHenkilo(String etu, String suku) {
+    public int etsiHenkilo(String etu, String suku) {
        for (int i=0; i<henkilot.size(); i++) {
            henkilo = henkilot.get(i);
            if (henkilo.getSukunimi().equals(suku)) {
@@ -71,10 +72,12 @@ public class Kortisto {
      * Metodi tulostaa henkilöt.
      * Hakee henkilöt-Arrayn jokaisen henkilön etu- ja sukunimen.
      */
-    public static void tulostaHenkilot() {
+    public String toString() {
+        String tulostus = "";
         for (Henkilo haettu : henkilot) {
-            System.out.println(haettu.getEtunimi()+" "+haettu.getSukunimi());
+            tulostus += haettu.getEtunimi()+" "+haettu.getSukunimi()+"\n";
         }
+        return tulostus;
     }
 
 }

@@ -11,14 +11,16 @@ import Kayttoliittyma.Komennot;
 public class Javalabra {
     
     /**
-     * Huolehtii käyttäjän valinnoista.
-     * Ohjelma toimii kunnes valinta on 0.
+     * Luo käyttöliittymän.
+     * Huolehtii käyttäjän valinnoista. Ohjelma toimii kunnes valinta on 0.
      * @param args 
      */
     public static void main(String[] args) {
         
+        Komennot komennot = new Komennot();
+        
         while (true) {
-            int valinta = Komennot.paavalikko();
+            int valinta = komennot.paavalikko();
 
             if (valinta == 0) {
                 System.out.println("Valitsit poistumisen");
@@ -26,7 +28,7 @@ public class Javalabra {
             }
 
             if (valinta == 1) {
-                Komennot.lisaaHenkilo();
+                komennot.lisaaHenkilo();
             }
 
             if (valinta == 2) {
@@ -34,7 +36,7 @@ public class Javalabra {
             }
 
             if (valinta == 3) {
-                Kortisto.tulostaHenkilot();
+                komennot.tulostaHenkilot();
             }
 
             if (valinta == 4) {

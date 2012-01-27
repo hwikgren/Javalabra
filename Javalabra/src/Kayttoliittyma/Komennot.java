@@ -11,8 +11,11 @@ import java.util.Scanner;
  */
 public class Komennot {
     public static Scanner lukija = new Scanner(System.in);
+    
+    Kortisto kortisto;
 
     public Komennot() {
+        kortisto = new Kortisto();
     }
     
     public static int paavalikko() {
@@ -35,16 +38,16 @@ public class Komennot {
         return valinta;
     }
     
-    public static void lisaaHenkilo() {
+    public void lisaaHenkilo() {
         System.out.print("Anna etunimi: ");
         String etunimi = lukija.next();
         System.out.print("Anna sukunimi: ");
         String sukunimi = lukija.next();
-        Kortisto.lisaaHenkilo(etunimi, sukunimi);
+        kortisto.lisaaHenkilo(etunimi, sukunimi);
         System.out.println("Haluatko asettaa henkilölle osaamisalueita? Y(es)/N(o)");
         String valinta = lukija.next();
         if (valinta.equalsIgnoreCase("y")) {
-            Kortisto.lisaaOsaaminen(etunimi, sukunimi);
+            kortisto.lisaaOsaaminen(etunimi, sukunimi);
         }
     }
     
@@ -52,11 +55,13 @@ public class Komennot {
         henkilo.lisaaOsaaminen(indeksi);   
     }*/
     
-    public static String mikaOsaaminen(Henkilo henkilo) {
+    public String mikaOsaaminen(Henkilo henkilo) {
         System.out.println("Anna henkilön osaamisalue: ");
         return lukija.next();
         
     }
 
-
+    public void tulostaHenkilot() {
+        System.out.println(kortisto.toString());
+    }
 }
