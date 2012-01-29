@@ -71,7 +71,7 @@ public class Kortisto {
     }
     
     /**
-     * Metodi etsii poistettavan henkilö-olion indeksi.
+     * Metodi etsii poistettavan henkilö-olion indeksin.
      * Kutsuu poistaHenkiloArraysta-metodia.
      * @param etu
      * @param suku 
