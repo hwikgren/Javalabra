@@ -3,6 +3,8 @@ package Kayttoliittyma;
 
 import Kortisto.Henkilo;
 import Kortisto.Kortisto;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 
 /**
@@ -14,21 +16,22 @@ public class Komennot {
     
     Kortisto kortisto;
 
-    public Komennot() {
+    public Komennot() throws FileNotFoundException, IOException, ClassNotFoundException {
         kortisto = new Kortisto();
     }
     
-    public static int paavalikko() {
+    public int paavalikko() {
         System.out.println("");
         System.out.println("HENKILÖOSAAMISKORTISTO");
         System.out.println("----------------------");
         System.out.println("Päävalikko");
         System.out.println(" 1. Lisää henkilö");
-        System.out.println(" 2. Muokkaa henkilön tietoja");
-        System.out.println(" 3. Listaa henkilöt");
-        System.out.println(" 4. Listaa osaamisalueet");
-        System.out.println(" 5. Etsi henkilö");
-        System.out.println(" 6. Etsi taito");
+        System.out.println(" 2. Poista henkilö");
+        System.out.println(" 3. Muokkaa henkilön tietoja");
+        System.out.println(" 4. Listaa henkilöt");
+        System.out.println(" 5. Listaa osaamisalueet");
+        System.out.println(" 6. Etsi henkilö");
+        System.out.println(" 7. Etsi taito");
         System.out.println(" 0. Poistu");
 
 
@@ -51,6 +54,14 @@ public class Komennot {
         }
     }
     
+    public void poistaHenkilo() {
+        System.out.println("Anna poistettavan henkilön etunimi: ");
+        String etu = lukija.next();
+        System.out.println("Anna poistettavan henkilön sukunimi: ");
+        String suku = lukija.next();
+        int indeksi = kortisto.etsiHenkilo(etu, suku);
+        kortisto.poistaHenkiloArraysta(indeksi);
+    }
     
     
     /*void lisaaOsaaminen(int indeksi) {
@@ -66,5 +77,9 @@ public class Komennot {
 
     public void tulostaHenkilot() {
         System.out.println(kortisto.toString());
+    }
+
+    public void tallennaTiedot() throws IOException {
+        kortisto.tallennaTiedot();
     }
 }

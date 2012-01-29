@@ -1,13 +1,14 @@
 
 package Kortisto;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Henkilö on olio, jolla voi olla erilaisia taitoja
  * @author heidi
  */
-public class Henkilo {
+public class Henkilo implements Serializable {
     String etunimi;
     String sukunimi;
     /**
@@ -52,7 +53,11 @@ public class Henkilo {
     public String getSukunimi() {
         return this.sukunimi;
     }
-    
+    /**
+     * Metodi palauttaa henkilön taitojen määrän.
+     * Antaa taidot-arrayn koon.
+     * @return taidot.size();
+     */
     public int getMaara() {
         return taidot.size();
     }
