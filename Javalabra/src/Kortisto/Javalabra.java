@@ -2,8 +2,10 @@
 package Kortisto;
 
 import Kayttoliittyma.Komennot;
+import Kayttoliittyma.Paaikkuna;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import javax.swing.WindowConstants;
 
 /**
  * Sisältää main-luokan.
@@ -20,7 +22,11 @@ public class Javalabra {
     public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
         
         Komennot komennot = new Komennot();
-        
+        Paaikkuna ikkuna = new Paaikkuna();
+        //ikkuna.setSize(450, 400);
+        ikkuna.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        ikkuna.setVisible(true);
+
         while (true) {
             int valinta = komennot.paavalikko();
 
@@ -34,7 +40,7 @@ public class Javalabra {
             }
             
             if (valinta == 2) {
-                komennot.poistaHenkilo();
+                //komennot.poistaHenkilo();
             }
 
             if (valinta == 3) {

@@ -128,6 +128,14 @@ public class Kortisto {
      * Metodi tulostaa henkilöt.
      * Hakee henkilöt-Arrayn jokaisen henkilön etu- ja sukunimen.
      */
+    public String[] kaikkiHenkilot() {
+        String[]  palautus = new String[henkilot.size()];
+        for (int i=0; i<henkilot.size(); i++) {
+            Henkilo haettu = henkilot.get(i);
+            palautus[i] = haettu.getEtunimi()+" "+haettu.getSukunimi();
+        }
+        return palautus;
+    }
     public String toString() {
         String tulostus = "";
         for (Henkilo haettu : henkilot) {

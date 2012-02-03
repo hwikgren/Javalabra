@@ -15,6 +15,7 @@ public class Komennot {
     public static Scanner lukija = new Scanner(System.in);
     
     Kortisto kortisto;
+    public static String[] lista;
 
     public Komennot() throws FileNotFoundException, IOException, ClassNotFoundException {
         kortisto = new Kortisto();
@@ -54,12 +55,12 @@ public class Komennot {
         }
     }
     
-    public void poistaHenkilo() {
-        System.out.println("Anna poistettavan henkilön etunimi: ");
+    public void poistaHenkilo(int indeksi) {
+        /*System.out.println("Anna poistettavan henkilön etunimi: ");
         String etu = lukija.next();
         System.out.println("Anna poistettavan henkilön sukunimi: ");
         String suku = lukija.next();
-        int indeksi = kortisto.etsiHenkilo(etu, suku);
+        int indeksi = kortisto.etsiHenkilo(etu, suku);*/
         kortisto.poistaHenkiloArraysta(indeksi);
     }
     
@@ -73,6 +74,11 @@ public class Komennot {
         System.out.println("Anna henkilön osaamisalue: ");
         return lukija.next();
         
+    }
+    
+    public String[] listaaHenkilot() {
+        lista = kortisto.kaikkiHenkilot();
+        return lista;
     }
 
     public void tulostaHenkilot() {
