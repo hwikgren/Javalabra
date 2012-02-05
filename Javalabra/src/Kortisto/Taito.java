@@ -1,12 +1,14 @@
 
 package Kortisto;
 
+import java.io.Serializable;
+
 /**
  * Taito on osaamis-olio
  * @author heidi
  */
 
-public class Taito {
+public class Taito implements Serializable {
     String taito;
     
     /**

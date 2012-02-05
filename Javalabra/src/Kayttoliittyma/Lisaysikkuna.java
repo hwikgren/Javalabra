@@ -4,18 +4,37 @@
  */
 package Kayttoliittyma;
 
+import Kortisto.Kortisto;
+import java.awt.HeadlessException;
+import java.util.ArrayList;
+import javax.swing.*;
+
 /**
  *
  * @author hwikgren
  */
 public class Lisaysikkuna extends javax.swing.JFrame {
 
+    Kortisto kortisto;
+    DefaultListModel model;
     /**
      * Creates new form Lisaysikkuna
      */
     public Lisaysikkuna() {
         initComponents();
+        model = new DefaultListModel();
+        taidotLista.setModel(model);
+        
     }
+
+    public Lisaysikkuna(Kortisto kortisto) {
+        initComponents();
+        model = new DefaultListModel();
+        taidotLista.setModel(model);
+        this.kortisto = kortisto;
+        
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -42,10 +61,18 @@ public class Lisaysikkuna extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "TAITAJA", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+        jPanel1.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                jPanel1AncestorAdded(evt);
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
 
         jLabel1.setText("Etunimi:");
 
-        etunimi.setText("jTextField1");
         etunimi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 etunimiActionPerformed(evt);
@@ -54,7 +81,6 @@ public class Lisaysikkuna extends javax.swing.JFrame {
 
         jLabel2.setText("Sukunimi:");
 
-        sukunimi.setText("jTextField2");
         sukunimi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 sukunimiActionPerformed(evt);
@@ -62,12 +88,31 @@ public class Lisaysikkuna extends javax.swing.JFrame {
         });
 
         asetaTaitoButton.setText("Aseta taito");
+        asetaTaitoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                asetaTaitoButtonActionPerformed(evt);
+            }
+        });
 
         jLabel6.setText("Uusi taito:");
 
-        uusiTaito.setText("jTextField3");
+        uusiTaito.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uusiTaitoActionPerformed(evt);
+            }
+        });
+        uusiTaito.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                uusiTaitoKeyPressed(evt);
+            }
+        });
 
         lisaaButton.setText("Lisää henkilö");
+        lisaaButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lisaaButtonActionPerformed(evt);
+            }
+        });
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Taidot"));
 
@@ -82,11 +127,16 @@ public class Lisaysikkuna extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(jScrollPane1)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -139,7 +189,7 @@ public class Lisaysikkuna extends javax.swing.JFrame {
                         .addComponent(asetaTaitoButton)
                         .addGap(40, 40, 40)
                         .addComponent(lisaaButton)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addGap(0, 16, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -170,6 +220,41 @@ public class Lisaysikkuna extends javax.swing.JFrame {
     private void sukunimiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sukunimiActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_sukunimiActionPerformed
+
+    private void asetaTaitoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_asetaTaitoButtonActionPerformed
+        String taito = uusiTaito.getText();
+        model.insertElementAt(taito, 0);
+        taidotLista.ensureIndexIsVisible(0);
+        uusiTaito.requestFocusInWindow();
+        uusiTaito.setText("");
+    }//GEN-LAST:event_asetaTaitoButtonActionPerformed
+
+    private void uusiTaitoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_uusiTaitoKeyPressed
+        
+    }//GEN-LAST:event_uusiTaitoKeyPressed
+
+    private void uusiTaitoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uusiTaitoActionPerformed
+        String taito = uusiTaito.getText();
+        model.insertElementAt(taito, 0);
+        taidotLista.ensureIndexIsVisible(0);
+        uusiTaito.requestFocusInWindow();
+        uusiTaito.setText("");
+    }//GEN-LAST:event_uusiTaitoActionPerformed
+
+    private void lisaaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lisaaButtonActionPerformed
+        etu = etunimi.getText();
+        suku = sukunimi.getText();
+        kortisto.lisaaHenkilo(etu, suku);
+        int indeksi = kortisto.getKoko()-1;
+        for (int i=0; i<model.getSize(); i++) {
+            kortisto.lisaaOsaaminen(indeksi, (String)model.elementAt(i));
+        }
+        dispose();
+    }//GEN-LAST:event_lisaaButtonActionPerformed
+
+    private void jPanel1AncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_jPanel1AncestorAdded
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jPanel1AncestorAdded
 
     /**
      * @param args the command line arguments

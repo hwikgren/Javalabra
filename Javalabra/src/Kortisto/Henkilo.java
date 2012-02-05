@@ -14,7 +14,7 @@ public class Henkilo implements Serializable {
     /**
      * Henkilön Taito-olioiden säilytyspaikka.
      */
-    static ArrayList<Taito> taidot = new ArrayList<Taito>();
+    ArrayList<Taito> taidot;
  
     public Henkilo() {
     }
@@ -27,6 +27,7 @@ public class Henkilo implements Serializable {
     public Henkilo(String etu, String suku) {
          this.etunimi = etu;
          this.sukunimi = suku;
+         taidot = new ArrayList<Taito>();
     }
     
     /**
@@ -35,9 +36,17 @@ public class Henkilo implements Serializable {
      */
     public void lisaaOsaaminen(String osaaminen) {
         Taito taito = new Taito(osaaminen);
-        taidot.add(taito);
+        this.taidot.add(taito);
     }
     
+    public String[] haeTaidot() {
+        String[] henkilonTaidot = new String[taidot.size()];
+        for (int i=0; i<taidot.size(); i++) {
+            Taito taito = taidot.get(i);
+            henkilonTaidot[i] = taito.getOsaaminen();
+        }
+        return henkilonTaidot;
+    }
     /**
      * Palauttaa henkilön etunimen.
      * @return etunimi
@@ -62,5 +71,7 @@ public class Henkilo implements Serializable {
         return taidot.size();
     }
     
-    
+    public void tyhjennaArray() {
+        taidot.clear();
+    }
 }

@@ -105,6 +105,7 @@
               <SubComponents>
                 <Component class="javax.swing.JList" name="henkilolista">
                   <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="henkilolistaMouseClicked"/>
                     <EventHandler event="valueChanged" listener="javax.swing.event.ListSelectionListener" parameters="javax.swing.event.ListSelectionEvent" handler="henkilolistaValueChanged"/>
                   </Events>
                   <AuxValues>
@@ -119,6 +120,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Lis&#xe4;&#xe4; henkil&#xf6;"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="lisaaButtonActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="poistaButton">
           <Properties>

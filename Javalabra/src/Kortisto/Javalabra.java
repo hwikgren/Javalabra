@@ -21,13 +21,13 @@ public class Javalabra {
      */
     public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
         
-        Komennot komennot = new Komennot();
+        //Komennot komennot = new Komennot();
         Paaikkuna ikkuna = new Paaikkuna();
         //ikkuna.setSize(450, 400);
         ikkuna.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         ikkuna.setVisible(true);
 
-        while (true) {
+        /*while (true) {
             int valinta = komennot.paavalikko();
 
             if (valinta == 0) {
@@ -61,7 +61,7 @@ public class Javalabra {
                 System.out.println("Valitsit etsimisen taidon perusteella");
             }
 
-        }
+        }*/
     }
     
 }

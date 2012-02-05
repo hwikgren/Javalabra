@@ -4,12 +4,13 @@ package Kortisto;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Observable;
 
 /**
  * Sovelluslogiikka-olio
  * @author heidi
  */
-public class Kortisto {
+public class Kortisto extends Observable {
     
     /**
      * Henkilö-olioiden säilytyspaikka
@@ -57,6 +58,8 @@ public class Kortisto {
     public void lisaaHenkilo(String etu, String suku) {
         henkilo = new Henkilo(etu, suku);
         henkilot.add(henkilo);
+        setChanged();
+        notifyObservers(kaikkiHenkilot());
     }
     /**
      * Metodi lisää henkilölle taidon.
@@ -68,6 +71,17 @@ public class Kortisto {
         henkilo = henkilot.get(indeksi);
         
         henkilo.lisaaOsaaminen(taito);
+    }
+    
+    /**
+     * Metodi hakee tietyn henkilön taidot.
+     * Ensin haetaan henkilo-olio ja sitten tämän taidot string-taulukossa.
+     * @param indeksi
+     * @return taisot-taulukko (String)
+     */
+    public String[] haeOsaamiset(int indeksi) {
+        henkilo = henkilot.get(indeksi);
+        return henkilo.haeTaidot();
     }
     
     /**
@@ -87,6 +101,17 @@ public class Kortisto {
      */
     public void poistaHenkiloArraysta(int indeksi) {
         henkilot.remove(indeksi);
+    }
+    
+    /**
+     * Metodi tyhjentää henkilön taidot.
+     * Ensin haetaan henkilo-olio ja sitten tyhjennetään henkilön taidot-taulukko.
+     * Metodia käytetään kun lisäys-ikkunassa on lisätty henkilölle taitoja.
+     * @param indeksi 
+     */
+    public void tyhjennaHenkilonTiedot(int indeksi) {
+        henkilo = henkilot.get(indeksi);
+        henkilo.tyhjennaArray();
     }
     /**
      * Metodi palauttaa henkilön indeksin Arrayssa.
@@ -128,6 +153,7 @@ public class Kortisto {
      * Metodi tulostaa henkilöt.
      * Hakee henkilöt-Arrayn jokaisen henkilön etu- ja sukunimen.
      */
+    
     public String[] kaikkiHenkilot() {
         String[]  palautus = new String[henkilot.size()];
         for (int i=0; i<henkilot.size(); i++) {
@@ -143,5 +169,15 @@ public class Kortisto {
         }
         return tulostus;
     }
-
+    
+    /**
+     * Metodi palauttaa henkilön nimen Stringinä.
+     * @param indeksi
+     * @return string
+     */
+    public String henkilonNimi(int indeksi) {
+        return henkilot.get(indeksi).getEtunimi()+" "+henkilot.get(indeksi).getSukunimi();
+    }
+    
+    
 }

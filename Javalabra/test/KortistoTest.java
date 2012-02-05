@@ -1,14 +1,15 @@
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 
 import Kortisto.Henkilo;
 import Kortisto.Kortisto;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -105,7 +106,7 @@ public class KortistoTest {
         assertEquals( kortisto.toString(), tulostus );
     }
     
-    @Test
+    /*@Test
     public void tiedostonLataaminenPalauttaaOliot() throws IOException, FileNotFoundException, ClassNotFoundException {
         kortisto.lisaaHenkilo("heidi", "jauhiainen");
         kortisto.lisaaHenkilo("tommi", "jauhiainen");
@@ -135,5 +136,32 @@ public class KortistoTest {
                 + "tommi jauhiainen\n"
                 + "kalle koehenkilo\n";
         assertEquals( kortisto.toString(), tulostus );
+    }*/
+    
+    @Test
+    public void getHenkiloToimii() {
+        kortisto.lisaaHenkilo("heidi", "jauhiainen");
+        assertTrue( kortisto.getHenkilo(0) != null);
+    }
+    
+    @Test
+    public void getOsaamisetToimii() {
+        kortisto.lisaaHenkilo("heidi", "jauhiainen");
+        kortisto.lisaaOsaaminen(0, "java");
+        kortisto.lisaaOsaaminen(0, "sql");
+        String[] taidot = kortisto.haeOsaamiset(0);
+        String haetut = "";
+        for (int i=0; i<taidot.length; i++) {
+            haetut += taidot[i]+" ";
+        }
+        assertEquals( haetut, "java sql ");
+    }
+    @Test
+    public void tyhjennaHenkilonTiedotToimii() {
+        kortisto.lisaaHenkilo("heidi", "jauhiainen");
+        kortisto.lisaaOsaaminen(0, "java");
+        kortisto.tyhjennaHenkilonTiedot(0);
+        String[] taidot = kortisto.haeOsaamiset(0);
+        assertEquals( 0, taidot.length );
     }
 }

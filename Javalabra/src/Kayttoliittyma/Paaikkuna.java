@@ -7,16 +7,24 @@ package Kayttoliittyma;
 import Kortisto.Kortisto;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
+import javax.swing.WindowConstants;
 
 
 /**
  *
  * @author hwikgren
  */
-public class Paaikkuna extends javax.swing.JFrame {
+public class Paaikkuna extends javax.swing.JFrame implements Observer {
+
+    
     Kortisto kortisto;
+    Henkiloikkuna henkilo;
+    Lisaysikkuna lisays;
     /**
      * Creates new form Paaikkuna
      */
@@ -24,11 +32,9 @@ public class Paaikkuna extends javax.swing.JFrame {
         
         initComponents();
         kortisto = new Kortisto();
+        kortisto.addObserver(this);
         String[] lista = kortisto.kaikkiHenkilot();
         henkilolista.setListData(lista);
-        henkilolista.addMouseListener(new MouseAdapter()) {
-        
-    }
     }
 
     /**
@@ -54,6 +60,11 @@ public class Paaikkuna extends javax.swing.JFrame {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Henkilöt"));
 
+        henkilolista.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                henkilolistaMouseClicked(evt);
+            }
+        });
         henkilolista.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 henkilolistaValueChanged(evt);
@@ -73,6 +84,11 @@ public class Paaikkuna extends javax.swing.JFrame {
         );
 
         lisaaButton.setText("Lisää henkilö");
+        lisaaButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lisaaButtonActionPerformed(evt);
+            }
+        });
 
         poistaButton.setText("Poista valittu henkilö");
         poistaButton.addActionListener(new java.awt.event.ActionListener() {
@@ -149,6 +165,22 @@ public class Paaikkuna extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_lopetaButtonActionPerformed
 
+    private void henkilolistaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_henkilolistaMouseClicked
+        if (evt.getClickCount() == 2) {
+            int valittu = henkilolista.getSelectedIndex();
+            henkilo = new Henkiloikkuna(kortisto, valittu);
+            //ikkuna.setSize(450, 400);
+            henkilo.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+            henkilo.setVisible(true);
+        }
+    }//GEN-LAST:event_henkilolistaMouseClicked
+
+    private void lisaaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lisaaButtonActionPerformed
+        lisays = new Lisaysikkuna(kortisto);
+        lisays.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        lisays.setVisible(true);
+    }//GEN-LAST:event_lisaaButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -207,4 +239,10 @@ public class Paaikkuna extends javax.swing.JFrame {
     private javax.swing.JButton lopetaButton;
     private javax.swing.JButton poistaButton;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void update(Observable o, Object o1) {
+        String[] lista = (String[])o1;
+        henkilolista.setListData(lista);
+    }
 }

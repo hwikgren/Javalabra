@@ -26,32 +26,39 @@ public class Tallennus implements Serializable {
      * @throws ClassNotFoundException 
      */
     public ArrayList<Henkilo> lataaTiedot() throws FileNotFoundException, IOException, ClassNotFoundException {
-        FileInputStream tiedosto = new FileInputStream("henkilot.oma");
-        ObjectInputStream lukija = new ObjectInputStream(tiedosto);
-        ArrayList<Henkilo> henkilot = new ArrayList<Henkilo>();
-        
-        try {
-            Object obj;
-        
-            while ((obj = lukija.readObject()) != null) {
-                if (obj instanceof Henkilo) {
-                    henkilo = (Henkilo)obj;
-                    henkilot.add(henkilo);
-                }
-            } 
-        } catch (EOFException ex) {
-        
-        } finally {
-            try {
-                if (lukija != null){
-                    lukija.close();
-                }
-            } catch (IOException ex) {
-            }
+        File f = new File("henkilot.oma");
+        if (!f.exists()) {
+            f.createNewFile();
         }
-        
-        
-        tiedosto.close();
+        ArrayList<Henkilo> henkilot = new ArrayList<Henkilo>();
+        if (f.length() > 0) {
+            FileInputStream tiedosto = new FileInputStream("henkilot.oma");
+            ObjectInputStream lukija = new ObjectInputStream(tiedosto);
+
+
+            try {
+                Object obj;
+
+                while ((obj = lukija.readObject()) != null) {
+                    if (obj instanceof Henkilo) {
+                        henkilo = (Henkilo)obj;
+                        henkilot.add(henkilo);
+                    }
+                } 
+            } catch (EOFException ex) {
+
+            } finally {
+                try {
+                    if (lukija != null){
+                        lukija.close();
+                    }
+                } catch (IOException ex) {
+                }
+            }
+
+
+            tiedosto.close();
+        }
         return henkilot;
     }
     /**
