@@ -4,6 +4,7 @@ package Kortisto;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Observable;
 
 /**
@@ -67,10 +68,10 @@ public class Kortisto extends Observable {
      * @param indeksi Henkilön indeksi Arrayssa
      * @param taito 
      */
-    public void lisaaOsaaminen(int indeksi, String taito) {
+    public void lisaaOsaaminen(int indeksi, String taito, String taso) {
         henkilo = henkilot.get(indeksi);
         
-        henkilo.lisaaOsaaminen(taito);
+        henkilo.lisaaOsaaminen(taito, taso);
     }
     
     /**
@@ -79,7 +80,7 @@ public class Kortisto extends Observable {
      * @param indeksi
      * @return taisot-taulukko (String)
      */
-    public String[] haeOsaamiset(int indeksi) {
+    public HashMap<String, String> haeOsaamiset(int indeksi) {
         henkilo = henkilot.get(indeksi);
         return henkilo.haeTaidot();
     }

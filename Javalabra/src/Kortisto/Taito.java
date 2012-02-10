@@ -10,6 +10,7 @@ import java.io.Serializable;
 
 public class Taito implements Serializable {
     String taito;
+    String taso;
     
     /**
      * Luo Taito-olion jolla on annettu taito.
@@ -19,11 +20,19 @@ public class Taito implements Serializable {
         this.taito = taito;
     }
     
+    public void setTaso(String taso) {
+        this.taso = taso;
+    }
+    
     /**
      * Palauttaa taidon Stringinä.
      * @return taito
      */
     public String getOsaaminen() {
         return this.taito;
+    }
+    
+    public String getTaso() {
+        return this.taso;
     }
 }

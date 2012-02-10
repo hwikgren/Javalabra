@@ -5,6 +5,7 @@
 package Kayttoliittyma;
 
 import Kortisto.Kortisto;
+import java.awt.event.WindowEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Observable;
@@ -35,6 +36,7 @@ public class Paaikkuna extends javax.swing.JFrame implements Observer {
         kortisto.addObserver(this);
         String[] lista = kortisto.kaikkiHenkilot();
         henkilolista.setListData(lista);
+        poistaButton.setVisible(false);
     }
 
     /**
@@ -55,8 +57,14 @@ public class Paaikkuna extends javax.swing.JFrame implements Observer {
         lopetaButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("TAITAJA");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "TAITAJA", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Henkilöt"));
 
@@ -80,7 +88,7 @@ public class Paaikkuna extends javax.swing.JFrame implements Observer {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
         );
 
         lisaaButton.setText("Lisää henkilö");
@@ -111,12 +119,16 @@ public class Paaikkuna extends javax.swing.JFrame implements Observer {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(lisaaButton)
-                        .addComponent(poistaButton))
-                    .addComponent(lopetaButton))
-                .addGap(0, 18, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lisaaButton)
+                            .addComponent(poistaButton))
+                        .addGap(0, 15, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(lopetaButton)
+                        .addContainerGap())))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -135,11 +147,17 @@ public class Paaikkuna extends javax.swing.JFrame implements Observer {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(23, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         pack();
@@ -150,6 +168,8 @@ public class Paaikkuna extends javax.swing.JFrame implements Observer {
         kortisto.poistaHenkiloArraysta(poistettava);
         String[] lista = kortisto.kaikkiHenkilot();
         henkilolista.setListData(lista);
+        henkilolista.clearSelection();
+        poistaButton.setVisible(false);
     }//GEN-LAST:event_poistaButtonActionPerformed
 
     private void henkilolistaValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_henkilolistaValueChanged
@@ -166,7 +186,10 @@ public class Paaikkuna extends javax.swing.JFrame implements Observer {
     }//GEN-LAST:event_lopetaButtonActionPerformed
 
     private void henkilolistaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_henkilolistaMouseClicked
-        if (evt.getClickCount() == 2) {
+        if (evt.getClickCount() == 1) {
+            poistaButton.setVisible(true);
+        }
+        else if (evt.getClickCount() == 2) {
             int valittu = henkilolista.getSelectedIndex();
             henkilo = new Henkiloikkuna(kortisto, valittu);
             //ikkuna.setSize(450, 400);
@@ -181,6 +204,15 @@ public class Paaikkuna extends javax.swing.JFrame implements Observer {
         lisays.setVisible(true);
     }//GEN-LAST:event_lisaaButtonActionPerformed
 
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        try {
+            kortisto.tallennaTiedot();
+        } catch (IOException ex) {
+            Logger.getLogger(Paaikkuna.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_formWindowClosing
+
+    
     /**
      * @param args the command line arguments
      */

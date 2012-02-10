@@ -6,9 +6,11 @@
 
 import Kortisto.Henkilo;
 import Kortisto.Kortisto;
+import Kortisto.Taito;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 import org.junit.After;
@@ -147,21 +149,21 @@ public class KortistoTest {
     @Test
     public void getOsaamisetToimii() {
         kortisto.lisaaHenkilo("heidi", "jauhiainen");
-        kortisto.lisaaOsaaminen(0, "java");
-        kortisto.lisaaOsaaminen(0, "sql");
-        String[] taidot = kortisto.haeOsaamiset(0);
+        kortisto.lisaaOsaaminen(0, "java", "Hyvä");
+        kortisto.lisaaOsaaminen(0, "sql", "Kohtalainen");
+        HashMap<String, String> taidot= kortisto.haeOsaamiset(0);
         String haetut = "";
-        for (int i=0; i<taidot.length; i++) {
-            haetut += taidot[i]+" ";
+        for (String taito : taidot.keySet()) {
+            haetut += taidot.get(taito) +" ";
         }
         assertEquals( haetut, "java sql ");
     }
     @Test
     public void tyhjennaHenkilonTiedotToimii() {
         kortisto.lisaaHenkilo("heidi", "jauhiainen");
-        kortisto.lisaaOsaaminen(0, "java");
+        kortisto.lisaaOsaaminen(0, "java", "Hyvä");
         kortisto.tyhjennaHenkilonTiedot(0);
-        String[] taidot = kortisto.haeOsaamiset(0);
-        assertEquals( 0, taidot.length );
+        HashMap<String, String> taidot= kortisto.haeOsaamiset(0);
+        assertEquals( 0, taidot.size() );
     }
 }

@@ -43,7 +43,7 @@ public class HenkiloTest {
     
     @Test
     public void osaaminenMeneeArrayhun() {
-        henkilo.lisaaOsaaminen("java");
+        henkilo.lisaaOsaaminen("java", "Erinomainen");
         assertEquals( 1, henkilo.getMaara() );
     }
 }

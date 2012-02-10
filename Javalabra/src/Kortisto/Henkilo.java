@@ -3,6 +3,7 @@ package Kortisto;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Henkilö on olio, jolla voi olla erilaisia taitoja
@@ -34,16 +35,19 @@ public class Henkilo implements Serializable {
      * Metodi lisää Henkilö-Oliolle Taito-olion
      * @param osaaminen 
      */
-    public void lisaaOsaaminen(String osaaminen) {
+    public void lisaaOsaaminen(String osaaminen, String taso) {
         Taito taito = new Taito(osaaminen);
+        taito.setTaso(taso);
         this.taidot.add(taito);
     }
     
-    public String[] haeTaidot() {
-        String[] henkilonTaidot = new String[taidot.size()];
+    public HashMap<String, String> haeTaidot() {
+        HashMap<String, String> henkilonTaidot = new HashMap<String, String>();
         for (int i=0; i<taidot.size(); i++) {
             Taito taito = taidot.get(i);
-            henkilonTaidot[i] = taito.getOsaaminen();
+            String henkilonTaito = taito.getOsaaminen();
+            String taso = taito.getTaso();
+            henkilonTaidot.put(henkilonTaito, taso);
         }
         return henkilonTaidot;
     }
