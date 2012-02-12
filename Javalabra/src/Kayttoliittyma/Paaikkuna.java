@@ -26,6 +26,7 @@ public class Paaikkuna extends javax.swing.JFrame implements Observer {
     Kortisto kortisto;
     Henkiloikkuna henkilo;
     Lisaysikkuna lisays;
+    Hakuikkuna haku;
     /**
      * Creates new form Paaikkuna
      */
@@ -55,6 +56,7 @@ public class Paaikkuna extends javax.swing.JFrame implements Observer {
         lisaaButton = new javax.swing.JButton();
         poistaButton = new javax.swing.JButton();
         lopetaButton = new javax.swing.JButton();
+        HaeButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("TAITAJA");
@@ -88,7 +90,7 @@ public class Paaikkuna extends javax.swing.JFrame implements Observer {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
+            .addComponent(jScrollPane1)
         );
 
         lisaaButton.setText("Lisää henkilö");
@@ -112,6 +114,13 @@ public class Paaikkuna extends javax.swing.JFrame implements Observer {
             }
         });
 
+        HaeButton.setText("Hae");
+        HaeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                HaeButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -127,9 +136,14 @@ public class Paaikkuna extends javax.swing.JFrame implements Observer {
                         .addGap(0, 15, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(lopetaButton)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lopetaButton, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(HaeButton, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addContainerGap())))
         );
+
+        jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {HaeButton, lopetaButton});
+
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -138,7 +152,9 @@ public class Paaikkuna extends javax.swing.JFrame implements Observer {
                 .addComponent(lisaaButton)
                 .addGap(18, 18, 18)
                 .addComponent(poistaButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 125, Short.MAX_VALUE)
+                .addComponent(HaeButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lopetaButton)
                 .addContainerGap())
         );
@@ -164,8 +180,8 @@ public class Paaikkuna extends javax.swing.JFrame implements Observer {
     }// </editor-fold>//GEN-END:initComponents
 
     private void poistaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_poistaButtonActionPerformed
-        int poistettava = henkilolista.getSelectedIndex();
-        kortisto.poistaHenkiloArraysta(poistettava);
+        String poistettava = (String)henkilolista.getSelectedValue();
+        kortisto.poistaHenkilo(poistettava);
         String[] lista = kortisto.kaikkiHenkilot();
         henkilolista.setListData(lista);
         henkilolista.clearSelection();
@@ -190,7 +206,7 @@ public class Paaikkuna extends javax.swing.JFrame implements Observer {
             poistaButton.setVisible(true);
         }
         else if (evt.getClickCount() == 2) {
-            int valittu = henkilolista.getSelectedIndex();
+            String valittu = (String)henkilolista.getSelectedValue();
             henkilo = new Henkiloikkuna(kortisto, valittu);
             //ikkuna.setSize(450, 400);
             henkilo.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -211,6 +227,12 @@ public class Paaikkuna extends javax.swing.JFrame implements Observer {
             Logger.getLogger(Paaikkuna.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_formWindowClosing
+
+    private void HaeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HaeButtonActionPerformed
+        haku = new Hakuikkuna(kortisto);
+        haku.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        haku.setVisible(true);
+    }//GEN-LAST:event_HaeButtonActionPerformed
 
     
     /**
@@ -263,6 +285,7 @@ public class Paaikkuna extends javax.swing.JFrame implements Observer {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton HaeButton;
     public static javax.swing.JList henkilolista;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

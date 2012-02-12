@@ -3,6 +3,7 @@ package Kortisto;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.TreeMap;
 
 /**
  * Tallennus-olio hoitaa tietojen tallennuksen ja lataamisen.
@@ -25,26 +26,27 @@ public class Tallennus implements Serializable {
      * @throws IOException
      * @throws ClassNotFoundException 
      */
-    public ArrayList<Henkilo> lataaTiedot() throws FileNotFoundException, IOException, ClassNotFoundException {
+    public TreeMap<String, Henkilo> lataaTiedot() throws FileNotFoundException, IOException, ClassNotFoundException {
         File f = new File("henkilot.oma");
         if (!f.exists()) {
             f.createNewFile();
         }
-        ArrayList<Henkilo> henkilot = new ArrayList<Henkilo>();
+        TreeMap<String, Henkilo> henkilot = new TreeMap<String, Henkilo>();
         if (f.length() > 0) {
             FileInputStream tiedosto = new FileInputStream("henkilot.oma");
             ObjectInputStream lukija = new ObjectInputStream(tiedosto);
 
 
             try {
-                Object obj;
+                henkilot = (TreeMap<String, Henkilo>)lukija.readObject();
+                /*Object obj;
 
                 while ((obj = lukija.readObject()) != null) {
                     if (obj instanceof Henkilo) {
                         henkilo = (Henkilo)obj;
-                        henkilot.add(henkilo);
+                        henkilot.put(henkilo);
                     }
-                } 
+                }*/ 
             } catch (EOFException ex) {
 
             } finally {
@@ -66,12 +68,11 @@ public class Tallennus implements Serializable {
      * @param lista
      * @throws IOException 
      */
-    public void talletaTiedot(ArrayList<Henkilo> lista) throws IOException {
+    public void talletaTiedot(TreeMap<String, Henkilo> lista) throws IOException {
         FileOutputStream henkiloTiedosto = new FileOutputStream("henkilot.oma");
         ObjectOutputStream kirjoittaja = new ObjectOutputStream(henkiloTiedosto);
-        for (int i=0; i<lista.size(); i++) {
-            kirjoittaja.writeObject((Object)lista.get(i));
-        }
+
+        kirjoittaja.writeObject((Object)lista);
         
         kirjoittaja.flush();
         henkiloTiedosto.close();

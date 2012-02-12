@@ -6,19 +6,12 @@
 
 import Kortisto.Henkilo;
 import Kortisto.Kortisto;
-import Kortisto.Taito;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-
-
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import java.util.TreeMap;
 import static org.junit.Assert.*;
+import org.junit.*;
 
 /**
  *
@@ -26,7 +19,7 @@ import static org.junit.Assert.*;
  */
 public class KortistoTest {
     Kortisto kortisto;
-    ArrayList<Henkilo> apuArray = new ArrayList<Henkilo>();
+    TreeMap<String, Henkilo> apuArray = new TreeMap<String, Henkilo>();
     
     public KortistoTest() {
     }
@@ -43,20 +36,22 @@ public class KortistoTest {
     @Before
     public void setUp() throws FileNotFoundException, IOException, ClassNotFoundException {
         kortisto = new Kortisto();
-        for (int i=kortisto.getKoko()-1; i>=0; i--) {
-            apuArray.add(kortisto.getHenkilo(i));
-            kortisto.poistaHenkiloArraysta(i);
+        for (String haettu : kortisto.henkilot.keySet()) {
+            apuArray.put(haettu, kortisto.henkilot.get(haettu));
         }
+        kortisto.henkilot.clear();
     }
     
     @After
     public void tearDown() {
-        for (int i=kortisto.getKoko()-1; i>=0; i--) {
-            kortisto.poistaHenkiloArraysta(i);
+        for (String haettu : kortisto.henkilot.keySet()) {
+            apuArray.put(haettu, kortisto.henkilot.get(haettu));
         }
-        for (int i=apuArray.size()-1; i>=0; i--) {
-            kortisto.henkilot.add(apuArray.get(i));
+        kortisto.henkilot.clear();
+        for (String haettu : apuArray.keySet()) {
+            kortisto.henkilot.put(haettu, apuArray.get(haettu));
         }
+        apuArray.clear();
     }
     
     
@@ -72,22 +67,22 @@ public class KortistoTest {
         assertEquals( vanha+1, kortisto.getKoko() );
     }
     
-    @Test
+    /*@Test
     public void etsiHenkiloToimii() {
         int vanhaPaikka = kortisto.getKoko()-1;
         int uusiPaikka = vanhaPaikka+1;
         kortisto.lisaaHenkilo("heidi", "jauhiainen");
         assertEquals( uusiPaikka, kortisto.etsiHenkilo("heidi", "jauhiainen") );
-    }
+    }*/
     
-    @Test
+    /*@Test
     public void etsiHenkiloToimiiKunArrayssaUseampia() {
         kortisto.lisaaHenkilo("heidi", "jauhiainen");
         kortisto.lisaaHenkilo("tommi", "jauhiainen");
         kortisto.lisaaHenkilo("kalle", "koehenkilo");
         int paikka = kortisto.getKoko()-2;
         assertEquals( paikka, kortisto.etsiHenkilo("tommi", "jauhiainen") );
-    }
+    }*/
     
     @Test
     public void toStringToimii() {
@@ -102,9 +97,9 @@ public class KortistoTest {
         kortisto.lisaaHenkilo("heidi", "jauhiainen");
         kortisto.lisaaHenkilo("kalle", "koehenkilo");
         kortisto.lisaaHenkilo("tommi", "jauhiainen");
-        kortisto.poistaHenkilo("kalle", "koehenkilo");
-        String tulostus = "heidi jauhiainen\n"
-                + "tommi jauhiainen\n";
+        kortisto.poistaHenkilo("koehenkilo kalle");
+        String tulostus = "jauhiainen heidi\n"
+                + "jauhiainen tommi\n";
         assertEquals( kortisto.toString(), tulostus );
     }
     
@@ -140,30 +135,42 @@ public class KortistoTest {
         assertEquals( kortisto.toString(), tulostus );
     }*/
     
-    @Test
+    /*@Test
     public void getHenkiloToimii() {
         kortisto.lisaaHenkilo("heidi", "jauhiainen");
         assertTrue( kortisto.getHenkilo(0) != null);
-    }
+    }*/
     
     @Test
     public void getOsaamisetToimii() {
         kortisto.lisaaHenkilo("heidi", "jauhiainen");
-        kortisto.lisaaOsaaminen(0, "java", "Hyvä");
-        kortisto.lisaaOsaaminen(0, "sql", "Kohtalainen");
-        HashMap<String, String> taidot= kortisto.haeOsaamiset(0);
+        kortisto.lisaaOsaaminen("jauhiainen heidi", "java", "Hyvä");
+        kortisto.lisaaOsaaminen("jauhiainen heidi", "sql", "Kohtalainen");
+        String[][] taidot = kortisto.haeOsaamiset("jauhiainen heidi");
         String haetut = "";
-        for (String taito : taidot.keySet()) {
-            haetut += taidot.get(taito) +" ";
+        for (int i=0; i<taidot.length; i++) {
+            haetut += taidot[i][0]+" ";
         }
         assertEquals( haetut, "java sql ");
     }
     @Test
-    public void tyhjennaHenkilonTiedotToimii() {
+    public void getOsaamisTasoToimii() {
         kortisto.lisaaHenkilo("heidi", "jauhiainen");
-        kortisto.lisaaOsaaminen(0, "java", "Hyvä");
-        kortisto.tyhjennaHenkilonTiedot(0);
-        HashMap<String, String> taidot= kortisto.haeOsaamiset(0);
-        assertEquals( 0, taidot.size() );
+        kortisto.lisaaOsaaminen("jauhiainen heidi", "java", "Hyvä");
+        kortisto.lisaaOsaaminen("jauhiainen heidi", "sql", "Kohtalainen");
+        String[][] taidot= kortisto.haeOsaamiset("jauhiainen heidi");
+        String haetut = "";
+        for (int i=0; i<taidot.length; i++) {
+            haetut += taidot[i][1] +" ";
+        }
+        assertEquals( haetut, "Hyvä Kohtalainen ");
+    }
+    @Test
+    public void tyhjennaHenkilonTaidotToimii() {
+        kortisto.lisaaHenkilo("heidi", "jauhiainen");
+        kortisto.lisaaOsaaminen("jauhiainen heidi", "java", "Hyvä");
+        kortisto.tyhjennaHenkilonTaidot("jauhiainen heidi");
+        String[][] taidot= kortisto.haeOsaamiset("jauhiainen heidi");
+        assertEquals( 0, taidot.length );
     }
 }

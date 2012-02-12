@@ -18,8 +18,9 @@ public class Henkiloikkuna extends javax.swing.JFrame {
 
     Kortisto kortisto;
     DefaultListModel model;
-    int henkilonIndeksi;
-    HashMap<String, String> taso;
+    String henkilonNimi;
+    String[][] tasot;
+    String[][] tasoja;
     TitledBorder border;
     /**
      * Creates new form Henkiloikkuna
@@ -28,20 +29,19 @@ public class Henkiloikkuna extends javax.swing.JFrame {
         initComponents();
     }
 
-    public Henkiloikkuna(Kortisto kortisto, int indeksi) {
+    public Henkiloikkuna(Kortisto kortisto, String nimi) {
         initComponents();
-        henkilonIndeksi = indeksi;
         this.kortisto = kortisto;
-        String nimi = kortisto.henkilonNimi(indeksi);
-        border = BorderFactory.createTitledBorder(nimi);
+        this.henkilonNimi = nimi;
+        border = BorderFactory.createTitledBorder(henkilonNimi);
         border.setTitleJustification(TitledBorder.CENTER);
         border.setTitlePosition(TitledBorder.CENTER);
         jPanel3.setBorder(border);
-        Nimi.setText(nimi);
-        taso = kortisto.haeOsaamiset(indeksi);
+        Nimi.setText(henkilonNimi);
+        tasot = kortisto.haeOsaamiset(henkilonNimi);
         model = new DefaultListModel();
-        for (String taito : taso.keySet()) {
-            model.addElement(taito);
+        for (int i=0; i<tasot.length; i++) {
+            model.addElement(tasot[i][0]);
         }
         taidotLista.setModel(model);
         poistaButton.setVisible(false);
@@ -255,33 +255,40 @@ public class Henkiloikkuna extends javax.swing.JFrame {
     }//GEN-LAST:event_uusiTaitoActionPerformed
 
     private void TallennaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TallennaButtonActionPerformed
-        kortisto.tyhjennaHenkilonTiedot(henkilonIndeksi);
+        kortisto.tyhjennaHenkilonTaidot(henkilonNimi);
         for (int i=0; i<model.getSize(); i++) {
             String taito = (String)model.elementAt(i);
-            kortisto.lisaaOsaaminen(henkilonIndeksi, taito, taso.get(taito));
+            kortisto.lisaaOsaaminen(henkilonNimi, taito, tasot[i][1]);
         }
         dispose();
     }//GEN-LAST:event_TallennaButtonActionPerformed
 
     private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
-        String taito = (String) model.getElementAt(taidotLista.getSelectedIndex());
-        taso.put(taito, "Kohtalainen");
+        int indeksi = taidotLista.getSelectedIndex();
+        String taito = (String) model.getElementAt(indeksi);
+        tasot[indeksi][0] = taito;
+        tasot[indeksi][1] = "Kohtalainen";
     }//GEN-LAST:event_jRadioButton1ActionPerformed
 
     private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2ActionPerformed
-        String taito = (String) model.getElementAt(taidotLista.getSelectedIndex());
-        taso.put(taito, "Hyvä");
+        int indeksi = taidotLista.getSelectedIndex();
+        String taito = (String) model.getElementAt(indeksi);
+        tasot[indeksi][0] = taito;
+        tasot[indeksi][1] = "Hyvä";
     }//GEN-LAST:event_jRadioButton2ActionPerformed
 
     private void jRadioButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton3ActionPerformed
-        String taito = (String) model.getElementAt(taidotLista.getSelectedIndex());
-        taso.put(taito, "Erinomainen");
+        int indeksi = taidotLista.getSelectedIndex();
+        String taito = (String) model.getElementAt(indeksi);
+        tasot[indeksi][0] = taito;
+        tasot[indeksi][1] = "Erinomainen";
     }//GEN-LAST:event_jRadioButton3ActionPerformed
 
     private void taidotListaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_taidotListaMouseClicked
         poistaButton.setVisible(true);
-        String taito = (String)model.getElementAt(taidotLista.getSelectedIndex());
-        String osaaminen = taso.get(taito);
+        int indeksi = taidotLista.getSelectedIndex();
+        String taito = (String)model.getElementAt(indeksi);
+        String osaaminen = tasot[indeksi][1];
         if (osaaminen.equals("Hyvä")) {
             jRadioButton2.setSelected(rootPaneCheckingEnabled);
         }
@@ -299,11 +306,12 @@ public class Henkiloikkuna extends javax.swing.JFrame {
     private void poistaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_poistaButtonActionPerformed
         int indeksi = taidotLista.getSelectedIndex();
         String taito = (String)model.getElementAt(indeksi);
-        taso.remove(taito);
+        tasot = kortisto.poistaTaito(tasot, taito);
         model.remove(indeksi);
         taidotLista.setModel(model);
         taidotLista.clearSelection();
         poistaButton.setVisible(false);
+        buttonGroup1.clearSelection();
     }//GEN-LAST:event_poistaButtonActionPerformed
 
     /**

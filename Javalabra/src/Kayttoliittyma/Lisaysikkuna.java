@@ -36,7 +36,10 @@ public class Lisaysikkuna extends javax.swing.JFrame {
         taidotLista.setModel(model);
         this.kortisto = kortisto;
         taidot = new HashMap<String, String>();
-        
+        poistaButton.setVisible(false);
+        jRadioButton1.setEnabled(false);
+        jRadioButton2.setEnabled(false);
+        jRadioButton3.setEnabled(false);
     }
     
 
@@ -67,6 +70,7 @@ public class Lisaysikkuna extends javax.swing.JFrame {
         jRadioButton3 = new javax.swing.JRadioButton();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
+        poistaButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("TAITAJA");
@@ -178,6 +182,13 @@ public class Lisaysikkuna extends javax.swing.JFrame {
 
         jLabel5.setText("Erinomainen");
 
+        poistaButton.setText("Poista valittu taito");
+        poistaButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                poistaButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -186,7 +197,6 @@ public class Lisaysikkuna extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lisaaButton)
                         .addGap(10, 10, 10))
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -202,23 +212,28 @@ public class Lisaysikkuna extends javax.swing.JFrame {
                                     .addComponent(sukunimi, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLabel4)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jRadioButton1)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jRadioButton2)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jRadioButton3)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLabel5))
-                                    .addComponent(jLabel6)
-                                    .addComponent(uusiTaito, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel3)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(jLabel4)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jRadioButton1)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jRadioButton2)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jRadioButton3)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(jLabel5))
+                                            .addComponent(jLabel6)
+                                            .addComponent(uusiTaito, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(8, 8, 8)
+                                        .addComponent(poistaButton)))))
                         .addGap(18, 18, 18)))
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -246,11 +261,13 @@ public class Lisaysikkuna extends javax.swing.JFrame {
                             .addComponent(jRadioButton3)
                             .addComponent(jLabel4)
                             .addComponent(jLabel5))
-                        .addGap(46, 46, 46)
+                        .addGap(31, 31, 31)
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(uusiTaito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
+                        .addComponent(poistaButton)
+                        .addGap(18, 18, 18)
                         .addComponent(lisaaButton)
                         .addGap(18, 18, 18))))
         );
@@ -293,12 +310,19 @@ public class Lisaysikkuna extends javax.swing.JFrame {
     private void uusiTaitoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uusiTaitoActionPerformed
         String taito = uusiTaito.getText();
         model.insertElementAt(taito, 0);
-        taidot.put(taito, null);
+        taidot.put(taito, "");
         taidotLista.ensureIndexIsVisible(0);
         taidotLista.setSelectedIndex(0);
         uusiTaito.requestFocusInWindow();
         uusiTaito.setText("");
-        buttonGroup2.clearSelection();
+        if (jRadioButton1.isSelected() || jRadioButton2.isSelected() || jRadioButton3.isSelected()) {
+            buttonGroup2.clearSelection();
+        }
+        else {
+            jRadioButton1.setEnabled(true);
+            jRadioButton2.setEnabled(true);
+            jRadioButton3.setEnabled(true);
+        }
     }//GEN-LAST:event_uusiTaitoActionPerformed
 
     private void lisaaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lisaaButtonActionPerformed
@@ -308,7 +332,7 @@ public class Lisaysikkuna extends javax.swing.JFrame {
         int indeksi = kortisto.getKoko()-1;
         for (int i=0; i<model.getSize(); i++) {
             String taito = (String)model.elementAt(i);
-            kortisto.lisaaOsaaminen(indeksi, taito, taidot.get(taito));
+            kortisto.lisaaOsaaminen(suku+" "+etu, taito, taidot.get(taito));
         }
         dispose();
     }//GEN-LAST:event_lisaaButtonActionPerformed
@@ -318,24 +342,36 @@ public class Lisaysikkuna extends javax.swing.JFrame {
     }//GEN-LAST:event_jPanel1AncestorAdded
 
     private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2ActionPerformed
-        String taito = (String)model.getElementAt(taidotLista.getSelectedIndex());
-        taidot.put(taito, "Hyvä");
+        if (!taidotLista.isSelectionEmpty()) {
+            String taito = (String)model.getElementAt(taidotLista.getSelectedIndex());
+            taidot.put(taito, "Hyvä");
+        }
     }//GEN-LAST:event_jRadioButton2ActionPerformed
 
     private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
-        String taito = (String)model.getElementAt(taidotLista.getSelectedIndex());
-        taidot.put(taito, "Kohtalainen");
+        if (!taidotLista.isSelectionEmpty()) {
+            String taito = (String)model.getElementAt(taidotLista.getSelectedIndex());
+            taidot.put(taito, "Kohtalainen");
+        }
     }//GEN-LAST:event_jRadioButton1ActionPerformed
 
     private void jRadioButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton3ActionPerformed
-        String taito = (String)model.getElementAt(taidotLista.getSelectedIndex());
-        taidot.put(taito, "Erinomainen");
+        if (!taidotLista.isSelectionEmpty()) {
+            String taito = (String)model.getElementAt(taidotLista.getSelectedIndex());
+            taidot.put(taito, "Erinomainen");
+        }
     }//GEN-LAST:event_jRadioButton3ActionPerformed
 
     private void taidotListaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_taidotListaMouseClicked
+        jRadioButton1.setEnabled(true);
+        jRadioButton2.setEnabled(true);
+        jRadioButton3.setEnabled(true);
         String taito = (String)model.getElementAt(taidotLista.getSelectedIndex());
         String osaaminen = taidot.get(taito);
-        if (osaaminen.equals("Hyvä")) {
+        if (osaaminen.isEmpty()) {
+            buttonGroup2.clearSelection();
+        }
+        else if (osaaminen.equals("Hyvä")) {
             jRadioButton2.setSelected(rootPaneCheckingEnabled);
         }
         else if (osaaminen.equals("Kohtalainen")) {
@@ -344,10 +380,19 @@ public class Lisaysikkuna extends javax.swing.JFrame {
         else if (osaaminen.equals("Erinomainen")) {
             jRadioButton3.setSelected(rootPaneCheckingEnabled);
         }
-        else {
-            buttonGroup2.clearSelection();
-        }
+        poistaButton.setVisible(true);
     }//GEN-LAST:event_taidotListaMouseClicked
+
+    private void poistaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_poistaButtonActionPerformed
+        int indeksi = taidotLista.getSelectedIndex();
+        String taito = (String)model.getElementAt(indeksi);
+        taidot.remove(taito);
+        model.remove(indeksi);
+        taidotLista.setModel(model);
+        taidotLista.clearSelection();
+        poistaButton.setVisible(false);
+        buttonGroup2.clearSelection();
+    }//GEN-LAST:event_poistaButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -406,6 +451,7 @@ public class Lisaysikkuna extends javax.swing.JFrame {
     private javax.swing.JRadioButton jRadioButton3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton lisaaButton;
+    private javax.swing.JButton poistaButton;
     private javax.swing.JTextField sukunimi;
     private javax.swing.JList taidotLista;
     private javax.swing.JTextField uusiTaito;

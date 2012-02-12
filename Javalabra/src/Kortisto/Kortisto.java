@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
+import java.util.TreeMap;
 
 /**
  * Sovelluslogiikka-olio
@@ -16,7 +17,7 @@ public class Kortisto extends Observable {
     /**
      * Henkilö-olioiden säilytyspaikka
      */
-    public ArrayList<Henkilo> henkilot;
+    public TreeMap<String, Henkilo> henkilot;
     Tallennus tallentaja;
     
     /**
@@ -31,7 +32,7 @@ public class Kortisto extends Observable {
      * @throws ClassNotFoundException 
      */
     public Kortisto() throws FileNotFoundException, IOException, ClassNotFoundException {
-        henkilot = new ArrayList<Henkilo>();
+        henkilot = new TreeMap<String, Henkilo>();
         tallentaja = new Tallennus();
         henkilot = tallentaja.lataaTiedot();
     }
@@ -47,18 +48,18 @@ public class Kortisto extends Observable {
      * @param indeksi
      * @return Henkilo
      */
-    public Henkilo getHenkilo(int indeksi) {
+    /*public Henkilo getHenkilo(int indeksi) {
         return henkilot.get(indeksi);
-    }
+    }*/
     /**
      * Metodi luo uuden Henkilö-olion.
-     * Lisää sen henkilöt-ArrayListiin.
+     * Lisää sen henkilöt-TreeSetiin.
      * @param etu
      * @param suku 
      */
     public void lisaaHenkilo(String etu, String suku) {
         henkilo = new Henkilo(etu, suku);
-        henkilot.add(henkilo);
+        henkilot.put(suku+" "+etu, henkilo);
         setChanged();
         notifyObservers(kaikkiHenkilot());
     }
@@ -68,8 +69,8 @@ public class Kortisto extends Observable {
      * @param indeksi Henkilön indeksi Arrayssa
      * @param taito 
      */
-    public void lisaaOsaaminen(int indeksi, String taito, String taso) {
-        henkilo = henkilot.get(indeksi);
+    public void lisaaOsaaminen(String nimi, String taito, String taso) {
+        henkilo = henkilot.get(nimi);
         
         henkilo.lisaaOsaaminen(taito, taso);
     }
@@ -80,29 +81,33 @@ public class Kortisto extends Observable {
      * @param indeksi
      * @return taisot-taulukko (String)
      */
-    public HashMap<String, String> haeOsaamiset(int indeksi) {
-        henkilo = henkilot.get(indeksi);
+    public String[][] haeOsaamiset(String nimi) {
+        henkilo = henkilot.get(nimi);
         return henkilo.haeTaidot();
     }
     
-    /**
-     * Metodi etsii poistettavan henkilö-olion indeksin.
-     * Kutsuu poistaHenkiloArraysta-metodia.
-     * @param etu
-     * @param suku 
-     */
-    public void poistaHenkilo(String etu, String suku) {
-        int indeksi = etsiHenkilo(etu, suku);
-        poistaHenkiloArraysta(indeksi);
+    public String[][] poistaTaito(String[][] taidot, String taito) {
+        String[][] uusiTaidot = new String[taidot.length-1][];
+        for (int i=0; i<taidot.length; i++) {
+            if (!taidot[i][0].equals(taito)) {
+                uusiTaidot[i][0] = taidot[i][0];
+                uusiTaidot[i][1] = taidot[i][0];
+            }
+        }
+        return uusiTaidot;
     }
     
     /**
-     * Metodi poistaa indeksin mukaisen henkilön arraysta.
-     * @param indeksi 
+     * Metodi poistaa nimen mukaisen henkilön TreeMapista
+     * @param etu
+     * @param suku 
      */
-    public void poistaHenkiloArraysta(int indeksi) {
-        henkilot.remove(indeksi);
+    public void poistaHenkilo(String nimi) {
+        //int indeksi = etsiHenkilo(etu, suku);
+        henkilot.remove(nimi);
     }
+    
+    
     
     /**
      * Metodi tyhjentää henkilön taidot.
@@ -110,8 +115,8 @@ public class Kortisto extends Observable {
      * Metodia käytetään kun lisäys-ikkunassa on lisätty henkilölle taitoja.
      * @param indeksi 
      */
-    public void tyhjennaHenkilonTiedot(int indeksi) {
-        henkilo = henkilot.get(indeksi);
+    public void tyhjennaHenkilonTaidot(String nimi) {
+        henkilo = henkilot.get(nimi);
         henkilo.tyhjennaArray();
     }
     /**
@@ -121,7 +126,7 @@ public class Kortisto extends Observable {
      * @param suku
      * @return i indeksi Arrayssa
      */
-    public int etsiHenkilo(String etu, String suku) {
+    /*public int etsiHenkilo(String etu, String suku) {
        for (int i=0; i<henkilot.size(); i++) {
            henkilo = henkilot.get(i);
            if (henkilo.getSukunimi().equals(suku)) {
@@ -133,7 +138,7 @@ public class Kortisto extends Observable {
        }
        return -1;
          
-     }
+     }*/
     /**
      * Metodi kutsuu Tallennus-olion tallennaTiedot-metodia.
      * @throws IOException 
@@ -157,16 +162,17 @@ public class Kortisto extends Observable {
     
     public String[] kaikkiHenkilot() {
         String[]  palautus = new String[henkilot.size()];
-        for (int i=0; i<henkilot.size(); i++) {
-            Henkilo haettu = henkilot.get(i);
-            palautus[i] = haettu.getEtunimi()+" "+haettu.getSukunimi();
+        int i=0;
+        for (String haettu : henkilot.keySet()) {
+            palautus[i] = haettu;
+            i++;
         }
         return palautus;
     }
     public String toString() {
         String tulostus = "";
-        for (Henkilo haettu : henkilot) {
-            tulostus += haettu.getEtunimi()+" "+haettu.getSukunimi()+"\n";
+        for (String haettu : henkilot.keySet()) {
+            tulostus += haettu+"\n";
         }
         return tulostus;
     }
@@ -178,6 +184,71 @@ public class Kortisto extends Observable {
      */
     public String henkilonNimi(int indeksi) {
         return henkilot.get(indeksi).getEtunimi()+" "+henkilot.get(indeksi).getSukunimi();
+    }
+    
+    public ArrayList<String> hae(String etu, String suku, String taito) {
+        ArrayList<String> haetut = new ArrayList<String>();
+        if (!etu.equals("")) {
+            if (!suku.equals("")) {
+                haetut = haeKokoNimella(etu, suku);
+            }
+            else {
+                haetut = haeEtunimella(etu);
+            }
+        }
+        else if (!suku.equals("")) {
+            haetut = haeSukunimella(suku);
+        }
+        else {
+            haetut = haeTaidolla(taito);
+        }
+        return haetut;
+    }
+
+    public ArrayList<String> haeKokoNimella(String etu, String suku) {
+        ArrayList<String> haettu = new ArrayList<String>();
+        String kokoNimi = suku+" "+etu;
+        if (henkilot.get(kokoNimi) != null) {
+            henkilo = henkilot.get(kokoNimi);
+            haettu.add(henkilo.sukunimi+" "+henkilo.etunimi);
+        }
+        return haettu;
+    }
+
+    public ArrayList<String> haeEtunimella(String etu) {
+        ArrayList<String> haetut = new ArrayList<String>();
+        for (String nimi : henkilot.keySet()) {
+            Henkilo haettu = henkilot.get(nimi);
+            if (haettu.etunimi.equalsIgnoreCase(etu)) {
+                haetut.add(haettu.sukunimi+" "+haettu.etunimi);
+            }
+        }
+        return haetut;
+    }
+
+    public ArrayList<String> haeSukunimella(String suku) {
+        ArrayList<String> haetut = new ArrayList<String>();
+        for (String nimi : henkilot.keySet()) {
+            Henkilo haettu = henkilot.get(nimi);
+            if (haettu.sukunimi.equalsIgnoreCase(suku)) {
+                haetut.add(haettu.sukunimi+" "+haettu.etunimi);
+            }
+        }
+        return haetut;
+    }
+
+    public ArrayList<String> haeTaidolla(String taito) {
+        ArrayList<String> haetut = new ArrayList<String>();
+        for (String nimi : henkilot.keySet()) {
+            Henkilo haettu = henkilot.get(nimi);
+            ArrayList<String> taidot = haettu.haePelkatTaidot();
+            for (String henkilonTaito : taidot) {
+                if (henkilonTaito.equalsIgnoreCase(taito)) {
+                    haetut.add(haettu.getSukunimi()+" "+haettu.getEtunimi());
+                }
+            }
+        }
+        return haetut;
     }
     
     

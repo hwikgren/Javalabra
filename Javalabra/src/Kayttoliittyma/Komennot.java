@@ -55,13 +55,13 @@ public class Komennot {
         }
     }
     
-    public void poistaHenkilo(int indeksi) {
+    public void poistaHenkilo(String nimi) {
         /*System.out.println("Anna poistettavan henkilön etunimi: ");
         String etu = lukija.next();
         System.out.println("Anna poistettavan henkilön sukunimi: ");
         String suku = lukija.next();
         int indeksi = kortisto.etsiHenkilo(etu, suku);*/
-        kortisto.poistaHenkiloArraysta(indeksi);
+        kortisto.poistaHenkilo(nimi);
     }
     
     
@@ -70,7 +70,7 @@ public class Komennot {
     }*/
     
     public String mikaOsaaminen(String etunimi, String sukunimi) {
-        int indeksi = kortisto.etsiHenkilo(etunimi, sukunimi);
+        //int indeksi = kortisto.etsiHenkilo(etunimi, sukunimi);
         System.out.println("Anna henkilön osaamisalue: ");
         return lukija.next();
         
