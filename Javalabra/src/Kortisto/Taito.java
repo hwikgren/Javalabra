@@ -20,6 +20,10 @@ public class Taito implements Serializable {
         this.taito = taito;
     }
     
+    /**
+     * Metodi asettaa taidon tason.
+     * @param taso 
+     */
     public void setTaso(String taso) {
         this.taso = taso;
     }
@@ -32,6 +36,10 @@ public class Taito implements Serializable {
         return this.taito;
     }
     
+    /**
+     * Palauttaa taidon tason Stringinä.
+     * @return taso
+     */
     public String getTaso() {
         return this.taso;
     }

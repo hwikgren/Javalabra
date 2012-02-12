@@ -4,7 +4,6 @@ package Kortisto;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Observable;
 import java.util.TreeMap;
 
@@ -43,14 +42,7 @@ public class Kortisto extends Observable {
     public int getKoko() {
         return henkilot.size();
     }
-    /**
-     * Medodi palauttaa indeksin osoittaman henkilö-olion Arraysta.
-     * @param indeksi
-     * @return Henkilo
-     */
-    /*public Henkilo getHenkilo(int indeksi) {
-        return henkilot.get(indeksi);
-    }*/
+    
     /**
      * Metodi luo uuden Henkilö-olion.
      * Lisää sen henkilöt-TreeSetiin.
@@ -86,12 +78,22 @@ public class Kortisto extends Observable {
         return henkilo.haeTaidot();
     }
     
+    /**
+     * Metodi poistaa annetusta taulukosta annetun taidon.
+     * Palauttaa yhtä pienemmän taulun. 
+     * @param taidot
+     * @param taito
+     * @return uusiTaidot
+     */
     public String[][] poistaTaito(String[][] taidot, String taito) {
-        String[][] uusiTaidot = new String[taidot.length-1][];
+        String[][] uusiTaidot = new String[taidot.length-1][2];
         for (int i=0; i<taidot.length; i++) {
             if (!taidot[i][0].equals(taito)) {
                 uusiTaidot[i][0] = taidot[i][0];
-                uusiTaidot[i][1] = taidot[i][0];
+                uusiTaidot[i][1] = taidot[i][1];
+            }
+            else {
+                i++;
             }
         }
         return uusiTaidot;
@@ -119,26 +121,7 @@ public class Kortisto extends Observable {
         henkilo = henkilot.get(nimi);
         henkilo.tyhjennaArray();
     }
-    /**
-     * Metodi palauttaa henkilön indeksin Arrayssa.
-     * Käy läpi henkilot-Arrayn ja vertaa kunkin olion etu- ja sukunimeä parametreihin.
-     * @param etu
-     * @param suku
-     * @return i indeksi Arrayssa
-     */
-    /*public int etsiHenkilo(String etu, String suku) {
-       for (int i=0; i<henkilot.size(); i++) {
-           henkilo = henkilot.get(i);
-           if (henkilo.getSukunimi().equals(suku)) {
-               if (henkilo.getEtunimi().equals(etu)) {
-                   return i;
-               }
-               
-           }
-       }
-       return -1;
-         
-     }*/
+    
     /**
      * Metodi kutsuu Tallennus-olion tallennaTiedot-metodia.
      * @throws IOException 
@@ -155,11 +138,11 @@ public class Kortisto extends Observable {
     public void lataaTiedot() throws FileNotFoundException, IOException, ClassNotFoundException {
         henkilot = tallentaja.lataaTiedot();
     }
-    /**
-     * Metodi tulostaa henkilöt.
-     * Hakee henkilöt-Arrayn jokaisen henkilön etu- ja sukunimen.
-     */
     
+    /**
+     * Metodi palauttaa String-taulukkona kaikki kortistossa olevat henkilöt.
+     * @return palautus
+     */
     public String[] kaikkiHenkilot() {
         String[]  palautus = new String[henkilot.size()];
         int i=0;
@@ -169,6 +152,11 @@ public class Kortisto extends Observable {
         }
         return palautus;
     }
+    
+    /**
+     * Metodi tulostaa henkilöt.
+     * Hakee henkilöt-Arrayn jokaisen henkilön etu- ja sukunimen.
+     */
     public String toString() {
         String tulostus = "";
         for (String haettu : henkilot.keySet()) {
@@ -178,14 +166,14 @@ public class Kortisto extends Observable {
     }
     
     /**
-     * Metodi palauttaa henkilön nimen Stringinä.
-     * @param indeksi
-     * @return string
+     * Metodi käy läpi annetut parametrit.
+     * Sen mukaan onko parametri tyhjä vai ei, metodi kutsuu erilaisia haku-metodeita. 
+     * Palauttaa haun tulokset ArrayListina.
+     * @param etu
+     * @param suku
+     * @param taito
+     * @return haetut
      */
-    public String henkilonNimi(int indeksi) {
-        return henkilot.get(indeksi).getEtunimi()+" "+henkilot.get(indeksi).getSukunimi();
-    }
-    
     public ArrayList<String> hae(String etu, String suku, String taito) {
         ArrayList<String> haetut = new ArrayList<String>();
         if (!etu.equals("")) {
@@ -205,6 +193,13 @@ public class Kortisto extends Observable {
         return haetut;
     }
 
+    /**
+     * Metodi hakee etu ja sukunimen mukaisen henkilön.
+     * Palauttaa ArrayListin.
+     * @param etu
+     * @param suku
+     * @return haettu
+     */
     public ArrayList<String> haeKokoNimella(String etu, String suku) {
         ArrayList<String> haettu = new ArrayList<String>();
         String kokoNimi = suku+" "+etu;
@@ -215,6 +210,12 @@ public class Kortisto extends Observable {
         return haettu;
     }
 
+    /**
+     * Metodi hakee etunimen mukaiset henkilöt.
+     * Palauttaa ArrayListin
+     * @param etu
+     * @return haetut
+     */
     public ArrayList<String> haeEtunimella(String etu) {
         ArrayList<String> haetut = new ArrayList<String>();
         for (String nimi : henkilot.keySet()) {
@@ -226,6 +227,12 @@ public class Kortisto extends Observable {
         return haetut;
     }
 
+    /**
+     * Metodi hakee sukunimen mukaiset henkilöt.
+     * Palauttaa arraylistin.
+     * @param suku
+     * @return haetut
+     */
     public ArrayList<String> haeSukunimella(String suku) {
         ArrayList<String> haetut = new ArrayList<String>();
         for (String nimi : henkilot.keySet()) {
@@ -237,6 +244,12 @@ public class Kortisto extends Observable {
         return haetut;
     }
 
+    /**
+     * Metodi hakee kaikki henkilöt joilla on annettu taito.
+     * Palauttaa Arraylistin.
+     * @param taito
+     * @return haetut
+     */
     public ArrayList<String> haeTaidolla(String taito) {
         ArrayList<String> haetut = new ArrayList<String>();
         for (String nimi : henkilot.keySet()) {

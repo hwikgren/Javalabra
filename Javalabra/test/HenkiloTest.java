@@ -4,6 +4,9 @@
  */
 
 import Kortisto.Henkilo;
+import Kortisto.Kortisto;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import static org.junit.Assert.*;
 import org.junit.*;
 
@@ -45,5 +48,17 @@ public class HenkiloTest {
     public void osaaminenMeneeArrayhun() {
         henkilo.lisaaOsaaminen("java", "Erinomainen");
         assertEquals( 1, henkilo.getMaara() );
+    }
+    
+    @Test
+    public void jarjestaTaidotToimii() throws FileNotFoundException, IOException, ClassNotFoundException {
+        Kortisto kortisto = new Kortisto();
+        kortisto.lisaaHenkilo("heidi", "jauhiainen");
+        kortisto.lisaaOsaaminen("jauhiainen heidi", "java", "Hyvä");
+        kortisto.lisaaOsaaminen("jauhiainen heidi", "sql", "Kohtalainen");
+        kortisto.lisaaOsaaminen("jauhiainen heidi", "php", "Erinomainen");
+        kortisto.lisaaOsaaminen("jauhiainen heidi", "mallintaminen", "Erinomainen");
+        String[][] taidot = kortisto.haeOsaamiset("jauhiainen heidi");
+        assertEquals ("mallintaminen", taidot[0][0]);
     }
 }

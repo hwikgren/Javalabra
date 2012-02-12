@@ -42,6 +42,11 @@ public class Henkilo implements Serializable {
         this.taidot.add(taito);
     }
     
+    /**
+     * Metodi palauttaa henkilön taidot String-taulukossa.
+     * Taidot haetaan taidot-arraylistista ja sitten metodi kutsuu jarjestaTaidot-metodia.
+     * @return henkilonTaidot
+     */
     public String[][] haeTaidot() {
         String[][] henkilonTaidot = new String[taidot.size()][2];
         for (int i=0; i<taidot.size(); i++) {
@@ -55,6 +60,12 @@ public class Henkilo implements Serializable {
         return henkilonTaidot;
     }
     
+    /**
+     * Metodi järjestää taidot.
+     * Taidot järjestetään ensisijaisesti taidon tason mukaan, toissijaisesti aakkosten mukaan.
+     * @param taidot
+     * @return 
+     */
     public String[][] jarjestaTaidot(String[][] taidot) {
         TreeMap<String, String> kohtalaiset = new TreeMap<String, String>();
         TreeMap<String, String> hyvat = new TreeMap<String, String>();
@@ -95,6 +106,10 @@ public class Henkilo implements Serializable {
         return palautus;
     }
     
+    /**
+     * Metodi palauttaa henkilon taidot ilman tasoja.
+     * @return 
+     */
     public ArrayList<String> haePelkatTaidot() {
         ArrayList<String> henkilonTaidot = new ArrayList<String>();
         for (int i=0; i<taidot.size(); i++) {
@@ -128,6 +143,10 @@ public class Henkilo implements Serializable {
         return taidot.size();
     }
     
+    /**
+     * Metodi tyhjentää henkilon taidot-arrayn.
+     * Käytetään ennen kuin tallennetaan henkiloikkuna, jossa tiedot saattavat olla muuttuneet.
+     */
     public void tyhjennaArray() {
         taidot.clear();
     }

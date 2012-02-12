@@ -8,6 +8,7 @@ import Kortisto.Henkilo;
 import Kortisto.Kortisto;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.TreeMap;
 import static org.junit.Assert.*;
@@ -61,28 +62,29 @@ public class KortistoTest {
     }
     
     @Test
+    public void getKokoToimii() {
+        kortisto.lisaaHenkilo("heidi", "jauhiainen");
+        assertEquals( 1, kortisto.getKoko() );
+    }
+    @Test
     public void LisayksenJalkeenArrayssaYksiEnemman() {
         int vanha = kortisto.getKoko();
         kortisto.lisaaHenkilo("heidi", "jauhiainen");
         assertEquals( vanha+1, kortisto.getKoko() );
     }
     
-    /*@Test
-    public void etsiHenkiloToimii() {
-        int vanhaPaikka = kortisto.getKoko()-1;
-        int uusiPaikka = vanhaPaikka+1;
-        kortisto.lisaaHenkilo("heidi", "jauhiainen");
-        assertEquals( uusiPaikka, kortisto.etsiHenkilo("heidi", "jauhiainen") );
-    }*/
-    
-    /*@Test
-    public void etsiHenkiloToimiiKunArrayssaUseampia() {
-        kortisto.lisaaHenkilo("heidi", "jauhiainen");
-        kortisto.lisaaHenkilo("tommi", "jauhiainen");
-        kortisto.lisaaHenkilo("kalle", "koehenkilo");
-        int paikka = kortisto.getKoko()-2;
-        assertEquals( paikka, kortisto.etsiHenkilo("tommi", "jauhiainen") );
-    }*/
+    @Test
+    public void taidonPoistoToimii() {
+        String[][] taidot = new String[3][2];
+        taidot[0][0] = "java";
+        taidot[0][1] = "Hyvä";
+        taidot[1][0] = "sql";
+        taidot[1][1] = "Kohtalainen";
+        taidot[2][0] = "php";
+        taidot[2][1] = "Erinomainen";
+        taidot = kortisto.poistaTaito(taidot, "sql");
+        assertEquals( 2, taidot.length);
+    }
     
     @Test
     public void toStringToimii() {
@@ -172,5 +174,43 @@ public class KortistoTest {
         kortisto.tyhjennaHenkilonTaidot("jauhiainen heidi");
         String[][] taidot= kortisto.haeOsaamiset("jauhiainen heidi");
         assertEquals( 0, taidot.length );
+    }
+    
+    @Test
+    public void hakuEtunimellaToimii() {
+        kortisto.lisaaHenkilo("heidi", "jauhiainen");
+        kortisto.lisaaHenkilo("tommi", "jauhiainen");
+        kortisto.lisaaHenkilo("tommi", "tomera");
+        ArrayList<String> haetut = kortisto.hae("tommi", "", "");
+        assertEquals( 2, haetut.size() );
+    }
+    
+    @Test
+    public void hakuSukunimellaToimii() {
+        kortisto.lisaaHenkilo("heidi", "jauhiainen");
+        kortisto.lisaaHenkilo("tommi", "jauhiainen");
+        kortisto.lisaaHenkilo("tommi", "tomera");
+        ArrayList<String> haetut = kortisto.hae("", "jauhiainen", "");
+        assertEquals( 2, haetut.size() );
+    }
+    
+    @Test
+    public void hakuKokonimellaToimii() {
+        kortisto.lisaaHenkilo("heidi", "jauhiainen");
+        kortisto.lisaaHenkilo("tommi", "jauhiainen");
+        kortisto.lisaaHenkilo("tommi", "tomera");
+        ArrayList<String> haetut = kortisto.hae("tommi", "tomera", "");
+        assertEquals( "tomera tommi", haetut.get(0));
+    }
+    @Test
+    public void hakuTaidollaToimii() {
+        kortisto.lisaaHenkilo("heidi", "jauhiainen");
+        kortisto.lisaaOsaaminen("jauhiainen heidi", "java", "Hyvä");
+        kortisto.lisaaOsaaminen("jauhiainen heidi", "sql", "Kohtalainen");
+        kortisto.lisaaHenkilo("tommi", "jauhiainen");
+        kortisto.lisaaHenkilo("tommi", "tomera");
+        kortisto.lisaaOsaaminen("tomera tommi", "java", "Erinomainen");
+        ArrayList<String> haetut = kortisto.hae("", "", "java");
+        assertEquals( 2, haetut.size() );
     }
 }
