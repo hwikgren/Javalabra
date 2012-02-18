@@ -38,4 +38,10 @@ public class TaitoTest {
     public void TaitoTallessa() {
         assertEquals( "java", taito.getOsaaminen() );
     }
+    
+    @Test
+    public void tasoTallessa() {
+        taito.setTaso("Hyvä");
+        assertEquals( "Hyvä", taito.getTaso() );
+    }
 }

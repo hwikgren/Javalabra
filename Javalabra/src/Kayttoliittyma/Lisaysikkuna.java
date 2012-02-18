@@ -93,12 +93,22 @@ public class Lisaysikkuna extends javax.swing.JFrame {
                 etunimiActionPerformed(evt);
             }
         });
+        etunimi.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                etunimiKeyPressed(evt);
+            }
+        });
 
         jLabel2.setText("Sukunimi:");
 
         sukunimi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 sukunimiActionPerformed(evt);
+            }
+        });
+        sukunimi.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                sukunimiKeyPressed(evt);
             }
         });
 
@@ -129,6 +139,7 @@ public class Lisaysikkuna extends javax.swing.JFrame {
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
+        taidotLista.setFocusable(false);
         taidotLista.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 taidotListaMouseClicked(evt);
@@ -296,11 +307,11 @@ public class Lisaysikkuna extends javax.swing.JFrame {
     private String suku;
     
     private void etunimiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_etunimiActionPerformed
-
+        sukunimi.requestFocusInWindow();
     }//GEN-LAST:event_etunimiActionPerformed
 
     private void sukunimiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sukunimiActionPerformed
-        // TODO add your handling code here:
+        uusiTaito.requestFocusInWindow();
     }//GEN-LAST:event_sukunimiActionPerformed
 
     private void uusiTaitoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_uusiTaitoKeyPressed
@@ -309,32 +320,45 @@ public class Lisaysikkuna extends javax.swing.JFrame {
 
     private void uusiTaitoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uusiTaitoActionPerformed
         String taito = uusiTaito.getText();
-        model.insertElementAt(taito, 0);
-        taidot.put(taito, "");
-        taidotLista.ensureIndexIsVisible(0);
-        taidotLista.setSelectedIndex(0);
-        uusiTaito.requestFocusInWindow();
-        uusiTaito.setText("");
-        if (jRadioButton1.isSelected() || jRadioButton2.isSelected() || jRadioButton3.isSelected()) {
-            buttonGroup2.clearSelection();
+        boolean onJo = false;
+        if (taidot.containsKey(taito)) {
+            JOptionPane.showMessageDialog(this, "Henkilöllä on jo kyseinen taito!", "", JOptionPane.WARNING_MESSAGE);
+            onJo = true;
         }
-        else {
-            jRadioButton1.setEnabled(true);
-            jRadioButton2.setEnabled(true);
-            jRadioButton3.setEnabled(true);
+        if (!onJo) {
+            model.insertElementAt(taito, 0);
+            taidot.put(taito, "");
+            taidotLista.ensureIndexIsVisible(0);
+            taidotLista.setSelectedIndex(0);
+            uusiTaito.requestFocusInWindow();
+            uusiTaito.setText("");
+            if (jRadioButton1.isSelected() || jRadioButton2.isSelected() || jRadioButton3.isSelected()) {
+                buttonGroup2.clearSelection();
+            }
+            else {
+                jRadioButton1.setEnabled(true);
+                jRadioButton2.setEnabled(true);
+                jRadioButton3.setEnabled(true);
+            }
         }
     }//GEN-LAST:event_uusiTaitoActionPerformed
 
     private void lisaaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lisaaButtonActionPerformed
         etu = etunimi.getText();
         suku = sukunimi.getText();
-        kortisto.lisaaHenkilo(etu, suku);
-        int indeksi = kortisto.getKoko()-1;
-        for (int i=0; i<model.getSize(); i++) {
-            String taito = (String)model.elementAt(i);
-            kortisto.lisaaOsaaminen(suku+" "+etu, taito, taidot.get(taito));
+        ArrayList<String> haettu = kortisto.hae(etu, suku, null);
+        if (!haettu.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Henkilö "+suku+" "+etu+" on jo kortistossa!", "", JOptionPane.WARNING_MESSAGE);
         }
-        dispose();
+        else {
+            kortisto.lisaaHenkilo(etu, suku);
+            int indeksi = kortisto.getKoko()-1;
+            for (int i=0; i<model.getSize(); i++) {
+                String taito = (String)model.elementAt(i);
+                kortisto.lisaaTaito(suku+" "+etu, taito, taidot.get(taito));
+            }
+            dispose();
+        }
     }//GEN-LAST:event_lisaaButtonActionPerformed
 
     private void jPanel1AncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_jPanel1AncestorAdded
@@ -393,6 +417,14 @@ public class Lisaysikkuna extends javax.swing.JFrame {
         poistaButton.setVisible(false);
         buttonGroup2.clearSelection();
     }//GEN-LAST:event_poistaButtonActionPerformed
+
+    private void etunimiKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_etunimiKeyPressed
+
+    }//GEN-LAST:event_etunimiKeyPressed
+
+    private void sukunimiKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_sukunimiKeyPressed
+        
+    }//GEN-LAST:event_sukunimiKeyPressed
 
     /**
      * @param args the command line arguments

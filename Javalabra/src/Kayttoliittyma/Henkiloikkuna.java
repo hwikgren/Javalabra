@@ -4,24 +4,95 @@
  */
 package Kayttoliittyma;
 
+import Kortisto.Henkilo;
 import Kortisto.Kortisto;
-import java.util.HashMap;
+import java.util.Observable;
+import java.util.Observer;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
 
 /**
  *
  * @author hwikgren
  */
-public class Henkiloikkuna extends javax.swing.JFrame {
+public class Henkiloikkuna extends javax.swing.JFrame implements Observer {
 
     Kortisto kortisto;
+    Henkilo olio;
     DefaultListModel model;
     String henkilonNimi;
     String[][] tasot;
     String[][] tasoja;
     TitledBorder border;
+    NimenMuutos henkilo;
+    
+    private void haeTiedot() {
+        tasot = kortisto.haeTaidot(henkilonNimi);
+        model = new DefaultListModel();
+        for (int i=0; i<tasot.length; i++) {
+            model.addElement(tasot[i][0]);
+        }
+        taidotLista.setModel(model);
+    }
+    
+    private void tallennaTaso(int indeksi, String taso) {
+        String taito = (String) model.getElementAt(indeksi);
+        tasot[indeksi][0] = taito;
+        tasot[indeksi][1] = taso;
+        tallenna();
+        haeTiedot();
+        int uusiIndeksi = model.indexOf(taito);
+        taidotLista.ensureIndexIsVisible(uusiIndeksi);
+        
+    }
+    private void tallennaTaito(String taito, String taso) {
+        String[][] taidot = new String[tasot.length+1][2];
+        for (int i=0; i<tasot.length; i++) {
+            taidot[i][0] = tasot[i][0];
+            taidot[i][1] = tasot[i][1];
+        }
+        taidot[taidot.length-1][0] = taito;
+        taidot[taidot.length-1][1] = taso;
+        tasot = taidot;
+        tallenna();
+        haeTiedot();
+        int uusiIndeksi = model.indexOf(taito);
+        taidotLista.ensureIndexIsVisible(uusiIndeksi);
+    }
+    
+    private void tallenna() {
+        kortisto.tyhjennaHenkilonTaidot(henkilonNimi);
+        for (int i=0; i<tasot.length; i++) {
+            //String taito = (String)model.elementAt(i);
+            kortisto.lisaaTaito(henkilonNimi, tasot[i][0], tasot[i][1]);
+        }
+    }
+    private void naytaTaso(String osaaminen) {
+        if (osaaminen.equals("Hyvä")) {
+            jRadioButton2.setSelected(rootPaneCheckingEnabled);
+        }
+        else if (osaaminen.equals("Kohtalainen")) {
+            jRadioButton1.setSelected(rootPaneCheckingEnabled);
+        }
+        else if (osaaminen.equals("Erinomainen")) {
+            jRadioButton3.setSelected(rootPaneCheckingEnabled);
+        }
+        else {
+            buttonGroup1.clearSelection();
+        }
+    }
+    
+    private void piilota() {
+        buttonGroup1.clearSelection();
+        jRadioButton1.setEnabled(false);
+        jRadioButton2.setEnabled(false);
+        jRadioButton3.setEnabled(false);
+        taidotLista.clearSelection();
+        poistaButton.setVisible(false);
+    }
     /**
      * Creates new form Henkiloikkuna
      */
@@ -38,14 +109,10 @@ public class Henkiloikkuna extends javax.swing.JFrame {
         border.setTitlePosition(TitledBorder.CENTER);
         jPanel3.setBorder(border);
         Nimi.setText(henkilonNimi);
-        tasot = kortisto.haeOsaamiset(henkilonNimi);
-        model = new DefaultListModel();
-        for (int i=0; i<tasot.length; i++) {
-            model.addElement(tasot[i][0]);
-        }
-        taidotLista.setModel(model);
-        poistaButton.setVisible(false);
-        
+        haeTiedot();
+        piilota();
+        olio = kortisto.valitaHenkiloOlio(nimi);
+        olio.addObserver(this);
         
     }
     /**
@@ -73,8 +140,15 @@ public class Henkiloikkuna extends javax.swing.JFrame {
         jRadioButton3 = new javax.swing.JRadioButton();
         jLabel5 = new javax.swing.JLabel();
         poistaButton = new javax.swing.JButton();
+        muokkaaButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jPanel3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel3MouseClicked(evt);
+            }
+        });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -103,12 +177,17 @@ public class Henkiloikkuna extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 216, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         jLabel1.setText("Uusi taito:");
 
+        uusiTaito.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                uusiTaitoMouseClicked(evt);
+            }
+        });
         uusiTaito.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 uusiTaitoActionPerformed(evt);
@@ -122,7 +201,8 @@ public class Henkiloikkuna extends javax.swing.JFrame {
             }
         });
 
-        Nimi.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        Nimi.setFont(new java.awt.Font("Helvetica", 1, 20)); // NOI18N
+        Nimi.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         jLabel3.setText("Taso");
 
@@ -161,51 +241,69 @@ public class Henkiloikkuna extends javax.swing.JFrame {
             }
         });
 
+        muokkaaButton.setFont(new java.awt.Font("Lucida Grande", 0, 10)); // NOI18N
+        muokkaaButton.setText("Muokkaa nimeä");
+        muokkaaButton.setFocusable(false);
+        muokkaaButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                muokkaaButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(Nimi, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(TallennaButton)
-                .addGap(17, 17, 17))
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                        .addGap(139, 139, 139)
+                        .addComponent(Nimi, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addGap(12, 12, 12)
-                                .addComponent(jRadioButton1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jRadioButton2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jRadioButton3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel5))
-                            .addComponent(jLabel1)
-                            .addComponent(uusiTaito, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(175, 175, 175)
-                        .addComponent(poistaButton)))
-                .addContainerGap(44, Short.MAX_VALUE))
+                                .addComponent(poistaButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(TallennaButton))
+                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addComponent(jLabel4)
+                                        .addGap(12, 12, 12)
+                                        .addComponent(jRadioButton1)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jRadioButton2)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jRadioButton3)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel5))
+                                    .addComponent(jLabel1)
+                                    .addComponent(uusiTaito, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addGap(90, 90, 90)
+                                        .addComponent(jLabel3)))
+                                .addComponent(muokkaaButton, javax.swing.GroupLayout.Alignment.TRAILING)))))
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap(24, Short.MAX_VALUE)
+                .addGap(19, 19, 19)
                 .addComponent(Nimi, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(TallennaButton)
+                        .addGap(90, 90, 90))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(muokkaaButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -218,12 +316,9 @@ public class Henkiloikkuna extends javax.swing.JFrame {
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(uusiTaito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(31, 31, 31)
                         .addComponent(poistaButton)
-                        .addGap(4, 4, 4)
-                        .addComponent(TallennaButton))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                        .addGap(117, 117, 117))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -233,14 +328,14 @@ public class Henkiloikkuna extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(17, 17, 17)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(31, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(18, 18, 18)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(53, Short.MAX_VALUE))
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         pack();
@@ -248,71 +343,78 @@ public class Henkiloikkuna extends javax.swing.JFrame {
 
     private void uusiTaitoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uusiTaitoActionPerformed
         String taito = uusiTaito.getText();
-        model.insertElementAt(taito, 0);
-        taidotLista.ensureIndexIsVisible(0);
-        uusiTaito.requestFocusInWindow();
-        uusiTaito.setText("");
+        boolean onJo = false;
+        for (int i=0; i<tasot.length; i++) {
+            if (tasot[i][0].equalsIgnoreCase(taito)) {
+                JOptionPane.showMessageDialog(this, "Henkilöllä on jo kyseinen taito!", "", JOptionPane.WARNING_MESSAGE);
+                onJo = true;
+            }
+            break;
+        }
+        if (!onJo) {
+            model.insertElementAt(taito, 0);
+            tallennaTaito(taito, "");
+            uusiTaito.requestFocusInWindow();
+            uusiTaito.setText("");
+        }
+        //buttonGroup1.clearSelection();
     }//GEN-LAST:event_uusiTaitoActionPerformed
 
     private void TallennaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TallennaButtonActionPerformed
-        kortisto.tyhjennaHenkilonTaidot(henkilonNimi);
-        for (int i=0; i<model.getSize(); i++) {
-            String taito = (String)model.elementAt(i);
-            kortisto.lisaaOsaaminen(henkilonNimi, taito, tasot[i][1]);
-        }
+        //tallenna();
         dispose();
     }//GEN-LAST:event_TallennaButtonActionPerformed
 
     private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
         int indeksi = taidotLista.getSelectedIndex();
-        String taito = (String) model.getElementAt(indeksi);
-        tasot[indeksi][0] = taito;
-        tasot[indeksi][1] = "Kohtalainen";
+        tallennaTaso(indeksi, "Kohtalainen");
     }//GEN-LAST:event_jRadioButton1ActionPerformed
 
     private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2ActionPerformed
         int indeksi = taidotLista.getSelectedIndex();
-        String taito = (String) model.getElementAt(indeksi);
-        tasot[indeksi][0] = taito;
-        tasot[indeksi][1] = "Hyvä";
+        tallennaTaso(indeksi, "Hyvä");
     }//GEN-LAST:event_jRadioButton2ActionPerformed
 
     private void jRadioButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton3ActionPerformed
         int indeksi = taidotLista.getSelectedIndex();
-        String taito = (String) model.getElementAt(indeksi);
-        tasot[indeksi][0] = taito;
-        tasot[indeksi][1] = "Erinomainen";
+        tallennaTaso(indeksi, "Erinomainen");
     }//GEN-LAST:event_jRadioButton3ActionPerformed
 
     private void taidotListaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_taidotListaMouseClicked
         poistaButton.setVisible(true);
+        jRadioButton1.setEnabled(true);
+        jRadioButton2.setEnabled(true);
+        jRadioButton3.setEnabled(true);
         int indeksi = taidotLista.getSelectedIndex();
         String taito = (String)model.getElementAt(indeksi);
         String osaaminen = tasot[indeksi][1];
-        if (osaaminen.equals("Hyvä")) {
-            jRadioButton2.setSelected(rootPaneCheckingEnabled);
-        }
-        else if (osaaminen.equals("Kohtalainen")) {
-            jRadioButton1.setSelected(rootPaneCheckingEnabled);
-        }
-        else if (osaaminen.equals("Erinomainen")) {
-            jRadioButton3.setSelected(rootPaneCheckingEnabled);
-        }
-        else {
-            buttonGroup1.clearSelection();
-        }
+        naytaTaso(osaaminen);
     }//GEN-LAST:event_taidotListaMouseClicked
 
     private void poistaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_poistaButtonActionPerformed
         int indeksi = taidotLista.getSelectedIndex();
         String taito = (String)model.getElementAt(indeksi);
-        tasot = kortisto.poistaTaito(tasot, taito);
-        model.remove(indeksi);
-        taidotLista.setModel(model);
-        taidotLista.clearSelection();
-        poistaButton.setVisible(false);
-        buttonGroup1.clearSelection();
+        kortisto.poistaTaito(henkilonNimi, taito);
+        haeTiedot();
+        piilota();
     }//GEN-LAST:event_poistaButtonActionPerformed
+
+    private void muokkaaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_muokkaaButtonActionPerformed
+        olio = kortisto.valitaHenkiloOlio(henkilonNimi);
+        henkilo = new NimenMuutos(kortisto, henkilonNimi);
+            //ikkuna.setSize(450, 400);
+        henkilo.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        henkilo.setVisible(true);
+    }//GEN-LAST:event_muokkaaButtonActionPerformed
+
+    private void jPanel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel3MouseClicked
+        buttonGroup1.clearSelection();
+        piilota();
+    }//GEN-LAST:event_jPanel3MouseClicked
+
+    private void uusiTaitoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_uusiTaitoMouseClicked
+        piilota();
+    }//GEN-LAST:event_uusiTaitoMouseClicked
 
     /**
      * @param args the command line arguments
@@ -369,8 +471,14 @@ public class Henkiloikkuna extends javax.swing.JFrame {
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JRadioButton jRadioButton3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton muokkaaButton;
     private javax.swing.JButton poistaButton;
     private javax.swing.JList taidotLista;
     private javax.swing.JTextField uusiTaito;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void update(Observable o, Object o1) {
+        Nimi.setText((String)o1);
+    }
 }

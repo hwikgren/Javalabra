@@ -75,15 +75,14 @@ public class KortistoTest {
     
     @Test
     public void taidonPoistoToimii() {
-        String[][] taidot = new String[3][2];
-        taidot[0][0] = "java";
-        taidot[0][1] = "Hyvä";
-        taidot[1][0] = "sql";
-        taidot[1][1] = "Kohtalainen";
-        taidot[2][0] = "php";
-        taidot[2][1] = "Erinomainen";
-        taidot = kortisto.poistaTaito(taidot, "sql");
-        assertEquals( 2, taidot.length);
+        kortisto.lisaaHenkilo("heidi", "jauhiainen");
+        kortisto.lisaaTaito("jauhiainen heidi", "java", "Hyvä");
+        kortisto.lisaaTaito("jauhiainen heidi", "sql", "Kohtalainen");
+        String[][] taidot = kortisto.haeTaidot("jauhiainen heidi");
+        assertEquals( 2, taidot.length );
+        kortisto.poistaTaito("jauhiainen heidi", "sql");
+        String[][] uusi  = kortisto.haeTaidot("jauhiainen heidi");
+        assertEquals( 1, uusi.length);
     }
     
     @Test
@@ -100,55 +99,21 @@ public class KortistoTest {
         kortisto.lisaaHenkilo("kalle", "koehenkilo");
         kortisto.lisaaHenkilo("tommi", "jauhiainen");
         kortisto.poistaHenkilo("koehenkilo kalle");
-        String tulostus = "jauhiainen heidi\n"
-                + "jauhiainen tommi\n";
-        assertEquals( kortisto.toString(), tulostus );
-    }
-    
-    /*@Test
-    public void tiedostonLataaminenPalauttaaOliot() throws IOException, FileNotFoundException, ClassNotFoundException {
-        kortisto.lisaaHenkilo("heidi", "jauhiainen");
-        kortisto.lisaaHenkilo("tommi", "jauhiainen");
-        kortisto.lisaaHenkilo("kalle", "koehenkilo");
-        kortisto.tallennaTiedot();
-        int koko = kortisto.getKoko();
-        for (int i=koko-1; i>=0; i--) {
-            kortisto.poistaHenkiloArraysta(i);
+        String pitaisiOlla = "jauhiainen heidi jauhiainen tommi ";
+        String on = "";
+        String[] henkilot= kortisto.kaikkiHenkilot();
+        for (int i=0; i<henkilot.length; i++) {
+            on += henkilot[i]+" ";
         }
-        assertEquals( 0, kortisto.getKoko() );
-        kortisto.lataaTiedot();
-        assertEquals( 3, kortisto.getKoko() );
+        assertEquals( on, pitaisiOlla );
     }
-    
-    @Test
-    public void tiedostonLataaminenPalauttaaTiedot() throws IOException, FileNotFoundException, ClassNotFoundException {
-        kortisto.lisaaHenkilo("heidi", "jauhiainen");
-        kortisto.lisaaHenkilo("tommi", "jauhiainen");
-        kortisto.lisaaHenkilo("kalle", "koehenkilo");
-        kortisto.tallennaTiedot();
-        int koko = kortisto.getKoko();
-        for (int i=koko-1; i>=0; i--) {
-            kortisto.poistaHenkiloArraysta(i);
-        }
-        kortisto.lataaTiedot();
-        String tulostus = "heidi jauhiainen\n"
-                + "tommi jauhiainen\n"
-                + "kalle koehenkilo\n";
-        assertEquals( kortisto.toString(), tulostus );
-    }*/
-    
-    /*@Test
-    public void getHenkiloToimii() {
-        kortisto.lisaaHenkilo("heidi", "jauhiainen");
-        assertTrue( kortisto.getHenkilo(0) != null);
-    }*/
     
     @Test
     public void getOsaamisetToimii() {
         kortisto.lisaaHenkilo("heidi", "jauhiainen");
-        kortisto.lisaaOsaaminen("jauhiainen heidi", "java", "Hyvä");
-        kortisto.lisaaOsaaminen("jauhiainen heidi", "sql", "Kohtalainen");
-        String[][] taidot = kortisto.haeOsaamiset("jauhiainen heidi");
+        kortisto.lisaaTaito("jauhiainen heidi", "java", "Hyvä");
+        kortisto.lisaaTaito("jauhiainen heidi", "sql", "Kohtalainen");
+        String[][] taidot = kortisto.haeTaidot("jauhiainen heidi");
         String haetut = "";
         for (int i=0; i<taidot.length; i++) {
             haetut += taidot[i][0]+" ";
@@ -158,9 +123,9 @@ public class KortistoTest {
     @Test
     public void getOsaamisTasoToimii() {
         kortisto.lisaaHenkilo("heidi", "jauhiainen");
-        kortisto.lisaaOsaaminen("jauhiainen heidi", "java", "Hyvä");
-        kortisto.lisaaOsaaminen("jauhiainen heidi", "sql", "Kohtalainen");
-        String[][] taidot= kortisto.haeOsaamiset("jauhiainen heidi");
+        kortisto.lisaaTaito("jauhiainen heidi", "java", "Hyvä");
+        kortisto.lisaaTaito("jauhiainen heidi", "sql", "Kohtalainen");
+        String[][] taidot= kortisto.haeTaidot("jauhiainen heidi");
         String haetut = "";
         for (int i=0; i<taidot.length; i++) {
             haetut += taidot[i][1] +" ";
@@ -170,9 +135,9 @@ public class KortistoTest {
     @Test
     public void tyhjennaHenkilonTaidotToimii() {
         kortisto.lisaaHenkilo("heidi", "jauhiainen");
-        kortisto.lisaaOsaaminen("jauhiainen heidi", "java", "Hyvä");
+        kortisto.lisaaTaito("jauhiainen heidi", "java", "Hyvä");
         kortisto.tyhjennaHenkilonTaidot("jauhiainen heidi");
-        String[][] taidot= kortisto.haeOsaamiset("jauhiainen heidi");
+        String[][] taidot= kortisto.haeTaidot("jauhiainen heidi");
         assertEquals( 0, taidot.length );
     }
     
@@ -205,11 +170,11 @@ public class KortistoTest {
     @Test
     public void hakuTaidollaToimii() {
         kortisto.lisaaHenkilo("heidi", "jauhiainen");
-        kortisto.lisaaOsaaminen("jauhiainen heidi", "java", "Hyvä");
-        kortisto.lisaaOsaaminen("jauhiainen heidi", "sql", "Kohtalainen");
+        kortisto.lisaaTaito("jauhiainen heidi", "java", "Hyvä");
+        kortisto.lisaaTaito("jauhiainen heidi", "sql", "Kohtalainen");
         kortisto.lisaaHenkilo("tommi", "jauhiainen");
         kortisto.lisaaHenkilo("tommi", "tomera");
-        kortisto.lisaaOsaaminen("tomera tommi", "java", "Erinomainen");
+        kortisto.lisaaTaito("tomera tommi", "java", "Erinomainen");
         ArrayList<String> haetut = kortisto.hae("", "", "java");
         assertEquals( 2, haetut.size() );
     }

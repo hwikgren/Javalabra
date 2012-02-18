@@ -65,8 +65,8 @@ public class Komennot {
     }
     
     
-    /*void lisaaOsaaminen(int indeksi) {
-        henkilo.lisaaOsaaminen(indeksi);   
+    /*void lisaaTaito(int indeksi) {
+        henkilo.lisaaTaito(indeksi);   
     }*/
     
     public String mikaOsaaminen(String etunimi, String sukunimi) {

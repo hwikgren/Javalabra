@@ -5,14 +5,13 @@
 package Kayttoliittyma;
 
 import Kortisto.Kortisto;
-import java.awt.event.WindowEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
 
@@ -181,11 +180,17 @@ public class Paaikkuna extends javax.swing.JFrame implements Observer {
 
     private void poistaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_poistaButtonActionPerformed
         String poistettava = (String)henkilolista.getSelectedValue();
-        kortisto.poistaHenkilo(poistettava);
-        String[] lista = kortisto.kaikkiHenkilot();
-        henkilolista.setListData(lista);
-        henkilolista.clearSelection();
-        poistaButton.setVisible(false);
+        Object[] valinnat = {"Ei", "Kyllä"};
+        int valinta = JOptionPane.showOptionDialog(this, "Olet poistamassa henkilön "+poistettava+".\n"
+                + "Tämä poistaa myös kaikki henkilöön liitetyt taidot!\n"
+                + "Haluatko jatkaa?", "", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, valinnat, valinnat[1]);
+        if (valinta == 1) {
+            kortisto.poistaHenkilo(poistettava);
+            String[] lista = kortisto.kaikkiHenkilot();
+            henkilolista.setListData(lista);
+            henkilolista.clearSelection();
+            poistaButton.setVisible(false);
+        }
     }//GEN-LAST:event_poistaButtonActionPerformed
 
     private void henkilolistaValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_henkilolistaValueChanged

@@ -7,6 +7,7 @@ import Kortisto.Henkilo;
 import Kortisto.Kortisto;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import static org.junit.Assert.*;
 import org.junit.*;
 
@@ -47,18 +48,35 @@ public class HenkiloTest {
     @Test
     public void osaaminenMeneeArrayhun() {
         henkilo.lisaaOsaaminen("java", "Erinomainen");
-        assertEquals( 1, henkilo.getMaara() );
+        henkilo.lisaaOsaaminen("sql", "Hyvä");
+        assertEquals( 2, henkilo.getMaara() );
+    }
+    
+    @Test
+    public void taitojenHakuToimii() {
+        henkilo.lisaaOsaaminen("java", "Erinomainen");
+        henkilo.lisaaOsaaminen("sql", "Hyvä");
+        ArrayList<String> taidot = henkilo.haePelkatTaidot();
+        String on = "";
+        for (String taito : taidot) {
+            on += taito+" ";
+        }
+        String pitaisiOlla = "java sql ";
+        assertEquals( pitaisiOlla, on );
     }
     
     @Test
     public void jarjestaTaidotToimii() throws FileNotFoundException, IOException, ClassNotFoundException {
         Kortisto kortisto = new Kortisto();
         kortisto.lisaaHenkilo("heidi", "jauhiainen");
-        kortisto.lisaaOsaaminen("jauhiainen heidi", "java", "Hyvä");
-        kortisto.lisaaOsaaminen("jauhiainen heidi", "sql", "Kohtalainen");
-        kortisto.lisaaOsaaminen("jauhiainen heidi", "php", "Erinomainen");
-        kortisto.lisaaOsaaminen("jauhiainen heidi", "mallintaminen", "Erinomainen");
-        String[][] taidot = kortisto.haeOsaamiset("jauhiainen heidi");
-        assertEquals ("mallintaminen", taidot[0][0]);
+        kortisto.lisaaTaito("jauhiainen heidi", "java", "Hyvä");
+        kortisto.lisaaTaito("jauhiainen heidi", "sql", "Kohtalainen");
+        kortisto.lisaaTaito("jauhiainen heidi", "php", "Erinomainen");
+        kortisto.lisaaTaito("jauhiainen heidi", "mallintaminen", "Erinomainen");
+        String[][] taidot = kortisto.haeTaidot("jauhiainen heidi");
+        assertEquals ("php", taidot[1][0]);
+        assertEquals ("sql", taidot[3][0]);
+        assertEquals ("Hyvä", taidot[2][1]);
+        assertEquals ("Kohtalainen", taidot[3][1]);
     }
 }

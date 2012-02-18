@@ -18,6 +18,7 @@ public class Kortisto extends Observable {
      */
     public TreeMap<String, Henkilo> henkilot;
     Tallennus tallentaja;
+    Haku hakija;
     
     /**
      * Henkilö-olio
@@ -34,6 +35,7 @@ public class Kortisto extends Observable {
         henkilot = new TreeMap<String, Henkilo>();
         tallentaja = new Tallennus();
         henkilot = tallentaja.lataaTiedot();
+        hakija = new Haku(henkilot);
     }
     /**
      * Metodi palauttaa henkilö-olioiden määrän.
@@ -55,13 +57,34 @@ public class Kortisto extends Observable {
         setChanged();
         notifyObservers(kaikkiHenkilot());
     }
+    
+    public void muutaNimea(String nimi, String etu, String suku) {
+        henkilo = henkilot.get(nimi);
+        henkilot.remove(nimi);
+        henkilo.muutaNimea(etu, suku);
+        henkilot.put(suku+" "+etu, henkilo);
+        setChanged();
+        notifyObservers(kaikkiHenkilot());
+    }
+    
+    public String[] haeNimet(String nimi) {
+        String[] nimet = new String[2];
+        henkilo = henkilot.get(nimi);
+        String etu = henkilo.etunimi;
+        String suku = henkilo.sukunimi;
+        nimet[0] = etu;
+        nimet[1] = suku;
+        return nimet;
+    }
+    
+    
     /**
      * Metodi lisää henkilölle taidon.
      * Hakee henkilö-olion Arraysta ja välittää tälle käyttäjän antaman taidon.
      * @param indeksi Henkilön indeksi Arrayssa
      * @param taito 
      */
-    public void lisaaOsaaminen(String nimi, String taito, String taso) {
+    public void lisaaTaito(String nimi, String taito, String taso) {
         henkilo = henkilot.get(nimi);
         
         henkilo.lisaaOsaaminen(taito, taso);
@@ -73,7 +96,7 @@ public class Kortisto extends Observable {
      * @param indeksi
      * @return taisot-taulukko (String)
      */
-    public String[][] haeOsaamiset(String nimi) {
+    public String[][] haeTaidot(String nimi) {
         henkilo = henkilot.get(nimi);
         return henkilo.haeTaidot();
     }
@@ -85,18 +108,9 @@ public class Kortisto extends Observable {
      * @param taito
      * @return uusiTaidot
      */
-    public String[][] poistaTaito(String[][] taidot, String taito) {
-        String[][] uusiTaidot = new String[taidot.length-1][2];
-        for (int i=0; i<taidot.length; i++) {
-            if (!taidot[i][0].equals(taito)) {
-                uusiTaidot[i][0] = taidot[i][0];
-                uusiTaidot[i][1] = taidot[i][1];
-            }
-            else {
-                i++;
-            }
-        }
-        return uusiTaidot;
+    public void poistaTaito(String nimi, String taito) {
+        henkilo = henkilot.get(nimi);
+        henkilo.poistaTaito(taito);
     }
     
     /**
@@ -153,17 +167,6 @@ public class Kortisto extends Observable {
         return palautus;
     }
     
-    /**
-     * Metodi tulostaa henkilöt.
-     * Hakee henkilöt-Arrayn jokaisen henkilön etu- ja sukunimen.
-     */
-    public String toString() {
-        String tulostus = "";
-        for (String haettu : henkilot.keySet()) {
-            tulostus += haettu+"\n";
-        }
-        return tulostus;
-    }
     
     /**
      * Metodi käy läpi annetut parametrit.
@@ -175,94 +178,25 @@ public class Kortisto extends Observable {
      * @return haetut
      */
     public ArrayList<String> hae(String etu, String suku, String taito) {
-        ArrayList<String> haetut = new ArrayList<String>();
+        ArrayList<String> haetut;
         if (!etu.equals("")) {
             if (!suku.equals("")) {
-                haetut = haeKokoNimella(etu, suku);
+                haetut = hakija.haeKokoNimella(etu, suku);
             }
             else {
-                haetut = haeEtunimella(etu);
+                haetut = hakija.haeEtunimella(etu);
             }
         }
         else if (!suku.equals("")) {
-            haetut = haeSukunimella(suku);
+            haetut = hakija.haeSukunimella(suku);
         }
         else {
-            haetut = haeTaidolla(taito);
+            haetut = hakija.haeTaidolla(taito);
         }
         return haetut;
-    }
-
-    /**
-     * Metodi hakee etu ja sukunimen mukaisen henkilön.
-     * Palauttaa ArrayListin.
-     * @param etu
-     * @param suku
-     * @return haettu
-     */
-    public ArrayList<String> haeKokoNimella(String etu, String suku) {
-        ArrayList<String> haettu = new ArrayList<String>();
-        String kokoNimi = suku+" "+etu;
-        if (henkilot.get(kokoNimi) != null) {
-            henkilo = henkilot.get(kokoNimi);
-            haettu.add(henkilo.sukunimi+" "+henkilo.etunimi);
-        }
-        return haettu;
-    }
-
-    /**
-     * Metodi hakee etunimen mukaiset henkilöt.
-     * Palauttaa ArrayListin
-     * @param etu
-     * @return haetut
-     */
-    public ArrayList<String> haeEtunimella(String etu) {
-        ArrayList<String> haetut = new ArrayList<String>();
-        for (String nimi : henkilot.keySet()) {
-            Henkilo haettu = henkilot.get(nimi);
-            if (haettu.etunimi.equalsIgnoreCase(etu)) {
-                haetut.add(haettu.sukunimi+" "+haettu.etunimi);
-            }
-        }
-        return haetut;
-    }
-
-    /**
-     * Metodi hakee sukunimen mukaiset henkilöt.
-     * Palauttaa arraylistin.
-     * @param suku
-     * @return haetut
-     */
-    public ArrayList<String> haeSukunimella(String suku) {
-        ArrayList<String> haetut = new ArrayList<String>();
-        for (String nimi : henkilot.keySet()) {
-            Henkilo haettu = henkilot.get(nimi);
-            if (haettu.sukunimi.equalsIgnoreCase(suku)) {
-                haetut.add(haettu.sukunimi+" "+haettu.etunimi);
-            }
-        }
-        return haetut;
-    }
-
-    /**
-     * Metodi hakee kaikki henkilöt joilla on annettu taito.
-     * Palauttaa Arraylistin.
-     * @param taito
-     * @return haetut
-     */
-    public ArrayList<String> haeTaidolla(String taito) {
-        ArrayList<String> haetut = new ArrayList<String>();
-        for (String nimi : henkilot.keySet()) {
-            Henkilo haettu = henkilot.get(nimi);
-            ArrayList<String> taidot = haettu.haePelkatTaidot();
-            for (String henkilonTaito : taidot) {
-                if (henkilonTaito.equalsIgnoreCase(taito)) {
-                    haetut.add(haettu.getSukunimi()+" "+haettu.getEtunimi());
-                }
-            }
-        }
-        return haetut;
-    }
+    }   
     
-    
+    public Henkilo valitaHenkiloOlio(String nimi) {
+        return henkilo = henkilot.get(nimi);
+    }
 }
