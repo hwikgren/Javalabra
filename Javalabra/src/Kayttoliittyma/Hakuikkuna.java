@@ -21,6 +21,37 @@ public class Hakuikkuna extends javax.swing.JFrame {
     String suku;
     String taito;
     Henkiloikkuna henkilo;
+    
+    private void otaTalteen() {
+        etu = etunimi.getText().trim();
+        if (!etu.equals("")) {
+            etu = muokkaaNimi(etu);
+        }
+        suku = sukunimi.getText().trim();
+        if (!suku.equals("")) {
+            suku = muokkaaNimi(suku);
+        }
+        taito = taitoKentta.getText().toUpperCase();
+    }
+    
+    private String muokkaaNimi(String nimi) {
+        return nimi.substring(0, 1).toUpperCase()+nimi.substring(1).toLowerCase();
+    }
+    
+    private void hae() {
+        ArrayList<String> haetut = kortisto.hae(etu, suku, taito);
+        String[] haetutTaulukko = new String[haetut.size()];
+        for (int i=0; i<haetut.size(); i++) {
+            haetutTaulukko[i] = haetut.get(i);
+        }
+        haetutLista.setListData(haetutTaulukko);
+    }
+    
+    private void tyhjenna() {
+        etunimi.setText("");
+        sukunimi.setText("");
+        taitoKentta.setText("");
+    }
     /**
      * Creates new form Hakuikkuna
      */
@@ -202,18 +233,9 @@ public class Hakuikkuna extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void haeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_haeButtonActionPerformed
-        etu = etunimi.getText();
-        suku = sukunimi.getText();
-        taito = taitoKentta.getText();
-        ArrayList<String> haetut = kortisto.hae(etu, suku, taito);
-        String[] haetutTaulukko = new String[haetut.size()];
-        for (int i=0; i<haetut.size(); i++) {
-            haetutTaulukko[i] = haetut.get(i);
-        }
-        haetutLista.setListData(haetutTaulukko);
-        etunimi.setText("");
-        sukunimi.setText("");
-        taitoKentta.setText("");
+        otaTalteen();
+        hae();
+        tyhjenna();
     }//GEN-LAST:event_haeButtonActionPerformed
 
     private void haetutListaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_haetutListaMouseClicked
@@ -230,48 +252,21 @@ public class Hakuikkuna extends javax.swing.JFrame {
     }//GEN-LAST:event_haetutListaMouseClicked
 
     private void etunimiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_etunimiActionPerformed
-        etu = etunimi.getText();
-        suku = sukunimi.getText();
-        taito = taitoKentta.getText();
-        ArrayList<String> haetut = kortisto.hae(etu, suku, taito);
-        String[] haetutTaulukko = new String[haetut.size()];
-        for (int i=0; i<haetut.size(); i++) {
-            haetutTaulukko[i] = haetut.get(i);
-        }
-        haetutLista.setListData(haetutTaulukko);
-        etunimi.setText("");
-        sukunimi.setText("");
-        taitoKentta.setText("");
+        otaTalteen();
+        hae();
+        tyhjenna();
     }//GEN-LAST:event_etunimiActionPerformed
 
     private void sukunimiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sukunimiActionPerformed
-        etu = etunimi.getText();
-        suku = sukunimi.getText();
-        taito = taitoKentta.getText();
-        ArrayList<String> haetut = kortisto.hae(etu, suku, taito);
-        String[] haetutTaulukko = new String[haetut.size()];
-        for (int i=0; i<haetut.size(); i++) {
-            haetutTaulukko[i] = haetut.get(i);
-        }
-        haetutLista.setListData(haetutTaulukko);
-        etunimi.setText("");
-        sukunimi.setText("");
-        taitoKentta.setText("");
+        otaTalteen();
+        hae();
+        tyhjenna();
     }//GEN-LAST:event_sukunimiActionPerformed
 
     private void taitoKenttaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_taitoKenttaActionPerformed
-        etu = etunimi.getText();
-        suku = sukunimi.getText();
-        taito = taitoKentta.getText();
-        ArrayList<String> haetut = kortisto.hae(etu, suku, taito);
-        String[] haetutTaulukko = new String[haetut.size()];
-        for (int i=0; i<haetut.size(); i++) {
-            haetutTaulukko[i] = haetut.get(i);
-        }
-        haetutLista.setListData(haetutTaulukko);
-        etunimi.setText("");
-        sukunimi.setText("");
-        taitoKentta.setText("");
+        otaTalteen();
+        hae();
+        tyhjenna();
     }//GEN-LAST:event_taitoKenttaActionPerformed
 
     /**

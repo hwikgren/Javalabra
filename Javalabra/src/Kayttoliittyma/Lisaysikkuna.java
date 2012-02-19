@@ -319,7 +319,7 @@ public class Lisaysikkuna extends javax.swing.JFrame {
     }//GEN-LAST:event_uusiTaitoKeyPressed
 
     private void uusiTaitoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uusiTaitoActionPerformed
-        String taito = uusiTaito.getText();
+        String taito = uusiTaito.getText().toUpperCase();
         boolean onJo = false;
         if (taidot.containsKey(taito)) {
             JOptionPane.showMessageDialog(this, "Henkilöllä on jo kyseinen taito!", "", JOptionPane.WARNING_MESSAGE);
@@ -344,9 +344,9 @@ public class Lisaysikkuna extends javax.swing.JFrame {
     }//GEN-LAST:event_uusiTaitoActionPerformed
 
     private void lisaaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lisaaButtonActionPerformed
-        etu = etunimi.getText();
-        suku = sukunimi.getText();
-        ArrayList<String> haettu = kortisto.hae(etu, suku, null);
+        etu = etunimi.getText().substring(0,1).toUpperCase()+etunimi.getText().substring(1).toLowerCase();
+        suku = sukunimi.getText().substring(0,1).toUpperCase()+sukunimi.getText().substring(1).toLowerCase();
+        ArrayList<String> haettu = kortisto.hae(etu.trim(), suku.trim(), null);
         if (!haettu.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Henkilö "+suku+" "+etu+" on jo kortistossa!", "", JOptionPane.WARNING_MESSAGE);
         }

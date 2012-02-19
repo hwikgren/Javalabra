@@ -47,7 +47,7 @@ public class Haku {
         ArrayList<String> haetut = new ArrayList<String>();
         for (String nimi : henkilot.keySet()) {
             Henkilo haettu = henkilot.get(nimi);
-            if (haettu.etunimi.equalsIgnoreCase(etu)) {
+            if (haettu.etunimi.equals(etu)) {
                 haetut.add(haettu.sukunimi+" "+haettu.etunimi);
             }
         }
@@ -64,7 +64,7 @@ public class Haku {
         ArrayList<String> haetut = new ArrayList<String>();
         for (String nimi : henkilot.keySet()) {
             Henkilo haettu = henkilot.get(nimi);
-            if (haettu.sukunimi.equalsIgnoreCase(suku)) {
+            if (haettu.sukunimi.equals(suku)) {
                 haetut.add(haettu.sukunimi+" "+haettu.etunimi);
             }
         }
@@ -83,7 +83,7 @@ public class Haku {
             Henkilo haettu = henkilot.get(nimi);
             ArrayList<String> taidot = haettu.haePelkatTaidot();
             for (String henkilonTaito : taidot) {
-                if (henkilonTaito.equalsIgnoreCase(taito)) {
+                if ((taito.length() == 1 && henkilonTaito.equals(taito)) || (taito.length()>1 && henkilonTaito.indexOf(taito) == 0)) {
                     haetut.add(haettu.sukunimi+" "+haettu.etunimi);
                 }
             }

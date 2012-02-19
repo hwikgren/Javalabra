@@ -125,8 +125,8 @@ public class NimenMuutos extends javax.swing.JFrame {
     }//GEN-LAST:event_sukuActionPerformed
 
     private void tallennaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tallennaButtonActionPerformed
-        String etunimi = etu.getText();
-        String sukunimi = suku.getText();
+        String etunimi = etu.getText().substring(0, 1).toUpperCase()+etu.getText().substring(1).toLowerCase();
+        String sukunimi = suku.getText().substring(0, 1).toUpperCase()+suku.getText().substring(1).toLowerCase();
         kortisto.muutaNimea(nimi, etunimi, sukunimi);
         dispose();
     }//GEN-LAST:event_tallennaButtonActionPerformed

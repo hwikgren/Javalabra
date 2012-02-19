@@ -342,7 +342,7 @@ public class Henkiloikkuna extends javax.swing.JFrame implements Observer {
     }// </editor-fold>//GEN-END:initComponents
 
     private void uusiTaitoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uusiTaitoActionPerformed
-        String taito = uusiTaito.getText();
+        String taito = uusiTaito.getText().toUpperCase();
         boolean onJo = false;
         for (int i=0; i<tasot.length; i++) {
             if (tasot[i][0].equalsIgnoreCase(taito)) {
@@ -480,5 +480,9 @@ public class Henkiloikkuna extends javax.swing.JFrame implements Observer {
     @Override
     public void update(Observable o, Object o1) {
         Nimi.setText((String)o1);
+        border = BorderFactory.createTitledBorder((String)o1);
+        border.setTitleJustification(TitledBorder.CENTER);
+        border.setTitlePosition(TitledBorder.CENTER);
+        jPanel3.setBorder(border);
     }
 }
