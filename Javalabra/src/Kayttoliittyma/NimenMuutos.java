@@ -54,6 +54,7 @@ public class NimenMuutos extends javax.swing.JFrame {
         tallennaButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("TAITAJA");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Muuta henkilön nimeä", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
 

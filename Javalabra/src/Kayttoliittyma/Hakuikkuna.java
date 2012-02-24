@@ -56,7 +56,7 @@ public class Hakuikkuna extends javax.swing.JFrame {
             suku = kortisto.muokkaaNimi(suku);
         }
         taito = taitoKentta.getText().trim().toUpperCase();
-        if ((!etu.equals("") || (!suku.equals("")) && !taito.equals(""))) {
+        if ((!etu.equals("") || !suku.equals("")) && !taito.equals("")) {
             JOptionPane.showMessageDialog(this, "Voit hakea vain joko nimillä tai taidolla!", "", JOptionPane.WARNING_MESSAGE);
             return false;
         }
@@ -170,7 +170,7 @@ public class Hakuikkuna extends javax.swing.JFrame {
                     .add(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(taitoKentta)
+                            .add(taitoKentta, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE)
                             .add(sukunimi)
                             .add(etunimi)
                             .add(jPanel1Layout.createSequentialGroup()
@@ -188,8 +188,8 @@ public class Hakuikkuna extends javax.swing.JFrame {
                     .add(jPanel1Layout.createSequentialGroup()
                         .add(68, 68, 68)
                         .add(jLabel4)))
-                .add(36, 36, 36)
-                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 197, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(18, 18, 18)
+                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 215, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(13, 13, 13))
         );
         jPanel1Layout.setVerticalGroup(

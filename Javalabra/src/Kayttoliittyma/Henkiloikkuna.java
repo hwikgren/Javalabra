@@ -167,6 +167,7 @@ public class Henkiloikkuna extends javax.swing.JFrame implements Observer {
         muokkaaButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("TAITAJA");
 
         jPanel3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
