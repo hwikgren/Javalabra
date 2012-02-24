@@ -5,20 +5,23 @@
 package Kayttoliittyma;
 
 import Kortisto.Kortisto;
-import java.awt.HeadlessException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import javax.swing.*;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 
 /**
- *
+ *  Ikkuna henkilöiden lisäämistä varten.
  * @author hwikgren
  */
 public class Lisaysikkuna extends javax.swing.JFrame {
 
     Kortisto kortisto;
     DefaultListModel model;
+    ArrayList<String> kaikki;
     HashMap<String, String> taidot;
+    String etu;
+    String suku;
     
     /**
      * Creates new form Lisaysikkuna
@@ -30,18 +33,55 @@ public class Lisaysikkuna extends javax.swing.JFrame {
         
     }
 
+    /**
+     * Konstuktori saa parametrinaan tiedon kortistosta.
+     * Luo uuden HashMapin, johon taidot tullaan tallentamaan.
+     * @param kortisto 
+     */
     public Lisaysikkuna(Kortisto kortisto) {
         initComponents();
         model = new DefaultListModel();
         taidotLista.setModel(model);
         this.kortisto = kortisto;
         taidot = new HashMap<String, String>();
+        piilota();
+        
+    }
+    
+    /**
+     * Luokkametodi ottaa nimet talteen ja kutsuu kortiston muokkaaNimenä-metodia.
+     * @param nimi
+     * @return 
+     */
+    private boolean otaNimetTalteen() {
+        etu = etunimi.getText().trim();
+        suku = sukunimi.getText().trim();
+        if (etu.equals("") || suku.equals("")) {
+            JOptionPane.showMessageDialog(this, "Henkilölle pitää asaettaa etu- ja sukunimi!", "", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        else {
+            etu = kortisto.muokkaaNimi(etu);
+            suku = kortisto.muokkaaNimi(suku);
+            return true;
+        }
+    }
+    
+    /**
+     * Metodi poistaa valinnat ja piilottaa poista-napin.
+     */
+    private void piilota() {
         poistaButton.setVisible(false);
         jRadioButton1.setEnabled(false);
         jRadioButton2.setEnabled(false);
         jRadioButton3.setEnabled(false);
+        if (!taidotLista.isSelectionEmpty()) {
+            taidotLista.clearSelection();
+        }
+        if (buttonGroup2.getSelection() != null) {
+            buttonGroup2.clearSelection();
+        }
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -76,6 +116,11 @@ public class Lisaysikkuna extends javax.swing.JFrame {
         setTitle("TAITAJA");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Lisää henkilö", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION));
+        jPanel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jPanel1MouseClicked(evt);
+            }
+        });
         jPanel1.addAncestorListener(new javax.swing.event.AncestorListener() {
             public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
             }
@@ -114,6 +159,11 @@ public class Lisaysikkuna extends javax.swing.JFrame {
 
         jLabel6.setText("Lisää taito:");
 
+        uusiTaito.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                uusiTaitoMouseClicked(evt);
+            }
+        });
         uusiTaito.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 uusiTaitoActionPerformed(evt);
@@ -125,7 +175,7 @@ public class Lisaysikkuna extends javax.swing.JFrame {
             }
         });
 
-        lisaaButton.setText("Lisää");
+        lisaaButton.setText("Tallenna");
         lisaaButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 lisaaButtonActionPerformed(evt);
@@ -139,10 +189,14 @@ public class Lisaysikkuna extends javax.swing.JFrame {
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
-        taidotLista.setFocusable(false);
         taidotLista.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 taidotListaMouseClicked(evt);
+            }
+        });
+        taidotLista.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                taidotListaValueChanged(evt);
             }
         });
         jScrollPane1.setViewportView(taidotLista);
@@ -303,61 +357,83 @@ public class Lisaysikkuna extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
-    private String etu;
-    private String suku;
-    
+    /**
+     * Metodi reagoi siihen, että etunimenlisäys kentässä painetaan enteriä.
+     * Kursori siirtyy sukunimi-kenttään.
+     * @param evt 
+     */
     private void etunimiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_etunimiActionPerformed
         sukunimi.requestFocusInWindow();
     }//GEN-LAST:event_etunimiActionPerformed
 
+    /**
+     * Metodi reagoi siihen, että sukunimenlisäys kentässä painetaan enteriä.
+     * Hakee syöttee etu-ja sukunimi kentistä ja testaa onko henkilö jo kortistossa.
+     * Jos ei, kursori siirtyy taidonlisäys kentään.
+     * @param evt 
+     */
     private void sukunimiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sukunimiActionPerformed
-        uusiTaito.requestFocusInWindow();
+        if (otaNimetTalteen()) {
+            ArrayList<String> haettu = kortisto.hae(etu, suku, null);
+            if (!haettu.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Henkilö "+suku+" "+etu+" on jo kortistossa!", "", JOptionPane.WARNING_MESSAGE);
+            }
+            else {
+                uusiTaito.requestFocusInWindow();
+            }
+        }
     }//GEN-LAST:event_sukunimiActionPerformed
 
     private void uusiTaitoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_uusiTaitoKeyPressed
         
     }//GEN-LAST:event_uusiTaitoKeyPressed
 
+    /**
+     * Metodi reagoi siihen että taidonlisäys kentässä painetaan enteriä.
+     * Ottaa taidon talteen ja tarkastaa onko henkilöllä jo kyseinen taito.
+     * Jos ei taito lisätään listalle.
+     * @param evt 
+     */
     private void uusiTaitoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uusiTaitoActionPerformed
-        String taito = uusiTaito.getText().toUpperCase();
-        boolean onJo = false;
-        if (taidot.containsKey(taito)) {
-            JOptionPane.showMessageDialog(this, "Henkilöllä on jo kyseinen taito!", "", JOptionPane.WARNING_MESSAGE);
-            onJo = true;
-        }
-        if (!onJo) {
-            model.insertElementAt(taito, 0);
-            taidot.put(taito, "");
-            taidotLista.ensureIndexIsVisible(0);
-            taidotLista.setSelectedIndex(0);
-            uusiTaito.requestFocusInWindow();
-            uusiTaito.setText("");
-            if (jRadioButton1.isSelected() || jRadioButton2.isSelected() || jRadioButton3.isSelected()) {
-                buttonGroup2.clearSelection();
+        String taito = uusiTaito.getText().trim().toUpperCase();
+        if (!taito.equals("")) {
+            boolean onJo = false;
+            if (taidot.containsKey(taito)) {
+                JOptionPane.showMessageDialog(this, "Henkilöllä on jo kyseinen taito!", "", JOptionPane.WARNING_MESSAGE);
+                onJo = true;
             }
-            else {
-                jRadioButton1.setEnabled(true);
-                jRadioButton2.setEnabled(true);
-                jRadioButton3.setEnabled(true);
+            if (!onJo) {
+                model.insertElementAt(taito, 0);
+                taidot.put(taito, "");
+                taidotLista.ensureIndexIsVisible(0);
+                uusiTaito.requestFocusInWindow();
+                uusiTaito.setText("");
+
             }
         }
     }//GEN-LAST:event_uusiTaitoActionPerformed
 
+    /**
+     * Metodi tallentaa uuden henkilön kun lisää-nappia painetaan.
+     * Ottaa nimet talteen ja tarkistaa onko sen niminen henkilö jo kortistossa.
+     * Jos ei, henkilö lisätään ja listalla olevat taidot lisätään henkilölle.
+     * @param evt 
+     */
     private void lisaaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lisaaButtonActionPerformed
-        etu = etunimi.getText().substring(0,1).toUpperCase()+etunimi.getText().substring(1).toLowerCase();
-        suku = sukunimi.getText().substring(0,1).toUpperCase()+sukunimi.getText().substring(1).toLowerCase();
-        ArrayList<String> haettu = kortisto.hae(etu.trim(), suku.trim(), null);
-        if (!haettu.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Henkilö "+suku+" "+etu+" on jo kortistossa!", "", JOptionPane.WARNING_MESSAGE);
-        }
-        else {
-            kortisto.lisaaHenkilo(etu, suku);
-            int indeksi = kortisto.getKoko()-1;
-            for (int i=0; i<model.getSize(); i++) {
-                String taito = (String)model.elementAt(i);
-                kortisto.lisaaTaito(suku+" "+etu, taito, taidot.get(taito));
+        if (otaNimetTalteen()) {
+            ArrayList<String> haettu = kortisto.hae(etu.trim(), suku.trim(), null);
+            if (!haettu.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Henkilö "+suku+" "+etu+" on jo kortistossa!", "", JOptionPane.WARNING_MESSAGE);
             }
-            dispose();
+            else {
+                kortisto.lisaaHenkilo(etu, suku);
+                int indeksi = kortisto.getKoko()-1;
+                for (int i=0; i<model.getSize(); i++) {
+                    String taito = (String)model.elementAt(i);
+                    kortisto.lisaaTaito(suku+" "+etu, taito, taidot.get(taito));
+                }
+                dispose();
+            }
         }
     }//GEN-LAST:event_lisaaButtonActionPerformed
 
@@ -365,6 +441,11 @@ public class Lisaysikkuna extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jPanel1AncestorAdded
 
+    /**
+     * Metodi asettaa taidon tason numerolle 2.
+     * Toimii mikäli listalta on valittu joku taito.
+     * @param evt 
+     */
     private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2ActionPerformed
         if (!taidotLista.isSelectionEmpty()) {
             String taito = (String)model.getElementAt(taidotLista.getSelectedIndex());
@@ -372,6 +453,11 @@ public class Lisaysikkuna extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jRadioButton2ActionPerformed
 
+    /**
+     * Metodi asettaa taidon tason numerolle 1.
+     * Toimii mikäli listalta on valittu joku taito.
+     * @param evt 
+     */
     private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
         if (!taidotLista.isSelectionEmpty()) {
             String taito = (String)model.getElementAt(taidotLista.getSelectedIndex());
@@ -379,6 +465,11 @@ public class Lisaysikkuna extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jRadioButton1ActionPerformed
 
+    /**
+     * Metodi asettaa taidon tason numerolle 3.
+     * Toimii mikäli listalta on valittu joku taito.
+     * @param evt 
+     */
     private void jRadioButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton3ActionPerformed
         if (!taidotLista.isSelectionEmpty()) {
             String taito = (String)model.getElementAt(taidotLista.getSelectedIndex());
@@ -387,35 +478,20 @@ public class Lisaysikkuna extends javax.swing.JFrame {
     }//GEN-LAST:event_jRadioButton3ActionPerformed
 
     private void taidotListaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_taidotListaMouseClicked
-        jRadioButton1.setEnabled(true);
-        jRadioButton2.setEnabled(true);
-        jRadioButton3.setEnabled(true);
-        String taito = (String)model.getElementAt(taidotLista.getSelectedIndex());
-        String osaaminen = taidot.get(taito);
-        if (osaaminen.isEmpty()) {
-            buttonGroup2.clearSelection();
-        }
-        else if (osaaminen.equals("Hyvä")) {
-            jRadioButton2.setSelected(rootPaneCheckingEnabled);
-        }
-        else if (osaaminen.equals("Kohtalainen")) {
-            jRadioButton1.setSelected(rootPaneCheckingEnabled);
-        }
-        else if (osaaminen.equals("Erinomainen")) {
-            jRadioButton3.setSelected(rootPaneCheckingEnabled);
-        }
-        poistaButton.setVisible(true);
+        
     }//GEN-LAST:event_taidotListaMouseClicked
 
+    /**
+     * Metodi poistaa valitun taidon listalta.
+     * @param evt 
+     */
     private void poistaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_poistaButtonActionPerformed
         int indeksi = taidotLista.getSelectedIndex();
         String taito = (String)model.getElementAt(indeksi);
         taidot.remove(taito);
         model.remove(indeksi);
         taidotLista.setModel(model);
-        taidotLista.clearSelection();
-        poistaButton.setVisible(false);
-        buttonGroup2.clearSelection();
+        piilota();
     }//GEN-LAST:event_poistaButtonActionPerformed
 
     private void etunimiKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_etunimiKeyPressed
@@ -425,6 +501,49 @@ public class Lisaysikkuna extends javax.swing.JFrame {
     private void sukunimiKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_sukunimiKeyPressed
         
     }//GEN-LAST:event_sukunimiKeyPressed
+
+    /**
+     * Metodi pitää huolen siitä mikä taito on valittu listalta.
+     * Jos joku taito on valittu, radiobuttonit tulevat näkyviin ja taitoa vastaava taso näkyy.
+     * @param evt 
+     */
+    private void taidotListaValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_taidotListaValueChanged
+        if (taidotLista.isSelectionEmpty() == false) {
+            jRadioButton1.setEnabled(true);
+            jRadioButton2.setEnabled(true);
+            jRadioButton3.setEnabled(true);
+            String taito = (String)model.getElementAt(taidotLista.getSelectedIndex());
+            String osaaminen = taidot.get(taito);
+            if (osaaminen.isEmpty()) {
+                buttonGroup2.clearSelection();
+            }
+            else if (osaaminen.equals("Hyvä")) {
+                jRadioButton2.setSelected(rootPaneCheckingEnabled);
+            }
+            else if (osaaminen.equals("Kohtalainen")) {
+                jRadioButton1.setSelected(rootPaneCheckingEnabled);
+            }
+            else if (osaaminen.equals("Erinomainen")) {
+                jRadioButton3.setSelected(rootPaneCheckingEnabled);
+            }
+            poistaButton.setVisible(true);
+        }
+        
+    }//GEN-LAST:event_taidotListaValueChanged
+
+    /**
+     * Metodi reagoi siihen, että taidonlisäys kenttää klikataan.
+     * Kaikki valinnat poistetaan.
+     * 
+     * @param evt 
+     */
+    private void uusiTaitoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_uusiTaitoMouseClicked
+        piilota();
+    }//GEN-LAST:event_uusiTaitoMouseClicked
+
+    private void jPanel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseClicked
+        piilota();
+    }//GEN-LAST:event_jPanel1MouseClicked
 
     /**
      * @param args the command line arguments

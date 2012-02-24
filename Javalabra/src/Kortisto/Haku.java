@@ -8,14 +8,24 @@ import java.util.ArrayList;
 import java.util.TreeMap;
 
 /**
- *
+ * Haku-olio suorittaa erilaiset haut kortistosta.
  * @author heidi
  */
 public class Haku {
-    
+    /**
+     * TreeMap pitää henkilöt aakkosjärjestyksessä
+     */
     private TreeMap<String, Henkilo> henkilot;
+    
+    /**
+     * Henkilö olio
+     */
     Henkilo henkilo;
 
+    /**
+     * kostruktori saa henkilöt-treeMapin parametrina
+     * @param henkilot 
+     */
     public Haku(TreeMap<String, Henkilo> henkilot) {
         this.henkilot = henkilot;
     }
@@ -47,7 +57,7 @@ public class Haku {
         ArrayList<String> haetut = new ArrayList<String>();
         for (String nimi : henkilot.keySet()) {
             Henkilo haettu = henkilot.get(nimi);
-            if (haettu.etunimi.equals(etu)) {
+            if (haettu.etunimi.indexOf(etu) != -1) {
                 haetut.add(haettu.sukunimi+" "+haettu.etunimi);
             }
         }

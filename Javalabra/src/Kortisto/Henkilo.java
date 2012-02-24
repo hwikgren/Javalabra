@@ -62,7 +62,7 @@ public class Henkilo extends Observable implements Serializable {
     }
     
     /**
-     * Metodi järjestää taidot.
+     * Metodi järjestää taidot-matriisin.
      * Taidot järjestetään ensisijaisesti taidon tason mukaan, toissijaisesti aakkosten mukaan.
      * @param taidot
      * @return 
@@ -98,6 +98,14 @@ public class Henkilo extends Observable implements Serializable {
         return palautus;
     }
     
+    /**
+     * Metodi palauttaa eri tasojen sisäisesti aakkostetut taidot yhteen matriisiin.
+     * @param palautus
+     * @param map
+     * @param koko1
+     * @param koko2
+     * @return 
+     */
     private String[][] palauta(String[][] palautus, TreeMap<String, String> map, int koko1, int koko2) {
         for (int i=koko1; i<koko2; i++) {
             palautus[i][0] = map.firstKey();
@@ -143,6 +151,12 @@ public class Henkilo extends Observable implements Serializable {
         return this.sukunimi;
     }
    
+    /**
+     * Metodi asettaa henkilö-oliolle muutetut etu-ja sukunimet.
+     * Kertoo muutoksesta Henkiloikkunalle, joka observoi.
+     * @param etu
+     * @param suku 
+     */
     public void muutaNimea(String etu, String suku) {
         this.etunimi = etu;
         this.sukunimi = suku;
@@ -159,6 +173,10 @@ public class Henkilo extends Observable implements Serializable {
         return taidot.size();
     }
     
+    /**
+     * Metodi poistaa olion taidot-listasta annetun taito-olion.
+     * @param poistettava 
+     */
     public void poistaTaito(String poistettava) {
         for (Taito taito : taidot) {
             if (taito.getOsaaminen().equalsIgnoreCase(poistettava)) {
@@ -170,7 +188,7 @@ public class Henkilo extends Observable implements Serializable {
     
     /**
      * Metodi tyhjentää henkilon taidot-arrayn.
-     * Käytetään ennen kuin tallennetaan henkiloikkuna, jossa tiedot saattavat olla muuttuneet.
+     * Metodia käytetään kun lisäys-ikkunassa on lisätty henkilölle taitoja.
      */
     public void tyhjennaArray() {
         taidot.clear();

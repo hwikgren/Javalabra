@@ -5,9 +5,10 @@
 package Kayttoliittyma;
 
 import Kortisto.Kortisto;
+import javax.swing.JOptionPane;
 
 /**
- *
+ * Ikkuna nimen muuttamista varten.
  * @author heidi
  */
 public class NimenMuutos extends javax.swing.JFrame {
@@ -21,6 +22,12 @@ public class NimenMuutos extends javax.swing.JFrame {
         initComponents();
     }
 
+    /**
+     * Konstruktori saa tiedon kortistosta ja henkilöstä.
+     * Asettaa vanhat nimet kenttiin.
+     * @param kortisto
+     * @param nimi 
+     */
     public NimenMuutos(Kortisto kortisto, String nimi) {
         initComponents();
         this.kortisto = kortisto;
@@ -29,6 +36,7 @@ public class NimenMuutos extends javax.swing.JFrame {
         etu.setText(nimet[0]);
         suku.setText(nimet[1]);
     }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -124,11 +132,23 @@ public class NimenMuutos extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_sukuActionPerformed
 
+    /**
+     * Metodi tallentaa henkilön nimet kun tallenna-nappia painetaan.
+     * Nimet otetaan talteen ja välitetään kortistolle.
+     * @param evt 
+     */
     private void tallennaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tallennaButtonActionPerformed
-        String etunimi = etu.getText().substring(0, 1).toUpperCase()+etu.getText().substring(1).toLowerCase();
-        String sukunimi = suku.getText().substring(0, 1).toUpperCase()+suku.getText().substring(1).toLowerCase();
-        kortisto.muutaNimea(nimi, etunimi, sukunimi);
-        dispose();
+        String etunimi = etu.getText().trim();
+        String sukunimi = suku.getText().trim();
+        if (etunimi.equals("") || sukunimi.equals("")) {
+            JOptionPane.showMessageDialog(this, "Henkilölle pitää asaettaa etu- ja sukunimi!", "", JOptionPane.WARNING_MESSAGE);
+        }
+        else {
+            etunimi = kortisto.muokkaaNimi(etunimi);
+            sukunimi = kortisto.muokkaaNimi(sukunimi);
+            kortisto.muutaNimea(nimi, etunimi, sukunimi);
+            dispose();
+        }
     }//GEN-LAST:event_tallennaButtonActionPerformed
 
     /**

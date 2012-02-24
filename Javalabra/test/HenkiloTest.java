@@ -73,6 +73,7 @@ public class HenkiloTest {
         kortisto.lisaaTaito("jauhiainen heidi", "sql", "Kohtalainen");
         kortisto.lisaaTaito("jauhiainen heidi", "php", "Erinomainen");
         kortisto.lisaaTaito("jauhiainen heidi", "mallintaminen", "Erinomainen");
+        kortisto.lisaaTaito("jauhiainen heidi", "testaus", "");
         String[][] taidot = kortisto.haeTaidot("jauhiainen heidi");
         assertEquals ("php", taidot[1][0]);
         assertEquals ("sql", taidot[3][0]);

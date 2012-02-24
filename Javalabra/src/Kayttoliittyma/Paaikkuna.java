@@ -4,11 +4,14 @@
  */
 package Kayttoliittyma;
 
+import Kortisto.Henkilo;
 import Kortisto.Kortisto;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.TreeMap;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -16,7 +19,7 @@ import javax.swing.WindowConstants;
 
 
 /**
- *
+ * Ohjelman pääikkuna.
  * @author hwikgren
  */
 public class Paaikkuna extends javax.swing.JFrame implements Observer {
@@ -26,8 +29,13 @@ public class Paaikkuna extends javax.swing.JFrame implements Observer {
     Henkiloikkuna henkilo;
     Lisaysikkuna lisays;
     Hakuikkuna haku;
+    boolean lisaysOn = false;
+    boolean henkiloOn = false;
+    boolean hakuOn = false;
     /**
-     * Creates new form Paaikkuna
+     * Creates new form Paaikkuna.
+     * Luo kortiston ja asettaa sen observeriksi.
+     * Hakee kortistosta kaikkien henkilöiden nimet ja asettaa ne listalle.
      */
     public Paaikkuna() throws FileNotFoundException, IOException, ClassNotFoundException {
         
@@ -36,7 +44,24 @@ public class Paaikkuna extends javax.swing.JFrame implements Observer {
         kortisto.addObserver(this);
         String[] lista = kortisto.kaikkiHenkilot();
         henkilolista.setListData(lista);
-        poistaButton.setVisible(false);
+        henkilolista.setSelectedIndex(0);
+    }
+    
+    /**
+     * Luokkametodi huolehtii kaikkien ikkunoiden sulkemisesta kun pääikkuna sulkeutuu.
+     * Muut ikkunat suljetaan jos ne on joskus luotu.
+     */
+    private void suljeKaikki() {
+        if (lisaysOn == true) {
+            lisays.dispose();
+        }
+        if (henkiloOn == true){
+            henkilo.dispose();
+        }
+        if (hakuOn == true) {
+            haku.dispose();
+        }
+        System.exit(0);
     }
 
     /**
@@ -151,7 +176,7 @@ public class Paaikkuna extends javax.swing.JFrame implements Observer {
                 .addComponent(lisaaButton)
                 .addGap(18, 18, 18)
                 .addComponent(poistaButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 125, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 197, Short.MAX_VALUE)
                 .addComponent(HaeButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lopetaButton)
@@ -172,12 +197,18 @@ public class Paaikkuna extends javax.swing.JFrame implements Observer {
             .addGroup(layout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Metodi poistaa henkilön kun Poista-nappia painetaan.
+     * Kysyy käyttäjältä haluaako, tämä varmasti poistaa henkilön.
+     * Pyytää kortistoa poistamaan henkilön.
+     * @param evt 
+     */
     private void poistaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_poistaButtonActionPerformed
         String poistettava = (String)henkilolista.getSelectedValue();
         Object[] valinnat = {"Ei", "Kyllä"};
@@ -186,10 +217,6 @@ public class Paaikkuna extends javax.swing.JFrame implements Observer {
                 + "Haluatko jatkaa?", "", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, valinnat, valinnat[1]);
         if (valinta == 1) {
             kortisto.poistaHenkilo(poistettava);
-            String[] lista = kortisto.kaikkiHenkilot();
-            henkilolista.setListData(lista);
-            henkilolista.clearSelection();
-            poistaButton.setVisible(false);
         }
     }//GEN-LAST:event_poistaButtonActionPerformed
 
@@ -197,44 +224,72 @@ public class Paaikkuna extends javax.swing.JFrame implements Observer {
         // TODO add your handling code here:
     }//GEN-LAST:event_henkilolistaValueChanged
 
+    /**
+     * Metodi tallentaa kaikki tiedot kun lopeta-nappia painetaan.
+     * Pyytää kortistoa tallentamaan kaikki tiedot tiedostoon ja sulkee ikkunan.
+     * @param evt 
+     */
     private void lopetaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lopetaButtonActionPerformed
         try {
             kortisto.tallennaTiedot();
         } catch (IOException ex) {
             Logger.getLogger(Paaikkuna.class.getName()).log(Level.SEVERE, null, ex);
         }
-        dispose();
+        suljeKaikki();
     }//GEN-LAST:event_lopetaButtonActionPerformed
 
+    /**
+     * Metodi kuuntelee hiirenklikkauksia henkilöt-listalla.
+     * Jos klikkauksia 1, poista-nappi tulee näkyviin ja klikattu henkilö on valittu.
+     * Jos klikkauksia kaksi, metodi saa listalta klikatun henkilön indeksin ja avaa henkiloikkunan,
+     * jossa kyseisen henkilön tiedot.
+     * @param evt 
+     */
     private void henkilolistaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_henkilolistaMouseClicked
-        if (evt.getClickCount() == 1) {
+        /*if (evt.getClickCount() == 1) {
             poistaButton.setVisible(true);
-        }
-        else if (evt.getClickCount() == 2) {
+        }*/
+        if (evt.getClickCount() == 2) {
             String valittu = (String)henkilolista.getSelectedValue();
             henkilo = new Henkiloikkuna(kortisto, valittu);
+            henkiloOn = true;
             //ikkuna.setSize(450, 400);
             henkilo.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
             henkilo.setVisible(true);
         }
     }//GEN-LAST:event_henkilolistaMouseClicked
 
+    /**
+     * Metodi avaa lisäysikkunan kun lisää-nappia painetaan.
+     * @param evt 
+     */
     private void lisaaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lisaaButtonActionPerformed
         lisays = new Lisaysikkuna(kortisto);
+        lisaysOn = true;
         lisays.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         lisays.setVisible(true);
     }//GEN-LAST:event_lisaaButtonActionPerformed
 
+    /**
+     * Metodi pyytää kortistoa tallentamaan kaikki tiedot, jos ikkuna suljetaan rastista.
+     * @param evt 
+     */
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         try {
             kortisto.tallennaTiedot();
         } catch (IOException ex) {
             Logger.getLogger(Paaikkuna.class.getName()).log(Level.SEVERE, null, ex);
         }
+        suljeKaikki();
     }//GEN-LAST:event_formWindowClosing
 
+    /**
+     * Metodi avaa haku-ikkunan kun Hae-nappia painetaan.
+     * @param evt 
+     */
     private void HaeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HaeButtonActionPerformed
         haku = new Hakuikkuna(kortisto);
+        hakuOn = true;
         haku.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         haku.setVisible(true);
     }//GEN-LAST:event_HaeButtonActionPerformed
@@ -300,6 +355,11 @@ public class Paaikkuna extends javax.swing.JFrame implements Observer {
     private javax.swing.JButton poistaButton;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Metodi päivittää henkilölistan, kun kortisto ilmoittaa että listalla on tapahtunut muutos.
+     * @param o
+     * @param o1 
+     */
     @Override
     public void update(Observable o, Object o1) {
         String[] lista = (String[])o1;

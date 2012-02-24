@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.TreeMap;
 import static org.junit.Assert.*;
 import org.junit.*;
@@ -75,13 +76,13 @@ public class KortistoTest {
     
     @Test
     public void taidonPoistoToimii() {
-        kortisto.lisaaHenkilo("heidi", "jauhiainen");
-        kortisto.lisaaTaito("jauhiainen heidi", "java", "Hyvä");
-        kortisto.lisaaTaito("jauhiainen heidi", "sql", "Kohtalainen");
-        String[][] taidot = kortisto.haeTaidot("jauhiainen heidi");
+        kortisto.lisaaHenkilo("Heidi", "Jauhiainen");
+        kortisto.lisaaTaito("Jauhiainen Heidi", "JAVA", "Hyvä");
+        kortisto.lisaaTaito("Jauhiainen Heidi", "SQL", "Kohtalainen");
+        String[][] taidot = kortisto.haeTaidot("Jauhiainen Heidi");
         assertEquals( 2, taidot.length );
-        kortisto.poistaTaito("jauhiainen heidi", "sql");
-        String[][] uusi  = kortisto.haeTaidot("jauhiainen heidi");
+        kortisto.poistaTaito("Jauhiainen Heidi", "SQL");
+        String[][] uusi  = kortisto.haeTaidot("Jauhiainen Heidi");
         assertEquals( 1, uusi.length);
     }
     
@@ -178,4 +179,44 @@ public class KortistoTest {
         ArrayList<String> haetut = kortisto.hae("", "", "java");
         assertEquals( 2, haetut.size() );
     }
+    @Test
+    public void nimiMuuttuu() {
+        kortisto.lisaaHenkilo("heidi", "wikgren");
+        kortisto.muutaNimea("wikgren heidi", "heidi", "jauhiainen");
+        String pitaisiOlla = "jauhiainen heidi ";
+        String on = "";
+        String[] henkilot= kortisto.kaikkiHenkilot();
+        for (int i=0; i<henkilot.length; i++) {
+            on += henkilot[i]+" ";
+        }
+        assertEquals( on, pitaisiOlla );
+    }
+    @Test
+    public void haeNimetToimii() {
+        kortisto.lisaaHenkilo("heidi", "jauhiainen");
+        kortisto.lisaaHenkilo("tommi", "jauhiainen");
+        kortisto.lisaaHenkilo("tommi", "tomera");
+        String[] nimet = kortisto.haeNimet("jauhiainen tommi");
+        String suku = nimet[1];
+        String etu = nimet[0];
+        assertEquals ( suku, "jauhiainen" );
+        assertEquals ( etu, "tommi" );
+    }
+    
+    @Test
+    public void valitaHenkiloOlioToimii() {
+        kortisto.lisaaHenkilo("heidi", "jauhiainen");
+        kortisto.lisaaHenkilo("tommi", "jauhiainen");
+        kortisto.lisaaHenkilo("tommi", "tomera");
+        assertTrue( kortisto.valitaHenkiloOlio("jauhiainen tommi") != null );        
+    }
+    @Test
+    public void muokkaaNimeaToimii() {
+        assertEquals( kortisto.muokkaaNimi("heidi"), "Heidi");
+        assertEquals( kortisto.muokkaaNimi("kalle k"), "Kalle K");
+        assertEquals( kortisto.muokkaaNimi("toivari-viitala"), "Toivari-Viitala");
+        assertEquals( kortisto.muokkaaNimi("lotta maaria"), "Lotta Maaria");
+    }
+    
+    
 }

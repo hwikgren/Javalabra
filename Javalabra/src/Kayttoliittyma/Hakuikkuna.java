@@ -7,10 +7,11 @@ package Kayttoliittyma;
 import Kortisto.Kortisto;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
 /**
- *
+ * Ikkuna henkilöiden hakemista varten.
  * @author heidi
  */
 public class Hakuikkuna extends javax.swing.JFrame {
@@ -22,22 +23,50 @@ public class Hakuikkuna extends javax.swing.JFrame {
     String taito;
     Henkiloikkuna henkilo;
     
-    private void otaTalteen() {
+    
+    /**
+     * Creates new form Hakuikkuna
+     */
+    public Hakuikkuna() {
+        initComponents();
+    }
+
+    /**
+     * Konstruktori saa tiedon kortistosta.
+     * @param kortisto 
+     */
+    public Hakuikkuna(Kortisto kortisto) {
+        initComponents();
+        this.kortisto = kortisto;
+        model = new DefaultListModel();
+        haetutLista.setModel(model);
+    }
+    
+    /**
+     * Metodi ottaa talteen tekstin kaikista kentistä.
+     * Jos nimikentissä on tekstiä, kutsutaan nimen muokkausta.
+     */
+    private boolean otaTalteen() {
         etu = etunimi.getText().trim();
-        if (!etu.equals("")) {
-            etu = muokkaaNimi(etu);
-        }
         suku = sukunimi.getText().trim();
-        if (!suku.equals("")) {
-            suku = muokkaaNimi(suku);
+        if (!etu.equals("")) {
+            etu = kortisto.muokkaaNimi(etu);
         }
-        taito = taitoKentta.getText().toUpperCase();
+        if (!suku.equals("")) {
+            suku = kortisto.muokkaaNimi(suku);
+        }
+        taito = taitoKentta.getText().trim().toUpperCase();
+        if ((!etu.equals("") || (!suku.equals("")) && !taito.equals(""))) {
+            JOptionPane.showMessageDialog(this, "Voit hakea vain joko nimillä tai taidolla!", "", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        return true;
     }
     
-    private String muokkaaNimi(String nimi) {
-        return nimi.substring(0, 1).toUpperCase()+nimi.substring(1).toLowerCase();
-    }
-    
+    /**
+     * Metodi suorittaa haun kortistosta.
+     * Haun tulos näytetään listana.
+     */
     private void hae() {
         ArrayList<String> haetut = kortisto.hae(etu, suku, taito);
         String[] haetutTaulukko = new String[haetut.size()];
@@ -47,25 +76,15 @@ public class Hakuikkuna extends javax.swing.JFrame {
         haetutLista.setListData(haetutTaulukko);
     }
     
+    /**
+     * Metodi tyhjentää kaikki kentät.
+     */
     private void tyhjenna() {
         etunimi.setText("");
         sukunimi.setText("");
         taitoKentta.setText("");
     }
-    /**
-     * Creates new form Hakuikkuna
-     */
-    public Hakuikkuna() {
-        initComponents();
-    }
-
-    public Hakuikkuna(Kortisto kortisto) {
-        initComponents();
-        this.kortisto = kortisto;
-        model = new DefaultListModel();
-        haetutLista.setModel(model);
-        poistaButton.setVisible(false);
-    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -87,7 +106,6 @@ public class Hakuikkuna extends javax.swing.JFrame {
         haeButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         haetutLista = new javax.swing.JList();
-        poistaButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("TAITAJA");
@@ -143,8 +161,6 @@ public class Hakuikkuna extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(haetutLista);
 
-        poistaButton.setText("Poista valittu henkilö");
-
         org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -164,22 +180,17 @@ public class Hakuikkuna extends javax.swing.JFrame {
                                     .add(jLabel1))
                                 .add(108, 108, 108))))
                     .add(jPanel1Layout.createSequentialGroup()
-                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(jPanel1Layout.createSequentialGroup()
-                                .add(47, 47, 47)
-                                .add(haeButton))
-                            .add(jPanel1Layout.createSequentialGroup()
-                                .add(80, 80, 80)
-                                .add(jLabel5))
-                            .add(jPanel1Layout.createSequentialGroup()
-                                .add(68, 68, 68)
-                                .add(jLabel4)))
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .add(63, 63, 63)
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 170, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                    .add(poistaButton))
-                .addContainerGap())
+                        .add(47, 47, 47)
+                        .add(haeButton))
+                    .add(jPanel1Layout.createSequentialGroup()
+                        .add(80, 80, 80)
+                        .add(jLabel5))
+                    .add(jPanel1Layout.createSequentialGroup()
+                        .add(68, 68, 68)
+                        .add(jLabel4)))
+                .add(36, 36, 36)
+                .add(jScrollPane1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 197, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(13, 13, 13))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -206,9 +217,7 @@ public class Hakuikkuna extends javax.swing.JFrame {
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(taitoKentta, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 20, Short.MAX_VALUE)
-                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(haeButton)
-                    .add(poistaButton))
+                .add(haeButton)
                 .add(24, 24, 24))
         );
 
@@ -232,17 +241,26 @@ public class Hakuikkuna extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Metodi reagoi Hae-napin painallukseen.
+     * Kutsuu metodeja otaTalteen, hae ja tyhjennä.
+     * @param evt 
+     */
     private void haeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_haeButtonActionPerformed
-        otaTalteen();
-        hae();
-        tyhjenna();
+        if (otaTalteen()) {
+            hae();
+            tyhjenna();
+        }
+        
     }//GEN-LAST:event_haeButtonActionPerformed
 
+    /**
+     * Metodi reagoi haettujen listan klikkaamiseen.
+     * Avataan valitun henkilön tiedot uuteen ikkunaan.
+     * @param evt 
+     */
     private void haetutListaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_haetutListaMouseClicked
-        if (evt.getClickCount() == 1) {
-            poistaButton.setVisible(true);
-        }
-        else if (evt.getClickCount() == 2) {
+        if (evt.getClickCount() == 2) {
             String valittu = (String)haetutLista.getSelectedValue();
             henkilo = new Henkiloikkuna(kortisto, valittu);
             //ikkuna.setSize(450, 400);
@@ -251,22 +269,40 @@ public class Hakuikkuna extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_haetutListaMouseClicked
 
+    /**
+     * Metodi reagoi enteriin etunimi-kentässä.
+     * Kutsuu metodeja otaTalteen, hae ja tyhjennä.
+     * @param evt 
+     */
     private void etunimiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_etunimiActionPerformed
-        otaTalteen();
-        hae();
-        tyhjenna();
+        if (otaTalteen()) {
+            hae();
+            tyhjenna();
+        }
     }//GEN-LAST:event_etunimiActionPerformed
 
+    /**
+     * Metodi reagoi enteriin sukunimi-kentässä.
+     * Kutsuu metodeja otaTalteen, hae ja tyhjennä.
+     * @param evt 
+     */
     private void sukunimiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sukunimiActionPerformed
-        otaTalteen();
-        hae();
-        tyhjenna();
+        if (otaTalteen()) {
+            hae();
+            tyhjenna();
+        }
     }//GEN-LAST:event_sukunimiActionPerformed
 
+    /**
+     * Metodi reagoi enteriin taito-kentässä.
+     * Kutsuu metodeja otaTalteen, hae ja tyhjennä.
+     * @param evt 
+     */
     private void taitoKenttaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_taitoKenttaActionPerformed
-        otaTalteen();
-        hae();
-        tyhjenna();
+        if (otaTalteen()) {
+            hae();
+            tyhjenna();
+        }
     }//GEN-LAST:event_taitoKenttaActionPerformed
 
     /**
@@ -321,7 +357,6 @@ public class Hakuikkuna extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JButton poistaButton;
     private javax.swing.JTextField sukunimi;
     private javax.swing.JTextField taitoKentta;
     // End of variables declaration//GEN-END:variables

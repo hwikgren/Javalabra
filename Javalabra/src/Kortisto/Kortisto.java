@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 /**
  * Sovelluslogiikka-olio
@@ -26,7 +27,7 @@ public class Kortisto extends Observable {
     private Henkilo henkilo;
     /**
      * Konstuktori luo kortisto-olion.
-     * Lataa mahdolliset olemassa olevat henkilö-oliot tiedostosta Arrayhun.
+     * Lataa mahdolliset olemassa olevat henkilö-oliot tiedostosta TreeMapiin.
      * @throws FileNotFoundException
      * @throws IOException
      * @throws ClassNotFoundException 
@@ -47,36 +48,20 @@ public class Kortisto extends Observable {
     
     /**
      * Metodi luo uuden Henkilö-olion.
-     * Lisää sen henkilöt-TreeSetiin.
+     * Lisää sen henkilöt-TreeMapiin.
      * @param etu
      * @param suku 
      */
     public void lisaaHenkilo(String etu, String suku) {
         henkilo = new Henkilo(etu, suku);
-        henkilot.put(suku+" "+etu, henkilo);
+        String nimi = suku+" "+etu;
+        if (suku.equals("")) {
+            nimi.trim();
+        }
+        henkilot.put(nimi, henkilo);
         setChanged();
         notifyObservers(kaikkiHenkilot());
     }
-    
-    public void muutaNimea(String nimi, String etu, String suku) {
-        henkilo = henkilot.get(nimi);
-        henkilot.remove(nimi);
-        henkilo.muutaNimea(etu, suku);
-        henkilot.put(suku+" "+etu, henkilo);
-        setChanged();
-        notifyObservers(kaikkiHenkilot());
-    }
-    
-    public String[] haeNimet(String nimi) {
-        String[] nimet = new String[2];
-        henkilo = henkilot.get(nimi);
-        String etu = henkilo.etunimi;
-        String suku = henkilo.sukunimi;
-        nimet[0] = etu;
-        nimet[1] = suku;
-        return nimet;
-    }
-    
     
     /**
      * Metodi lisää henkilölle taidon.
@@ -86,15 +71,45 @@ public class Kortisto extends Observable {
      */
     public void lisaaTaito(String nimi, String taito, String taso) {
         henkilo = henkilot.get(nimi);
-        
         henkilo.lisaaOsaaminen(taito, taso);
+    }
+    
+    /**
+     * Metodi muuttaa henkilön etu- ja sukunimet annetuiksi.
+     * Hakee annetun nimen mukaisen olion ja muutaa sen nimet. Poistaa kyseisen olion TreeMapista.
+     * Panee olion takaisin TreeMapiin uusilla nimillä.
+     * Kertoo muutoksesta Paaikkunalle, joka observoi.
+     * @param nimi
+     * @param etu
+     * @param suku 
+     */
+    public void muutaNimea(String nimi, String etu, String suku) {
+        henkilo = henkilot.get(nimi);
+        henkilo.muutaNimea(etu, suku);
+        henkilot.remove(nimi);
+        henkilot.put(suku+" "+etu, henkilo);
+        setChanged();
+        notifyObservers(kaikkiHenkilot());
+    }
+    
+    /**
+     * Metodi palauttaa henkilön nimet taulussa.
+     * @param nimi
+     * @return 
+     */
+    public String[] haeNimet(String nimi) {
+        String[] nimet = new String[2];
+        henkilo = henkilot.get(nimi);
+        nimet[0] = henkilo.getEtunimi();
+        nimet[1] = henkilo.getSukunimi();
+        return nimet;
     }
     
     /**
      * Metodi hakee tietyn henkilön taidot.
      * Ensin haetaan henkilo-olio ja sitten tämän taidot string-taulukossa.
      * @param indeksi
-     * @return taisot-taulukko (String)
+     * @return taidot-taulukko (String)
      */
     public String[][] haeTaidot(String nimi) {
         henkilo = henkilot.get(nimi);
@@ -114,16 +129,16 @@ public class Kortisto extends Observable {
     }
     
     /**
-     * Metodi poistaa nimen mukaisen henkilön TreeMapista
+     * Metodi poistaa nimen mukaisen henkilön TreeMapista.
+     * Kertoo muutoksesta Paaikkunalle, joka observoi.
      * @param etu
      * @param suku 
      */
     public void poistaHenkilo(String nimi) {
-        //int indeksi = etsiHenkilo(etu, suku);
         henkilot.remove(nimi);
+        setChanged();
+        notifyObservers(kaikkiHenkilot());
     }
-    
-    
     
     /**
      * Metodi tyhjentää henkilön taidot.
@@ -136,22 +151,7 @@ public class Kortisto extends Observable {
         henkilo.tyhjennaArray();
     }
     
-    /**
-     * Metodi kutsuu Tallennus-olion tallennaTiedot-metodia.
-     * @throws IOException 
-     */
-    public void tallennaTiedot() throws IOException {
-        tallentaja.talletaTiedot(henkilot);
-    }
-    /**
-     * Metodi kutsuu Tallennus-olion lataaTiedot-metodia.
-     * @throws FileNotFoundException
-     * @throws IOException
-     * @throws ClassNotFoundException 
-     */
-    public void lataaTiedot() throws FileNotFoundException, IOException, ClassNotFoundException {
-        henkilot = tallentaja.lataaTiedot();
-    }
+    
     
     /**
      * Metodi palauttaa String-taulukkona kaikki kortistossa olevat henkilöt.
@@ -167,10 +167,9 @@ public class Kortisto extends Observable {
         return palautus;
     }
     
-    
     /**
      * Metodi käy läpi annetut parametrit.
-     * Sen mukaan onko parametri tyhjä vai ei, metodi kutsuu erilaisia haku-metodeita. 
+     * Sen mukaan onko parametri tyhjä vai ei, metodi kutsuu erilaisia haku-olion metodeita. 
      * Palauttaa haun tulokset ArrayListina.
      * @param etu
      * @param suku
@@ -196,7 +195,54 @@ public class Kortisto extends Observable {
         return haetut;
     }   
     
+    /**
+     * Metodi palauttaa nimeä vastaavan olion.
+     * @param nimi
+     * @return 
+     */
     public Henkilo valitaHenkiloOlio(String nimi) {
         return henkilo = henkilot.get(nimi);
+    }
+    
+    /**
+     * Metodi kutsuu Tallennus-olion tallennaTiedot-metodia.
+     * @throws IOException 
+     */
+    public void tallennaTiedot() throws IOException {
+        tallentaja.talletaTiedot(henkilot);
+    }
+    /**
+     * Metodi kutsuu Tallennus-olion lataaTiedot-metodia.
+     * @throws FileNotFoundException
+     * @throws IOException
+     * @throws ClassNotFoundException 
+     */
+    private void lataaTiedot() throws FileNotFoundException, IOException, ClassNotFoundException {
+        henkilot = tallentaja.lataaTiedot();
+    }
+    
+    /**
+     * Metodi varmistaa, että henkilön etu- ja sukunimissä on ensimmäinen kirjain iso ja muut pieniä.
+     * Käytetään kun uusi henkilö lisätään tai haetaan tai nimeä muutetaan.
+     * @param nimi
+     * @return 
+     */
+    public String muokkaaNimi(String nimi) {
+        String uusiN = nimi.substring(0, 1).toUpperCase()+nimi.substring(1).toLowerCase();
+        int indeksi;
+        if (uusiN.indexOf("-") > -1) {
+            indeksi = uusiN.indexOf("-");
+            uusiN = uusiN.substring(0, indeksi+1)+uusiN.substring(indeksi+1, indeksi+2).toUpperCase()+uusiN.substring(indeksi+2);
+        }
+        if (uusiN.indexOf(" ") > -1) {
+            indeksi = uusiN.indexOf(" ");
+            if (indeksi < uusiN.length()-2) {
+                uusiN = uusiN.substring(0, indeksi+1)+uusiN.substring(indeksi+1, indeksi+2).toUpperCase()+uusiN.substring(indeksi+2);
+            }
+            else {
+                uusiN = uusiN.substring(0, indeksi+1)+uusiN.substring(indeksi+1, indeksi+2).toUpperCase();
+            }
+        }
+        return uusiN;
     }
 }

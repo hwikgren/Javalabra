@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="Heidi-Jauhiainens-MacBook-Air.local" name="TaitoTest" tests="2" time="0.377" timestamp="2012-02-18T14:32:38">
+<testsuite errors="0" failures="0" hostname="Heidi-Jauhiainens-MacBook-Air.local" name="TaitoTest" tests="2" time="0.17" timestamp="2012-02-22T13:55:57">
   <properties>
     <property name="libs.jsp-compiler.javadoc" value="" />
     <property name="netbeans.autoupdate.country" value="US" />
-    <property name="javac.test.classpath" value="/Users/heidi/Documents/junit-4.10.jar/junit-4.10.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/platform/modules/ext/swing-layout-1.0.4.jar:build/classes:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/platform/modules/ext/junit-4.10.jar" />
+    <property name="javac.test.classpath" value="/Users/heidi/Documents/junit-4.10.jar/junit-4.10.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/platform/modules/ext/swing-layout-1.0.4.jar:/Users/heidi/Downloads/jSuggestField.jar:build/classes:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/platform/modules/ext/junit-4.10.jar" />
     <property name="libs.jsf20.maven-pom" value="" />
     <property name="libs.DataBindingME.src" value="/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/mobility/sources/netbeans_databindingme-src.zip" />
     <property name="libs.j2me_ant_ext.javadoc" value="" />
@@ -68,7 +68,7 @@
     <property name="manifest.available+main.class" value="true" />
     <property name="libs.spring-webmvc3.0.maven-pom" value="" />
     <property name="libs.swing-layout.maven-pom" value="" />
-    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner TaitoTest filtertrace=true haltOnError=false haltOnFailure=false showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/Users/heidi/NetBeansProjects/Javalabra/Javalabra/build/test/results/TEST-TaitoTest.xml crashfile=/Users/heidi/NetBeansProjects/Javalabra/Javalabra/build/junitvmwatcher1187295391638753616.properties propsfile=/Users/heidi/NetBeansProjects/Javalabra/Javalabra/build/junit7455203789152792237.properties" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner TaitoTest filtertrace=true haltOnError=false haltOnFailure=false showoutput=true outputtoformatters=true logfailedtests=true logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.BriefJUnitResultFormatter formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,/Users/heidi/NetBeansProjects/Javalabra/Javalabra/build/test/results/TEST-TaitoTest.xml crashfile=/Users/heidi/NetBeansProjects/Javalabra/Javalabra/build/junitvmwatcher1393954368229841922.properties propsfile=/Users/heidi/NetBeansProjects/Javalabra/Javalabra/build/junit8799812326388367987.properties" />
     <property name="build.classes.dir" value="build/classes" />
     <property name="netbeans.accept_license_class" value="org.netbeans.license.AcceptLicense" />
     <property name="build.sysclasspath" value="ignore" />
@@ -81,7 +81,7 @@
     <property name="libs.jstl11.javadoc" value="/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/enterprise/docs/javaee6-doc-api.zip" />
     <property name="libs.JMUnit4CLDC11.src" value="" />
     <property name="javadoc.encoding" value="UTF-8" />
-    <property name="javac.classpath" value="/Users/heidi/Documents/junit-4.10.jar/junit-4.10.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/platform/modules/ext/swing-layout-1.0.4.jar" />
+    <property name="javac.classpath" value="/Users/heidi/Documents/junit-4.10.jar/junit-4.10.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/platform/modules/ext/swing-layout-1.0.4.jar:/Users/heidi/Downloads/jSuggestField.jar" />
     <property name="libs.jsp-compilation-syscp.src" value="" />
     <property name="debug-transport" value="dt_socket" />
     <property name="netbeans.system_http_non_proxy_hosts" value="" />
@@ -123,7 +123,7 @@
     <property name="file.separator" value="/" />
     <property name="libs.junit_4.maven-pom" value="" />
     <property name="mkdist.disabled" value="false" />
-    <property name="javac.test.processorpath" value="/Users/heidi/Documents/junit-4.10.jar/junit-4.10.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/platform/modules/ext/swing-layout-1.0.4.jar:build/classes:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/platform/modules/ext/junit-4.10.jar" />
+    <property name="javac.test.processorpath" value="/Users/heidi/Documents/junit-4.10.jar/junit-4.10.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/platform/modules/ext/swing-layout-1.0.4.jar:/Users/heidi/Downloads/jSuggestField.jar:build/classes:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/platform/modules/ext/junit-4.10.jar" />
     <property name="netbeans.buildnumber" value="201112071828" />
     <property name="libs.JWSAntTasks.javadoc" value="" />
     <property name="build.generated.sources.dir" value="build/generated-sources" />
@@ -153,6 +153,7 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle" />
     <property name="libs.semc-ant-utils.javadoc" value="" />
     <property name="libs.jaxws21.classpath" value="/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/ide/modules/ext/jaxb/jaxb-impl.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/ide/modules/ext/jaxb/jaxb-xjc.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/modules/ext/jaxws22/FastInfoset.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/modules/ext/jaxws22/gmbal-api-only.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/modules/ext/jaxws22/http.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/modules/ext/jaxws22/jaxws-rt.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/modules/ext/jaxws22/jaxws-tools.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/modules/ext/jaxws22/management-api.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/modules/ext/jaxws22/mimepull.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/modules/ext/jaxws22/policy.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/modules/ext/jaxws22/saaj-impl.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/modules/ext/jaxws22/stax-ex.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/modules/ext/jaxws22/streambuffer.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/modules/ext/jaxws22/woodstox.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/modules/ext/jaxws22/api/jaxws-api.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/modules/ext/jaxws22/api/jsr181-api.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/modules/ext/jaxws22/api/jsr250-api.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/modules/ext/jaxws22/api/saaj-api.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/ide/modules/ext/jaxb/activation.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/ide/modules/ext/jaxb/api/jaxb-api.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/ide/modules/ext/jaxb/api/jsr173_api.jar" />
+    <property name="file.reference.jSuggestField.jar" value="/Users/heidi/Downloads/jSuggestField.jar" />
     <property name="libs.struts.src" value="" />
     <property name="compile.on.save" value="true" />
     <property name="apple.awt.graphics.UseQuartz" value="true" />
@@ -164,7 +165,7 @@
     <property name="manifest.available" value="true" />
     <property name="libs.primefaces.javadoc" value="" />
     <property name="libs.spring-framework300.maven-pom" value="" />
-    <property name="run.test.classpath" value="/Users/heidi/Documents/junit-4.10.jar/junit-4.10.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/platform/modules/ext/swing-layout-1.0.4.jar:build/classes:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/platform/modules/ext/junit-4.10.jar:build/test/classes:/Users/heidi/.netbeans/7.1/modules/ext/emma.jar" />
+    <property name="run.test.classpath" value="/Users/heidi/Documents/junit-4.10.jar/junit-4.10.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/platform/modules/ext/swing-layout-1.0.4.jar:/Users/heidi/Downloads/jSuggestField.jar:build/classes:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/platform/modules/ext/junit-4.10.jar:build/test/classes:/Users/heidi/.netbeans/7.1/modules/ext/emma.jar" />
     <property name="ant.project.invoked-targets" value="test" />
     <property name="libs.swing-layout.javadoc" value="/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/platform/docs/swing-layout-1.0.4-doc.zip" />
     <property name="libs.ejb3-persistence.maven-pom" value="" />
@@ -197,7 +198,7 @@
     <property name="libs.jsp-compilation.src" value="" />
     <property name="libs.spring-webmvc.src" value="" />
     <property name="libs.ant-contrib.javadoc" value="" />
-    <property name="debug.test.classpath" value="/Users/heidi/Documents/junit-4.10.jar/junit-4.10.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/platform/modules/ext/swing-layout-1.0.4.jar:build/classes:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/platform/modules/ext/junit-4.10.jar:build/test/classes:/Users/heidi/.netbeans/7.1/modules/ext/emma.jar" />
+    <property name="debug.test.classpath" value="/Users/heidi/Documents/junit-4.10.jar/junit-4.10.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/platform/modules/ext/swing-layout-1.0.4.jar:/Users/heidi/Downloads/jSuggestField.jar:build/classes:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/platform/modules/ext/junit-4.10.jar:build/test/classes:/Users/heidi/.netbeans/7.1/modules/ext/emma.jar" />
     <property name="libs.javaee-endorsed-api-6.0.classpath" value="/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/enterprise/modules/ext/javaee6-endorsed/javax.annotation.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/enterprise/modules/ext/javaee6-endorsed/jaxb-api-osgi.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/enterprise/modules/ext/javaee6-endorsed/webservices-api-osgi.jar" />
     <property name="libs.javaee-api-6.0.src" value="" />
     <property name="netbeans.importclass" value="org.netbeans.upgrade.AutoUpgrade" />
@@ -219,7 +220,7 @@
     <property name="libs.javaee-web-api-6.0.maven-pom" value="" />
     <property name="libs.cdc-pp-awt-layout.classpath" value="/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/mobility/modules/ext/cdc-pp-awt-layout.jar" />
     <property name="libs.cdc-agui-swing-layout.src" value="/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/mobility/sources/cdc-agui-swing-layout-src.zip" />
-    <property name="run.classpath" value="/Users/heidi/Documents/junit-4.10.jar/junit-4.10.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/platform/modules/ext/swing-layout-1.0.4.jar:build/classes" />
+    <property name="run.classpath" value="/Users/heidi/Documents/junit-4.10.jar/junit-4.10.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/platform/modules/ext/swing-layout-1.0.4.jar:/Users/heidi/Downloads/jSuggestField.jar:build/classes" />
     <property name="libs.hibernate-support.src" value="" />
     <property name="libs.javaee-endorsed-api-6.0.javadoc" value="/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/enterprise/docs/javaee6-doc-api.zip" />
     <property name="libs.JMUnit4CLDC11.classpath" value="/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/mobility/modules/ext/jmunit4cldc11-1.2.1.jar" />
@@ -239,7 +240,7 @@
     <property name="javadoc.use" value="true" />
     <property name="sun.java2d.noddraw" value="true" />
     <property name="libs.jsp-compiler.classpath" value="/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/enterprise/ant/extra/jspcompile.jar" />
-    <property name="javac.processorpath" value="/Users/heidi/Documents/junit-4.10.jar/junit-4.10.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/platform/modules/ext/swing-layout-1.0.4.jar" />
+    <property name="javac.processorpath" value="/Users/heidi/Documents/junit-4.10.jar/junit-4.10.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/platform/modules/ext/swing-layout-1.0.4.jar:/Users/heidi/Downloads/jSuggestField.jar" />
     <property name="libs.spring-webmvc.classpath" value="/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/enterprise/modules/ext/spring/spring-webmvc-2.5.6.SEC01.jar" />
     <property name="javac.compilerargs" value="" />
     <property name="svnkit.http.methods" value="Basic" />
@@ -257,7 +258,6 @@
     <property name="org.openide.major.version" value="IDE/1" />
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
     <property name="netbeans.user" value="/Users/heidi/.netbeans/7.1" />
-    <property name="tests.failed" value="true" />
     <property name="javadoc.additionalparam" value="" />
     <property name="java.io.tmpdir" value="/var/folders/S8/S8dDZOGZHrGhGAVoMY9bMk+++TI/-Tmp-/" />
     <property name="java.vendor.url" value="http://www.apple.com/" />
@@ -266,7 +266,7 @@
     <property name="mrj.build" value="10M3425" />
     <property name="sun.boot.library.path" value="/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Libraries" />
     <property name="have.sources" value="true" />
-    <property name="debug.classpath" value="/Users/heidi/Documents/junit-4.10.jar/junit-4.10.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/platform/modules/ext/swing-layout-1.0.4.jar:build/classes" />
+    <property name="debug.classpath" value="/Users/heidi/Documents/junit-4.10.jar/junit-4.10.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/platform/modules/ext/swing-layout-1.0.4.jar:/Users/heidi/Downloads/jSuggestField.jar:build/classes" />
     <property name="javadoc.private" value="true" />
     <property name="test.src.dir" value="test" />
     <property name="ant.file.type.Javalabra-impl" value="file" />
@@ -276,6 +276,7 @@
     <property name="javadoc.encoding.used" value="UTF-8" />
     <property name="libs.DataBindingME-SVG.src" value="/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/mobility/sources/netbeans_databindingme_svg-src.zip" />
     <property name="dist.jar" value="dist/Javalabra.jar" />
+    <property name="netbeans.automatic.build" value="true" />
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment" />
     <property name="ant.project.name" value="Javalabra" />
     <property name="netbeans.hash.code" value="unique=NB_JAVA_WEBEE_MOB_CND_GROOVY_PHP_GFMOD0705aea4e-de69-4353-a272-a9819ed2767f_fc0419a4-15a4-44cf-b478-05b8b7f5ad81" />
@@ -291,15 +292,15 @@
     <property name="annotation.processing.processors.list" value="" />
     <property name="debug-args-line" value="-Xdebug" />
     <property name="libs.primefaces.maven-pom" value="" />
-    <property name="sun.zip.disableMemoryMapping" value="true" />
     <property name="libs.NetBeans MIDP Components.classpath" value="/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/mobility/modules/ext/netbeans_midp_components_basic.jar" />
+    <property name="sun.zip.disableMemoryMapping" value="true" />
     <property name="libs.javaee-api-6.0.maven-pom" value="" />
     <property name="libs.JWSAntTasks.src" value="" />
     <property name="jar.index" value="false" />
     <property name="libs.CopyLibs.maven-pom" value="" />
-    <property name="libs.absolutelayout.javadoc" value="" />
     <property name="libs.hibernate-persistence.maven-pom" value="" />
     <property name="libs.spring-framework300.javadoc" value="" />
+    <property name="libs.absolutelayout.javadoc" value="" />
     <property name="java.specification.name" value="Java Platform API Specification" />
     <property name="guice.disable.misplaced.annotation.check" value="true" />
     <property name="libs.NetBeans MIDP Components WMA.classpath" value="/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/mobility/modules/ext/netbeans_midp_components_wma.jar" />
@@ -309,8 +310,8 @@
     <property name="java.specification.vendor" value="Sun Microsystems Inc." />
     <property name="libs.cdc-agui-swing-layout.javadoc" value="" />
     <property name="libs.javac-api.classpath" value="/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/modules/ext/javac-api-nb-7.0-b07.jar" />
-    <property name="java.version" value="1.6.0_26" />
     <property name="libs.nokiaS80-ant-utils.classpath" value="/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/mobility/modules/ext/org-netbeans-modules-j2me-cdc-project-nokiaS80.jar" />
+    <property name="java.version" value="1.6.0_26" />
     <property name="libs.NetBeans MIDP Components WMA.javadoc" value="/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/mobility/modules/docs/netbeans_midp_components_wma-api.zip" />
     <property name="javadoc.version" value="false" />
     <property name="libs.MySQLDriver.javadoc" value="" />
@@ -331,16 +332,16 @@
     <property name="libs.cdc-ant-utils.src" value="" />
     <property name="work.dir" value="/Users/heidi/NetBeansProjects/Javalabra/Javalabra" />
     <property name="libs.jaxb.classpath" value="/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/ide/modules/ext/jaxb/jaxb-impl.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/ide/modules/ext/jaxb/jaxb-xjc.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/ide/modules/ext/jaxb/jaxb1-impl.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/ide/modules/ext/jaxb/activation.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/ide/modules/ext/jaxb/api/jaxb-api.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/ide/modules/ext/jaxb/api/jsr173_api.jar" />
-    <property name="com.sun.mysql.startargs" value="start" />
     <property name="do.depend" value="false" />
+    <property name="com.sun.mysql.startargs" value="start" />
     <property name="dist.javadoc.dir" value="dist/javadoc" />
     <property name="libs.spring-webmvc3.0.classpath" value="/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/modules/ext/spring-3.0/spring-webmvc-3.0.6.RELEASE.jar" />
     <property name="libs.swing-layout.classpath" value="/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/platform/modules/ext/swing-layout-1.0.4.jar" />
     <property name="libs.restlib.src" value="" />
-    <property name="build.generated.dir" value="build/generated" />
     <property name="javac.source" value="1.6" />
-    <property name="libs.hibernate-persistence.src" value="" />
+    <property name="build.generated.dir" value="build/generated" />
     <property name="line.separator" value="&#xa;" />
+    <property name="libs.hibernate-persistence.src" value="" />
     <property name="libs.nb_svg_midp_components.javadoc" value="/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/mobility/modules/docs/nb_svg_midp_components-api.zip" />
     <property name="java.specification.version" value="1.6" />
     <property name="java.vm.info" value="mixed mode" />
@@ -357,8 +358,8 @@
     <property name="annotation.processing.enabled" value="true" />
     <property name="com.sun.mysql.startcommand" value="/usr/local/mysql/support-files/mysql-admin.server" />
     <property name="libs.jsf20.src" value="" />
-    <property name="libs.jsf12.src" value="" />
     <property name="libs.DataBindingME-SVG.maven-pom" value="" />
+    <property name="libs.jsf12.src" value="" />
     <property name="libs.nokiadeployment.src" value="" />
     <property name="libs.savaje-ant-utils.javadoc" value="" />
     <property name="libs.struts.javadoc" value="/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/enterprise/docs/struts-1.3.10-javadoc.zip" />
@@ -370,13 +371,13 @@
     <property name="libs.groovy-all.javadoc" value="" />
     <property name="do.archive+manifest.available+main.class" value="true" />
     <property name="libs.groovy-all.classpath" value="/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/groovy/modules/ext/groovy-all.jar" />
-    <property name="javac.fork" value="false" />
     <property name="libs.sjmc-ant-utils.classpath" value="/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/mobility/modules/ext/org-netbeans-modules-j2me-cdc-project-sjmc.jar" />
+    <property name="javac.fork" value="false" />
     <property name="libs.JMUnit4CLDC10.classpath" value="/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/mobility/modules/ext/jmunit4cldc10-1.2.1.jar" />
     <property name="java.awt.printerjob" value="apple.awt.CPrinterJob" />
     <property name="default.javac.source" value="1.6" />
-    <property name="debug-transport-by-os" value="dt_socket" />
     <property name="com.sun.mysql.stopargs" value="stop" />
+    <property name="debug-transport-by-os" value="dt_socket" />
     <property name="libs.MySQLDriver.src" value="" />
     <property name="sun.jnu.encoding" value="MacRoman" />
     <property name="libs.ant-contrib.maven-pom" value="" />
@@ -385,9 +386,9 @@
     <property name="java.runtime.version" value="1.6.0_26-b03-384-10M3425" />
     <property name="libs.ejb3-persistence.javadoc" value="" />
     <property name="libs.NetBeans MIDP Components.src" value="/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/mobility/sources/netbeans_midp_components_basic-src.zip" />
+    <property name="libs.sjmc-ant-utils.javadoc" value="" />
     <property name="jna.platform.library.path" value="/usr/lib:/usr/lib" />
     <property name="manifest.available+main.class+mkdist.available" value="true" />
-    <property name="libs.sjmc-ant-utils.javadoc" value="" />
     <property name="default.javac.target" value="1.6" />
     <property name="libs.junit_4.classpath" value="/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/platform/modules/ext/junit-4.10.jar" />
     <property name="user.timezone" value="" />
@@ -403,12 +404,12 @@
     <property name="libs.savaje-ant-utils.maven-pom" value="" />
     <property name="libs.absolutelayout.classpath" value="/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/modules/ext/AbsoluteLayout.jar" />
     <property name="excludes" value="" />
-    <property name="libs.restlib.maven-pom" value="" />
     <property name="libs.metro.classpath" value="/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/ide/modules/ext/jaxb/activation.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/enterprise/modules/ext/metro/webservices-api.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/enterprise/modules/ext/metro/webservices-extra-api.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/enterprise/modules/ext/metro/webservices-extra.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/enterprise/modules/ext/metro/webservices-rt.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/enterprise/modules/ext/metro/webservices-tools.jar" />
+    <property name="libs.restlib.maven-pom" value="" />
     <property name="file.reference.junit-4.10.jar.zip" value="/Users/heidi/Documents/junit-4.10.jar/junit-4.10.jar" />
     <property name="libs.DataBindingME.javadoc" value="/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/mobility/modules/docs/netbeans_databindingme-api.zip" />
-    <property name="java.class.path" value="/Users/heidi/Documents/junit-4.10.jar/junit-4.10.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/platform/modules/ext/swing-layout-1.0.4.jar:/Users/heidi/NetBeansProjects/Javalabra/Javalabra/build/classes:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/platform/modules/ext/junit-4.10.jar:/Users/heidi/NetBeansProjects/Javalabra/Javalabra/build/test/classes:/Users/heidi/.netbeans/7.1/modules/ext/emma.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/ant/lib/ant-launcher.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/ant/lib/ant.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/ant/lib/ant-junit.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/ant/lib/ant-junit4.jar" />
     <property name="apple.laf.useScreenMenuBar" value="true" />
+    <property name="java.class.path" value="/Users/heidi/Documents/junit-4.10.jar/junit-4.10.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/platform/modules/ext/swing-layout-1.0.4.jar:/Users/heidi/Downloads/jSuggestField.jar:/Users/heidi/NetBeansProjects/Javalabra/Javalabra/build/classes:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/platform/modules/ext/junit-4.10.jar:/Users/heidi/NetBeansProjects/Javalabra/Javalabra/build/test/classes:/Users/heidi/.netbeans/7.1/modules/ext/emma.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/ant/lib/ant-launcher.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/ant/lib/ant.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/ant/lib/ant-junit.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/ant/lib/ant-junit4.jar" />
     <property name="do.mkdist" value="true" />
     <property name="ant.file.Javalabra-impl" value="/Users/heidi/NetBeansProjects/Javalabra/Javalabra/nbproject/build-impl.xml" />
     <property name="libs.absolutelayout.src" value="" />
@@ -423,8 +424,8 @@
     <property name="libs.restlib.javadoc" value="/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/enterprise/docs/jersey-1.8-javadoc.zip:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/enterprise/docs/jersey-apache-client-1.8-javadoc.zip:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/enterprise/docs/jersey-atom-abdera-1.8-javadoc.zip:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/enterprise/docs/jersey-guice-1.8-javadoc.zip:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/enterprise/docs/jersey-multipart-1.8-javadoc.zip:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/enterprise/docs/jersey-simple-server-1.8-javadoc.zip:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/enterprise/docs/jersey-spring-1.8-javadoc.zip:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/enterprise/docs/oauth-client-1.8-javadoc.zip:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/enterprise/docs/oauth-server-1.8-javadoc.zip:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/enterprise/docs/oauth-signature-1.8-javadoc.zip" />
     <property name="libs.JAXB-ENDORSED.classpath" value="/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/ide/modules/ext/jaxb/api/jaxb-api.jar" />
     <property name="libs.eclipselink.classpath" value="/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/modules/ext/eclipselink/eclipselink-2.3.0.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/modules/ext/eclipselink/javax.persistence-2.0.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/modules/ext/eclipselink/org.eclipse.persistence.jpa.jpql_1.0.0.jar" />
-    <property name="libs.beans-binding.javadoc" value="/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/docs/beansbinding-1.2.1-doc.zip" />
     <property name="java.awt.graphicsenv" value="apple.awt.CGraphicsEnvironment" />
+    <property name="libs.beans-binding.javadoc" value="/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/docs/beansbinding-1.2.1-doc.zip" />
     <property name="java.vm.vendor" value="Apple Inc." />
     <property name="libs.CopyLibs.classpath" value="/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/ant/extra/org-netbeans-modules-java-j2seproject-copylibstask.jar" />
     <property name="libs.spring-framework300.classpath" value="/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/ide/modules/org-apache-commons-logging.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/modules/ext/cglib-2.2.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/modules/ext/spring-3.0/spring-aop-3.0.6.RELEASE.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/modules/ext/spring-3.0/spring-asm-3.0.6.RELEASE.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/modules/ext/spring-3.0/spring-aspects-3.0.6.RELEASE.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/modules/ext/spring-3.0/spring-beans-3.0.6.RELEASE.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/modules/ext/spring-3.0/spring-context-3.0.6.RELEASE.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/modules/ext/spring-3.0/spring-context-support-3.0.6.RELEASE.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/modules/ext/spring-3.0/spring-core-3.0.6.RELEASE.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/modules/ext/spring-3.0/spring-expression-3.0.6.RELEASE.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/modules/ext/spring-3.0/spring-instrument-3.0.6.RELEASE.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/modules/ext/spring-3.0/spring-instrument-tomcat-3.0.6.RELEASE.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/modules/ext/spring-3.0/spring-jdbc-3.0.6.RELEASE.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/modules/ext/spring-3.0/spring-jms-3.0.6.RELEASE.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/modules/ext/spring-3.0/spring-orm-3.0.6.RELEASE.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/modules/ext/spring-3.0/spring-oxm-3.0.6.RELEASE.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/modules/ext/spring-3.0/spring-test-3.0.6.RELEASE.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/modules/ext/spring-3.0/spring-tx-3.0.6.RELEASE.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/modules/ext/spring-3.0/spring-web-3.0.6.RELEASE.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/modules/ext/spring-3.0/spring-webmvc-portlet-3.0.6.RELEASE.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/modules/ext/spring-3.0/spring-webmvc-3.0.6.RELEASE.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/modules/ext/spring-3.0/spring-struts-3.0.6.RELEASE.jar" />
@@ -432,8 +433,8 @@
     <property name="libs.spring-webmvc.maven-pom" value="" />
     <property name="run.jvmargs" value="" />
     <property name="libs.ejb3-persistence.classpath" value="/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/modules/ext/hibernate/ejb3-persistence.jar" />
-    <property name="libs.spring-framework.javadoc" value="" />
     <property name="libs.JAXB-ENDORSED.src" value="" />
+    <property name="libs.spring-framework.javadoc" value="" />
     <property name="libs.DataBindingME-PIM.src" value="/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/mobility/sources/netbeans_databindingme_pim-src.zip" />
     <property name="libs.PostgreSQLDriver.classpath" value="/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/ide/modules/ext/postgresql-8.3-603.jdbc3.jar" />
     <property name="libs.jsf12.maven-pom" value="" />
@@ -444,14 +445,14 @@
     <property name="build.dir" value="build" />
     <property name="libs.jsp-compilation.classpath" value="/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/ant/lib/ant.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/enterprise/modules/ext/servlet3.0-jsp2.2-api.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/enterprise/modules/ext/glassfish-jspparser-3.0.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/enterprise/modules/ext/jsf-2_1/jsf-api.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/enterprise/modules/ext/jstl.jar:/Applications/NetBeans/NetBeans 7.1.app/Contents/Resources/NetBeans/java/ant/lib/ant-launcher.jar" />
     <property name="ant.version" value="Apache Ant(TM) version 1.8.2 compiled on December 20 2010" />
-    <property name="file.encoding" value="MacRoman" />
     <property name="build.classes.excludes" value="**/*.java,**/*.form" />
-    <property name="javadoc.nonavbar" value="false" />
+    <property name="file.encoding" value="MacRoman" />
     <property name="jdkBug6558476" value="false" />
+    <property name="javadoc.nonavbar" value="false" />
     <property name="platform.active" value="default_platform" />
     <property name="awt.toolkit" value="apple.awt.CToolkit" />
   </properties>
-  <testcase classname="TaitoTest" name="TaitoTallessa" time="0.231" />
+  <testcase classname="TaitoTest" name="TaitoTallessa" time="0.076" />
   <testcase classname="TaitoTest" name="tasoTallessa" time="0.0" />
   <system-out><![CDATA[EMMA: collecting runtime coverage data ...
 ]]></system-out>

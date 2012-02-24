@@ -84,12 +84,9 @@
                           <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace min="-2" pref="63" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jScrollPane1" min="-2" pref="170" max="-2" attributes="0"/>
-                      <Component id="poistaButton" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
+                  <Component id="jScrollPane1" min="-2" pref="197" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -121,10 +118,7 @@
                       </Group>
                   </Group>
                   <EmptySpace pref="20" max="32767" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="haeButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="poistaButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
+                  <Component id="haeButton" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -210,11 +204,6 @@
             </Component>
           </SubComponents>
         </Container>
-        <Component class="javax.swing.JButton" name="poistaButton">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Poista valittu henkil&#xf6;"/>
-          </Properties>
-        </Component>
       </SubComponents>
     </Container>
   </SubComponents>

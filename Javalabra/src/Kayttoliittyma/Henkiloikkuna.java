@@ -15,7 +15,7 @@ import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
 
 /**
- *
+ * Ikkuna yhden henkilön tieton tarkasteluun.
  * @author hwikgren
  */
 public class Henkiloikkuna extends javax.swing.JFrame implements Observer {
@@ -29,6 +29,42 @@ public class Henkiloikkuna extends javax.swing.JFrame implements Observer {
     TitledBorder border;
     NimenMuutos henkilo;
     
+    
+    /**
+     * Creates new form Henkiloikkuna
+     */
+    public Henkiloikkuna() {
+        initComponents();
+    }
+
+    /**
+     * Konstruktori saa tiedon kortistosta ja henkilöstä.
+     * Tekee reunuksen jossa on henkilön nimi.
+     * Kutsuu haeTiedot metodia ja asettaa henkilö-olion observeriksi.
+     * @param kortisto
+     * @param nimi 
+     */
+    public Henkiloikkuna(Kortisto kortisto, String nimi) {
+        initComponents();
+        this.kortisto = kortisto;
+        this.henkilonNimi = nimi;
+        border = BorderFactory.createTitledBorder(henkilonNimi);
+        border.setTitleJustification(TitledBorder.CENTER);
+        border.setTitlePosition(TitledBorder.CENTER);
+        jPanel3.setBorder(border);
+        Nimi.setText(henkilonNimi);
+        haeTiedot();
+        taidotLista.setSelectedIndex(0);
+        String osaaminen = tasot[0][1];
+        naytaTaso(osaaminen);
+        olio = kortisto.valitaHenkiloOlio(henkilonNimi);
+        olio.addObserver(this);
+        henkilo = new NimenMuutos(kortisto, henkilonNimi);
+    }
+    
+    /**
+     * Metodi hakee kortistosta henkilön taidot ja lisää ne listalle.
+     */
     private void haeTiedot() {
         tasot = kortisto.haeTaidot(henkilonNimi);
         model = new DefaultListModel();
@@ -38,38 +74,40 @@ public class Henkiloikkuna extends javax.swing.JFrame implements Observer {
         taidotLista.setModel(model);
     }
     
+    /**
+     * Metodi lisää radioButtonin mukaisen tason taidolle.
+     * Kutsuu tallenna- ja haeTiedot-metodeja.
+     * @param indeksi
+     * @param taso 
+     */
     private void tallennaTaso(int indeksi, String taso) {
-        String taito = (String) model.getElementAt(indeksi);
+        String taito = (String)model.getElementAt(indeksi);
         tasot[indeksi][0] = taito;
         tasot[indeksi][1] = taso;
         tallenna();
         haeTiedot();
-        int uusiIndeksi = model.indexOf(taito);
-        taidotLista.ensureIndexIsVisible(uusiIndeksi);
+        int uusiIndeksi = model.indexOf((Object)taito);
+        taidotLista.setSelectedIndex(uusiIndeksi);
+        
         
     }
-    private void tallennaTaito(String taito, String taso) {
-        String[][] taidot = new String[tasot.length+1][2];
-        for (int i=0; i<tasot.length; i++) {
-            taidot[i][0] = tasot[i][0];
-            taidot[i][1] = tasot[i][1];
-        }
-        taidot[taidot.length-1][0] = taito;
-        taidot[taidot.length-1][1] = taso;
-        tasot = taidot;
-        tallenna();
-        haeTiedot();
-        int uusiIndeksi = model.indexOf(taito);
-        taidotLista.ensureIndexIsVisible(uusiIndeksi);
-    }
     
+    /**
+     * Metodi tallentaa henkilön taidot kortistoon.
+     * Pyytää ensin tyhjentämään henkilön taidot.
+     * Lisää sitten listalla olevat taidot ja tasot henkilölle.
+     */
     private void tallenna() {
         kortisto.tyhjennaHenkilonTaidot(henkilonNimi);
         for (int i=0; i<tasot.length; i++) {
-            //String taito = (String)model.elementAt(i);
             kortisto.lisaaTaito(henkilonNimi, tasot[i][0], tasot[i][1]);
         }
     }
+    
+    /**
+     * Metodi asettaa osaamisen vaatiman radioButtonin aktiiviseksi.
+     * @param osaaminen 
+     */
     private void naytaTaso(String osaaminen) {
         if (osaaminen.equals("Hyvä")) {
             jRadioButton2.setSelected(rootPaneCheckingEnabled);
@@ -85,36 +123,22 @@ public class Henkiloikkuna extends javax.swing.JFrame implements Observer {
         }
     }
     
+    /**
+     * Metodi piilottaa poista-napin, poistaa valinnat ja laittaa radioButtonit ei-aktiivisiksi.
+     */
     private void piilota() {
-        buttonGroup1.clearSelection();
         jRadioButton1.setEnabled(false);
         jRadioButton2.setEnabled(false);
         jRadioButton3.setEnabled(false);
-        taidotLista.clearSelection();
         poistaButton.setVisible(false);
+        if (!taidotLista.isSelectionEmpty()) {
+            taidotLista.clearSelection();
+        }
+        if (buttonGroup1.getSelection() != null) {
+            buttonGroup1.clearSelection();
+        }
     }
-    /**
-     * Creates new form Henkiloikkuna
-     */
-    public Henkiloikkuna() {
-        initComponents();
-    }
-
-    public Henkiloikkuna(Kortisto kortisto, String nimi) {
-        initComponents();
-        this.kortisto = kortisto;
-        this.henkilonNimi = nimi;
-        border = BorderFactory.createTitledBorder(henkilonNimi);
-        border.setTitleJustification(TitledBorder.CENTER);
-        border.setTitlePosition(TitledBorder.CENTER);
-        jPanel3.setBorder(border);
-        Nimi.setText(henkilonNimi);
-        haeTiedot();
-        piilota();
-        olio = kortisto.valitaHenkiloOlio(nimi);
-        olio.addObserver(this);
-        
-    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -157,9 +181,15 @@ public class Henkiloikkuna extends javax.swing.JFrame implements Observer {
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
+        taidotLista.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         taidotLista.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 taidotListaMouseClicked(evt);
+            }
+        });
+        taidotLista.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                taidotListaValueChanged(evt);
             }
         });
         jScrollPane1.setViewportView(taidotLista);
@@ -255,20 +285,15 @@ public class Henkiloikkuna extends javax.swing.JFrame implements Observer {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
-                        .addGap(139, 139, 139)
-                        .addComponent(Nimi, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(poistaButton))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(poistaButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(TallennaButton))
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(TallennaButton, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(jPanel3Layout.createSequentialGroup()
@@ -286,7 +311,8 @@ public class Henkiloikkuna extends javax.swing.JFrame implements Observer {
                                     .addGroup(jPanel3Layout.createSequentialGroup()
                                         .addGap(90, 90, 90)
                                         .addComponent(jLabel3)))
-                                .addComponent(muokkaaButton, javax.swing.GroupLayout.Alignment.TRAILING)))))
+                                .addComponent(muokkaaButton, javax.swing.GroupLayout.Alignment.TRAILING))))
+                    .addComponent(Nimi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -296,11 +322,6 @@ public class Henkiloikkuna extends javax.swing.JFrame implements Observer {
                 .addComponent(Nimi, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(TallennaButton)
-                        .addGap(90, 90, 90))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(muokkaaButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -316,9 +337,16 @@ public class Henkiloikkuna extends javax.swing.JFrame implements Observer {
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(uusiTaito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(31, 31, 31)
-                        .addComponent(poistaButton)
-                        .addGap(117, 117, 117))))
+                        .addGap(58, 58, 58))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(TallennaButton)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addComponent(poistaButton)))
+                .addGap(75, 75, 75))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -341,56 +369,91 @@ public class Henkiloikkuna extends javax.swing.JFrame implements Observer {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Metodi reagoi enteriin taidonlisäys kentässä.
+     * Teksti otetaan talteen ja tarkastetaan ettei henkilöllä jo ole kyseistä taitoa.
+     * Jos ei, vanhat taidot siirretään yhtä pidempään taulukkoon.
+     * Taidot tallennetaan ja haetaan uudelleen.
+     * Kursori pidetään taidonlisäys kentässä mutta teksti poistetaan.
+     * @param evt 
+     */
     private void uusiTaitoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uusiTaitoActionPerformed
-        String taito = uusiTaito.getText().toUpperCase();
-        boolean onJo = false;
-        for (int i=0; i<tasot.length; i++) {
-            if (tasot[i][0].equalsIgnoreCase(taito)) {
-                JOptionPane.showMessageDialog(this, "Henkilöllä on jo kyseinen taito!", "", JOptionPane.WARNING_MESSAGE);
-                onJo = true;
+        String taito = uusiTaito.getText().trim().toUpperCase();
+        if (!taito.equals("")) {
+            boolean onJo = false;
+            for (int i=0; i<tasot.length; i++) {
+                if (tasot[i][0].equalsIgnoreCase(taito)) {
+                    JOptionPane.showMessageDialog(this, "Henkilöllä on jo kyseinen taito!", "", JOptionPane.WARNING_MESSAGE);
+                    onJo = true;
+                }
+                break;
             }
-            break;
+            if (!onJo) {
+                model.insertElementAt(taito, 0);
+                String[][] taidot = new String[tasot.length+1][2];
+                for (int i=0; i<tasot.length; i++) {
+                    taidot[i][0] = tasot[i][0];
+                    taidot[i][1] = tasot[i][1];
+                }
+                taidot[taidot.length-1][0] = taito;
+                taidot[taidot.length-1][1] = "";
+                tasot = taidot;
+                tallenna();
+                haeTiedot();
+                int uusiIndeksi = model.indexOf(taito);
+                taidotLista.ensureIndexIsVisible(uusiIndeksi);
+                uusiTaito.requestFocusInWindow();
+                uusiTaito.setText("");
+            }
         }
-        if (!onJo) {
-            model.insertElementAt(taito, 0);
-            tallennaTaito(taito, "");
-            uusiTaito.requestFocusInWindow();
-            uusiTaito.setText("");
-        }
-        //buttonGroup1.clearSelection();
     }//GEN-LAST:event_uusiTaitoActionPerformed
 
+    /**
+     * Metodi sulkee ikkunan.
+     * @param evt 
+     */
     private void TallennaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TallennaButtonActionPerformed
-        //tallenna();
         dispose();
     }//GEN-LAST:event_TallennaButtonActionPerformed
 
+    /**
+     * Metodi reagoi radioButtonin 1 klikkaamiseen.
+     * Tallentaa valitulle taidolle kyseisen tason.
+     * @param evt 
+     */
     private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
         int indeksi = taidotLista.getSelectedIndex();
         tallennaTaso(indeksi, "Kohtalainen");
     }//GEN-LAST:event_jRadioButton1ActionPerformed
 
+    /**
+     * Metodi reagoi radioButtonin 2 klikkaamiseen.
+     * Tallentaa valitulle taidolle kyseisen tason.
+     * @param evt 
+     */
     private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2ActionPerformed
         int indeksi = taidotLista.getSelectedIndex();
         tallennaTaso(indeksi, "Hyvä");
     }//GEN-LAST:event_jRadioButton2ActionPerformed
 
+    /**
+     * Metodi reagoi radioButtonin 3 klikkaamiseen.
+     * Tallentaa valitulle taidolle kyseisen tason.
+     * @param evt 
+     */
     private void jRadioButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton3ActionPerformed
         int indeksi = taidotLista.getSelectedIndex();
         tallennaTaso(indeksi, "Erinomainen");
     }//GEN-LAST:event_jRadioButton3ActionPerformed
 
     private void taidotListaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_taidotListaMouseClicked
-        poistaButton.setVisible(true);
-        jRadioButton1.setEnabled(true);
-        jRadioButton2.setEnabled(true);
-        jRadioButton3.setEnabled(true);
-        int indeksi = taidotLista.getSelectedIndex();
-        String taito = (String)model.getElementAt(indeksi);
-        String osaaminen = tasot[indeksi][1];
-        naytaTaso(osaaminen);
+        
     }//GEN-LAST:event_taidotListaMouseClicked
 
+    /**
+     * Metodi poistaa taidon henkilön listalta.
+     * @param evt 
+     */
     private void poistaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_poistaButtonActionPerformed
         int indeksi = taidotLista.getSelectedIndex();
         String taito = (String)model.getElementAt(indeksi);
@@ -399,22 +462,53 @@ public class Henkiloikkuna extends javax.swing.JFrame implements Observer {
         piilota();
     }//GEN-LAST:event_poistaButtonActionPerformed
 
+    /**
+     * Metodi avaa nimen muokkaus ikkunan.
+     * @param evt 
+     */
     private void muokkaaButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_muokkaaButtonActionPerformed
-        olio = kortisto.valitaHenkiloOlio(henkilonNimi);
-        henkilo = new NimenMuutos(kortisto, henkilonNimi);
+        
             //ikkuna.setSize(450, 400);
         henkilo.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         henkilo.setVisible(true);
     }//GEN-LAST:event_muokkaaButtonActionPerformed
 
+    /**
+     * Metodi reagoi siihen, että taustaa klikataan.
+     * Kutsuu piilota metodia.
+     * @param evt 
+     */
     private void jPanel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel3MouseClicked
-        buttonGroup1.clearSelection();
         piilota();
     }//GEN-LAST:event_jPanel3MouseClicked
 
+    /**
+     * Metodi reagoi siihen, että taidon lisäys kenttää klikataan.
+     * Kutsuu piilota metodia.
+     * @param evt 
+     */
     private void uusiTaitoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_uusiTaitoMouseClicked
         piilota();
     }//GEN-LAST:event_uusiTaitoMouseClicked
+
+    /**
+     * Metodi pitää huolen siitä mikä taito on valittu listalta.
+     * Jos joku taito on valittu, radiobuttonit tulevat näkyviin ja taitoa vastaava taso näkyy.
+     * @param evt 
+     */
+    private void taidotListaValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_taidotListaValueChanged
+        if (taidotLista.isSelectionEmpty() == false) {
+            poistaButton.setVisible(true);
+            jRadioButton1.setEnabled(true);
+            jRadioButton2.setEnabled(true);
+            jRadioButton3.setEnabled(true);
+            int indeksi = taidotLista.getSelectedIndex();
+            //String taito = (String)model.getElementAt(indeksi);
+            String osaaminen = tasot[indeksi][1];
+            naytaTaso(osaaminen);
+        }
+        
+    }//GEN-LAST:event_taidotListaValueChanged
 
     /**
      * @param args the command line arguments
@@ -477,6 +571,11 @@ public class Henkiloikkuna extends javax.swing.JFrame implements Observer {
     private javax.swing.JTextField uusiTaito;
     // End of variables declaration//GEN-END:variables
 
+    /**
+     * Metodi päivittää henkilön nimen, kun observer ilmoittaa että listalla on tapahtunut muutos.
+     * @param o
+     * @param o1 
+     */
     @Override
     public void update(Observable o, Object o1) {
         Nimi.setText((String)o1);
@@ -484,5 +583,6 @@ public class Henkiloikkuna extends javax.swing.JFrame implements Observer {
         border.setTitleJustification(TitledBorder.CENTER);
         border.setTitlePosition(TitledBorder.CENTER);
         jPanel3.setBorder(border);
+        henkilonNimi = (String)o1;
     }
 }

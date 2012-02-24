@@ -2,8 +2,8 @@
 package Kortisto;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 /**
  * Tallennus-olio hoitaa tietojen tallennuksen ja lataamisen.
@@ -38,15 +38,7 @@ public class Tallennus implements Serializable {
 
 
             try {
-                henkilot = (TreeMap<String, Henkilo>)lukija.readObject();
-                /*Object obj;
-
-                while ((obj = lukija.readObject()) != null) {
-                    if (obj instanceof Henkilo) {
-                        henkilo = (Henkilo)obj;
-                        henkilot.put(henkilo);
-                    }
-                }*/ 
+                henkilot = (TreeMap<String, Henkilo>)lukija.readObject(); 
             } catch (EOFException ex) {
 
             } finally {
@@ -77,4 +69,5 @@ public class Tallennus implements Serializable {
         kirjoittaja.flush();
         henkiloTiedosto.close();
     }
+
 }

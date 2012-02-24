@@ -1,7 +1,6 @@
 
 package Kortisto;
 
-import Kayttoliittyma.Komennot;
 import Kayttoliittyma.Paaikkuna;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -15,8 +14,7 @@ import javax.swing.WindowConstants;
 public class Javalabra {
     
     /**
-     * Luo käyttöliittymän.
-     * Huolehtii käyttäjän valinnoista. Ohjelma toimii kunnes valinta on 0.
+     * Luo käyttöliittymän luomalla pääikkunan.
      * @param args 
      */
     public static void main(String[] args) throws FileNotFoundException, IOException, ClassNotFoundException {
