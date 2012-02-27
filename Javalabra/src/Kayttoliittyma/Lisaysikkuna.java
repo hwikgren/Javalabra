@@ -133,6 +133,11 @@ public class Lisaysikkuna extends javax.swing.JFrame {
 
         jLabel1.setText("Etunimi:");
 
+        etunimi.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                etunimiMouseClicked(evt);
+            }
+        });
         etunimi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 etunimiActionPerformed(evt);
@@ -146,6 +151,11 @@ public class Lisaysikkuna extends javax.swing.JFrame {
 
         jLabel2.setText("Sukunimi:");
 
+        sukunimi.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                sukunimiMouseClicked(evt);
+            }
+        });
         sukunimi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 sukunimiActionPerformed(evt);
@@ -544,6 +554,14 @@ public class Lisaysikkuna extends javax.swing.JFrame {
     private void jPanel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel1MouseClicked
         piilota();
     }//GEN-LAST:event_jPanel1MouseClicked
+
+    private void etunimiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_etunimiMouseClicked
+        piilota();
+    }//GEN-LAST:event_etunimiMouseClicked
+
+    private void sukunimiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sukunimiMouseClicked
+        piilota();
+    }//GEN-LAST:event_sukunimiMouseClicked
 
     /**
      * @param args the command line arguments

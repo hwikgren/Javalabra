@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.TreeMap;
-import java.util.TreeSet;
 
 /**
  * Sovelluslogiikka-olio
